@@ -62,7 +62,8 @@ class Auth extends MY_Controller {
                         $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
 
                         /* Load Template */
-                        $this->template->auth_render('auth/choice', $this->data);
+                        // $this->template->auth_render('admin/choice', $this->data);
+                        redirect('admin/dashboard');
                     }
                 }
                 else

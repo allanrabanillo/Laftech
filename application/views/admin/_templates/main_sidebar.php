@@ -32,11 +32,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php endif; ?>
                     <!-- Sidebar menu -->
                     <ul class="sidebar-menu">
-                        <li>
+                        <!--<li>
                             <a href="<?php echo site_url('/'); ?>">
                                 <i class="fa fa-home text-primary"></i> <span><?php echo lang('menu_access_website'); ?></span>
                             </a>
-                        </li>
+                        </li>-->
 
                         <li class="header text-uppercase"><?php echo lang('menu_main_navigation'); ?></li>
                         <li class="<?=active_link_controller('dashboard')?>">
@@ -72,22 +72,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <i class="fa fa-file"></i> <span><?php echo lang('menu_files'); ?></span>
                             </a>
                         </li>
-                        <li class="<?=active_link_controller('database')?>">
+                        <!--<li class="<?=active_link_controller('database')?>">
                             <a href="<?php echo site_url('admin/database'); ?>">
                                 <i class="fa fa-database"></i> <span><?php echo lang('menu_database_utility'); ?></span>
                             </a>
-                        </li>
+                        </li>-->
 
 
                         <li class="header text-uppercase"><?php echo $title; ?></li>
-                        <li class="<?=active_link_controller('license')?>">
+                        <!--<li class="<?=active_link_controller('license')?>">
                             <a href="<?php echo site_url('admin/license'); ?>">
                                 <i class="fa fa-legal"></i> <span><?php echo lang('menu_license'); ?></span>
                             </a>
-                        </li>
-                        <li class="<?=active_link_controller('resources')?>">
-                            <a href="<?php echo site_url('admin/resources'); ?>">
-                                <i class="fa fa-cubes"></i> <span><?php echo lang('menu_resources'); ?></span>
+                        </li>-->
+                        <li class="<?=active_link_controller('about')?>">
+                            <a href="<?php echo site_url('admin/about'); ?>">
+                                <i class="fa fa-cubes"></i> <span><?php echo lang('menu_about'); ?></span>
                             </a>
                         </li>
                     </ul>

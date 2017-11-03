@@ -14,7 +14,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="col-md-12">
                              <div class="box">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Default Box Example</h3>
+                                    <h3 class="box-title">Info</h3>
                                 </div>
                                 <div class="box-body">
 

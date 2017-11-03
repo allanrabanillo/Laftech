@@ -25,8 +25,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="info-box">
                                 <span class="info-box-icon bg-green"><i class="fa fa-check"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">AdminLTE version</span>
-                                    <span class="info-box-number">2.3.1</span>
+                                    <span class="info-box-text">Laftech version</span>
+                                    <span class="info-box-number">1.0.0</span>
                                 </div>
                             </div>
                         </div>
@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="info-box">
                                 <span class="info-box-icon bg-aqua"><i class="fa fa-shield"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Security groups</span>
+                                    <span class="info-box-text">Groups</span>
                                     <span class="info-box-number"><?php echo $count_groups; ?></span>
                                 </div>
                             </div>
@@ -69,7 +69,7 @@ if ($url_exist) {
                         <div class="col-md-12">
                             <div class="box">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Title</h3>
+                                    <h3 class="box-title">Software Info</h3>
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                                     </div>

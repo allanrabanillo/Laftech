@@ -20,10 +20,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <table class="table table-striped table-hover">
                                         <tbody>
 <?php foreach ($user_info as $user):?>
-                                            <tr>
+                                            <!--<tr>
                                                 <th><?php echo lang('users_ip_address'); ?></th>
                                                 <td><?php echo $user->ip_address; ?></td>
-                                            </tr>
+                                            </tr>-->
                                             <tr>
                                                 <th><?php echo lang('users_firstname'); ?></th>
                                                 <td><?php echo htmlspecialchars($user->first_name, ENT_QUOTES, 'UTF-8'); ?></td>

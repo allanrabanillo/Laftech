@@ -4,8 +4,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
             <header class="main-header">
                 <a href="<?php echo site_url('admin/dashboard'); ?>" class="logo">
-                    <span class="logo-mini"><b>A</b><?php echo $title_mini; ?></span>
-                    <span class="logo-lg"><b>Admin</b><?php echo $title_lg; ?></span>
+                    <span class="logo-mini"><b><?php echo $title_mini; ?></b>T</span>
+                    <span class="logo-lg"><b>Laf</b>tech</span>
                 </a>
 
                 <nav class="navbar navbar-static-top" role="navigation">
@@ -109,7 +109,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <img src="<?php echo base_url($avatar_dir . '/m_001.png'); ?>" class="img-circle" alt="User Image">
                                         <p><?php echo $user_login['firstname'].$user_login['lastname']; ?><small><?php echo lang('header_member_since'); ?> <?php echo date('d-m-Y', $user_login['created_on']); ?></small></p>
                                     </li>
-                                    <li class="user-body">
+                                    <!--<li class="user-body">
                                         <div class="row">
                                             <div class="col-xs-4 text-center">
                                                 <a href="#"><?php echo lang('header_followers'); ?></a>
@@ -121,7 +121,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <a href="#"><?php echo lang('header_friends'); ?></a>
                                             </div>
                                         </div>
-                                    </li>
+                                    </li>-->
                                     <li class="user-footer">
                                         <div class="pull-left">
                                             <a href="<?php echo site_url('admin/users/profile/'.$user_login['id']); ?>" class="btn btn-default btn-flat"><?php echo lang('header_profile'); ?></a>

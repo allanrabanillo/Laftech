@@ -27,7 +27,7 @@ $lang['menu_search'] = 'Search';
 /* *********** */$lang['menu_users_create']     = 'Create';
 /* *********** */$lang['menu_users_edit']       = 'Edit';
 
-/* ****** */$lang['menu_security_groups']       = 'Security groups';
+/* ****** */$lang['menu_security_groups']       = 'Groups';
 /* *********** */$lang['menu_groups_create']    = 'Create';
 /* *********** */$lang['menu_groups_edit']      = 'Edit';
 
@@ -42,4 +42,4 @@ $lang['menu_search'] = 'Search';
 
 /* * */$lang['menu_webapp']                     = 'Web application';
 /* ****** */$lang['menu_license']               = 'License';
-/* ****** */$lang['menu_resources']             = 'Resources';
+/* ****** */$lang['menu_about']             = 'About Us';

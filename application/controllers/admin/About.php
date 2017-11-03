@@ -1,18 +1,18 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Resources extends Admin_Controller {
+class About extends Admin_Controller {
 
     public function __construct()
     {
         parent::__construct();
 
         /* Title Page :: Common */
-        $this->page_title->push(lang('menu_resources'));
+        $this->page_title->push(lang('menu_about'));
         $this->data['pagetitle'] = $this->page_title->show();
 
         /* Breadcrumbs :: Common */
-        $this->breadcrumbs->unshift(1, lang('menu_resources'), 'admin/resources');
+        $this->breadcrumbs->unshift(1, lang('menu_about'), 'admin/about');
     }
 
 
@@ -28,7 +28,7 @@ class Resources extends Admin_Controller {
             $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
             /* Load Template */
-            $this->template->admin_render('admin/resources/index', $this->data);
+            $this->template->admin_render('admin/about/index', $this->data);
         }
 	}
 }
