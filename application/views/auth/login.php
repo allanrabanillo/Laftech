@@ -3,13 +3,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 ?>
             <div class="login-logo">
-                <a href="#" style ="color:#dd4b39"><b>Laf</b>tech</a>
+                <a href="#" style ="color:#dd4b39"><img width="20%" src="<?php echo base_url($avatar_dir . '/icon.png'); ?>"/><b>Laf</b>tech</a>
             </div>
 
             <div class="login-box-body">
                 <p class="login-box-msg"><?php echo lang('auth_sign_session'); ?></p>
+                <?php
+                if(!empty($message)):
+                ?>
                 <div class="alert alert-danger" role="alert"><?php echo $message;?></div>
-
+                <?php
+                endif;
+                ?>
                 <?php echo form_open('auth/login');?>
                     <div class="form-group has-feedback">
                         <?php echo form_input($identity);?>
