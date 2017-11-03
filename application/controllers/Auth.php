@@ -108,6 +108,7 @@ class Auth extends MY_Controller {
         $logout = $this->ion_auth->logout();
 
         $this->session->set_flashdata('message', $this->ion_auth->messages());
+        
 
         if ($src == 'admin')
         {

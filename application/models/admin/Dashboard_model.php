@@ -16,6 +16,13 @@ class Dashboard_model extends CI_Model {
         return $query;
     }
 
+    public function top_user_login()
+    {
+        $query = $this->db->query("SELECT * FROM users order by last_login desc limit 5;");
+
+        return $query->result();
+    }
+
 
     public function disk_totalspace($dir = DIRECTORY_SEPARATOR)
     {

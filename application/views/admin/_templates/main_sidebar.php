@@ -9,11 +9,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <!-- Sidebar user panel -->
                     <div class="user-panel">
                         <div class="pull-left image">
-                            <img src="<?php echo base_url($avatar_dir . '/m_001.png'); ?>" class="img-circle" alt="User Image">
+                            <img src="<?php echo base_url($avatar_dir . '/default.png'); ?>" class="img-circle" alt="User Image">
                         </div>
                         <div class="pull-left info">
                             <p><?php echo $user_login['firstname'].$user_login['lastname']; ?></p>
-                            <a href="#"><i class="fa fa-circle text-success"></i> <?php echo lang('menu_online'); ?></a>
+                            <a href="#"><i class="fa fa-circle text-success"></i> <?php echo gmdate("Y-m-d H:i:s ", $user_login['lastlogin']); ?></a>
                         </div>
                     </div>
 

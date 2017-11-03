@@ -716,6 +716,8 @@ class CI_Session {
 	 */
 	public function sess_regenerate($destroy = FALSE)
 	{
+		
+        session_start(); 
 		$_SESSION['__ci_last_regenerate'] = time();
 		session_regenerate_id($destroy);
 	}

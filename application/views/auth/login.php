@@ -3,12 +3,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 ?>
             <div class="login-logo">
-                <a href="#"><b>Laf</b>tech</a>
+                <a href="#" style ="color:#dd4b39"><b>Laf</b>tech</a>
             </div>
 
             <div class="login-box-body">
                 <p class="login-box-msg"><?php echo lang('auth_sign_session'); ?></p>
-                <?php echo $message;?>
+                <div class="alert alert-danger" role="alert"><?php echo $message;?></div>
 
                 <?php echo form_open('auth/login');?>
                     <div class="form-group has-feedback">

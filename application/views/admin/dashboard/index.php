@@ -14,19 +14,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="row">
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-maroon"><i class="fa fa-legal"></i></span>
+                                <span class="info-box-icon bg-maroon"><i class="glyphicon glyphicon-copy"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Licence</span>
-                                    <span class="info-box-number">Free</span>
+                                    <span class="info-box-text">Total Request</span>
+                                    <span class="info-box-number">10</span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-green"><i class="fa fa-check"></i></span>
+                                <span class="info-box-icon bg-red"><i class="fa fa-sort-amount-desc"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Laftech version</span>
-                                    <span class="info-box-number">1.0.0</span>
+                                    <span class="info-box-text">Out of Stock</span>
+                                    <span class="info-box-number">12</span>
                                 </div>
                             </div>
                         </div>
@@ -69,7 +69,7 @@ if ($url_exist) {
                         <div class="col-md-12">
                             <div class="box">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Software Info</h3>
+                                    <h3 class="box-title">System Info</h3>
                                     <div class="box-tools pull-right">
                                         <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
                                     </div>
@@ -77,7 +77,25 @@ if ($url_exist) {
                                 <div class="box-body">
                                     <div class="row">
                                         <div class="col-md-6">
-                                            <p class="text-center"><strong>xxx</strong></p>
+                                            <p class="text-center text-uppercase"><strong>Login History</strong></p>
+                                             <table class="table table-striped table-hover">
+                                                <thead>
+                                                    <tr>
+                                                        <th>Name</th>
+                                                        <th>Last Login</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                               <?php foreach ($users as $user):?>
+                                               <tr>
+                                                    <td><?php echo htmlspecialchars($user->first_name.' '.$user->last_name, ENT_QUOTES, 'UTF-8'); ?></td>
+                                                    <td><?php $now = time();echo htmlspecialchars(timespan($user->last_login, $now).' ago', ENT_QUOTES, 'UTF-8'); ?></td>
+                                                </tr>
+                                               <?php endforeach;?>
+                                                    
+                                                </tbody>
+                                             
+                                            </table>
                                         </div>
                                         <div class="col-md-6">
                                             <p class="text-center text-uppercase"><strong>Resources</strong></p>

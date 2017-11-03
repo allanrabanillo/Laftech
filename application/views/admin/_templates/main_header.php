@@ -32,7 +32,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <li><!-- start message -->
                                                 <a href="#">
                                                     <div class="pull-left">
-                                                        <img src="<?php echo base_url($avatar_dir . '/m_002.png'); ?>" class="img-circle" alt="User Image">
+                                                        <img src="<?php echo base_url($avatar_dir . '/default.png'); ?>" class="img-circle" alt="User Image">
                                                     </div>
                                                     <h4>Support Team<small><i class="fa fa-clock-o"></i> 5 mins</small></h4>
                                                     <p>Why not buy a new awesome theme?</p>
@@ -64,7 +64,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </li><!-- end notification -->
                                         </ul>
                                     </li>
-                                    <li class="footer"><a href="#"><?php echo lang('header_view_all'); ?></a></li>
+                                    <!--<li class="footer"><a href="#"><?php echo lang('header_view_all'); ?></a></li>-->
                                 </ul>
                             </li>
 
@@ -101,12 +101,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <!-- User Account -->
                             <li class="dropdown user user-menu">
                                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                                    <img src="<?php echo base_url($avatar_dir . '/m_001.png'); ?>" class="user-image" alt="User Image">
+                                    <img src="<?php echo base_url($avatar_dir . '/default.png'); ?>" class="user-image" alt="User Image">
                                     <span class="hidden-xs"><?php echo $user_login['username']; ?></span>
                                 </a>
                                 <ul class="dropdown-menu">
                                     <li class="user-header">
-                                        <img src="<?php echo base_url($avatar_dir . '/m_001.png'); ?>" class="img-circle" alt="User Image">
+                                        <img src="<?php echo base_url($avatar_dir . '/default.png'); ?>" class="img-circle" alt="User Image">
                                         <p><?php echo $user_login['firstname'].$user_login['lastname']; ?><small><?php echo lang('header_member_since'); ?> <?php echo date('d-m-Y', $user_login['created_on']); ?></small></p>
                                     </li>
                                     <!--<li class="user-body">
@@ -127,7 +127,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <a href="<?php echo site_url('admin/users/profile/'.$user_login['id']); ?>" class="btn btn-default btn-flat"><?php echo lang('header_profile'); ?></a>
                                         </div>
                                         <div class="pull-right">
-                                            <a href="<?php echo site_url('auth/logout/admin'); ?>" class="btn btn-default btn-flat"><?php echo lang('header_sign_out'); ?></a>
+                                            <a href="<?php echo site_url('auth/logout/admin'); ?>" class="btn btn-danger btn-flat"><?php echo lang('header_sign_out'); ?></a>
                                         </div>
                                     </li>
                                 </ul>
