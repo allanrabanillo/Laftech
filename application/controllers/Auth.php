@@ -105,11 +105,12 @@ class Auth extends MY_Controller {
 
     function logout($src = NULL)
 	{
+        
         $logout = $this->ion_auth->logout();
 
         $this->session->set_flashdata('message', $this->ion_auth->messages());
         
-
+        
         if ($src == 'admin')
         {
             redirect('auth/login', 'refresh');

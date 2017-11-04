@@ -47,6 +47,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
                         <li class="header text-uppercase"><?php echo lang('menu_administration'); ?></li>
+                         <li class="treeview <?=active_link_controller('prefs')?>">
+                            <a href="#">
+                                <i class="fa fa-archive"></i>
+                                <span>File Maintenance</span>
+                                <i class="fa fa-angle-left pull-right"></i>
+                            </a>
+                            <ul class="treeview-menu">
+                                <li class="<?=active_link_controller('parts')?>">
+                            <a href="<?php echo site_url('admin/parts'); ?>">
+                                <i class="fa fa-th-list"></i> <span>Parts</span>
+                            </a>
+                        </li>
+                        <li class="<?=active_link_controller('categories')?>">
+                            <a href="<?php echo site_url('admin/categories'); ?>">
+                                <i class="fa fa-cog"></i> <span>Categories</span>
+                            </a>
+                        </li>
+                        <li class="<?=active_link_controller('customers')?>">
+                            <a href="<?php echo site_url('admin/customers'); ?>">
+                                <i class="fa fa-users"></i> <span>Customers</span>
+                            </a>
+                        </li>
                         <li class="<?=active_link_controller('users')?>">
                             <a href="<?php echo site_url('admin/users'); ?>">
                                 <i class="fa fa-user"></i> <span><?php echo lang('menu_users'); ?></span>
@@ -57,6 +79,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <i class="fa fa-shield"></i> <span><?php echo lang('menu_security_groups'); ?></span>
                             </a>
                         </li>
+                            </ul>
+                        </li>
+                         
                         <li class="treeview <?=active_link_controller('prefs')?>">
                             <a href="#">
                                 <i class="fa fa-cogs"></i>

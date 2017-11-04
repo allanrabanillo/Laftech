@@ -406,7 +406,7 @@ class Ion_auth
 
 		// Destroy the session
 		$this->session->sess_destroy();
-
+		 session_start(); 
 		//Recreate the session
 		if (substr(CI_VERSION, 0, 1) == '2')
 		{

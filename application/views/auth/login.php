@@ -3,19 +3,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 ?>
             <div class="login-logo">
-<<<<<<< HEAD
-                <a href="#" style ="color:#dd4b39"><b>Laf</b>tech</a>
-=======
+
+                <!--<a href="#" style ="color:#dd4b39"><b>Laf</b>tech</a>-->
+
                 <a href="#" style ="color:#dd4b39"><img width="20%" src="<?php echo base_url($avatar_dir . '/icon.png'); ?>"/><b>Laf</b>tech</a>
->>>>>>> 7134de7be31ddb09a42e3c3ced75fc061a104942
+
             </div>
 
             <div class="login-box-body">
                 <p class="login-box-msg"><?php echo lang('auth_sign_session'); ?></p>
-<<<<<<< HEAD
-                <div class="alert alert-danger" role="alert"><?php echo $message;?></div>
 
-=======
+               
+
+
                 <?php
                 if(!empty($message)):
                 ?>
@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <?php
                 endif;
                 ?>
->>>>>>> 7134de7be31ddb09a42e3c3ced75fc061a104942
+
                 <?php echo form_open('auth/login');?>
                     <div class="form-group has-feedback">
                         <?php echo form_input($identity);?>
