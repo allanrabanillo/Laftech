@@ -4,8 +4,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 ?>
             <header class="main-header">
                 <a href="<?php echo site_url('admin/dashboard'); ?>" class="logo">
+<<<<<<< HEAD
                     <span class="logo-mini"><b><?php echo $title_mini; ?></b>T</span>
                     <span class="logo-lg"><b>Laf</b>tech</span>
+=======
+                    <span class="logo-mini"><img width="70%" src="<?php echo base_url($avatar_dir . '/icon.png'); ?>"/></span>
+                    <span class="logo-lg"><img width="15%" src="<?php echo base_url($avatar_dir . '/icon.png'); ?>"/><b>Laf</b>tech </span>
+>>>>>>> 7134de7be31ddb09a42e3c3ced75fc061a104942
                 </a>
 
                 <nav class="navbar navbar-static-top" role="navigation">
