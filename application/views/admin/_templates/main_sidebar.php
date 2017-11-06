@@ -44,6 +44,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <i class="fa fa-dashboard"></i> <span><?php echo lang('menu_dashboard'); ?></span>
                             </a>
                         </li>
+                        <li class="<?=active_link_controller('stocks')?>">
+                            <a href="<?php echo site_url('admin/stocks'); ?>">
+                                <i class="fa fa-inbox"></i> <span>Stocks</span>
+                            </a>
+                        </li>
+                        <li class="<?=active_link_controller('receiving')?>">
+                            <a href="<?php echo site_url('admin/receiving'); ?>">
+                                <i class="fa fa-sign-in"></i> <span>Receiving</span>
+                            </a>
+                        </li>
 
 
                         <li class="header text-uppercase"><?php echo lang('menu_administration'); ?></li>

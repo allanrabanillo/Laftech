@@ -1,7 +1,7 @@
 <?php
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-class Parts extends Admin_Controller {
+class Receiving extends Admin_Controller {
 
     public function __construct()
     {
@@ -9,14 +9,15 @@ class Parts extends Admin_Controller {
 
         /* Load :: Common */
         $this->lang->load('admin/users');
+        $this->load->model('admin/receiving_model');
         $this->load->model('admin/parts_model');
         $this->load->model('admin/categories_model');
         /* Title Page :: Common */
-        $this->page_title->push('Parts');
+        $this->page_title->push('Receiving');
         $this->data['pagetitle'] = $this->page_title->show();
 
         /* Breadcrumbs :: Common */
-        $this->breadcrumbs->unshift(1, 'Parts', 'admin/parts');
+        $this->breadcrumbs->unshift(1, 'Receiving', 'admin/receiving');
     }
 
 
@@ -32,14 +33,19 @@ class Parts extends Admin_Controller {
             $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
             /* Get all categories */
-            $this->data['parts'] = $this->parts_model->get_all();
-            foreach ($this->data['parts'] as $k => $part)
+            $this->data['receives'] = $this->receiving_model->get_all();
+            foreach ($this->data['receives'] as $k => $receive)
             {
-                $this->data['parts'][$k]->categories = $this->categories_model->get_all($part->cat_id);
+                $this->data['receives'][$k]->parts = $this->parts_model->get_all($receive->p_id);
+                 
+                    foreach ($this->data['receives'][$k]->parts as $r => $part)
+                    {
+                        $this->data['receives'][$k]->parts[$r]->categories = $this->categories_model->get_all($part->cat_id);
+                    }
             }
 
             /* Load Template */
-            $this->template->admin_render('admin/parts/index', $this->data);
+            $this->template->admin_render('admin/receiving/index', $this->data);
         }
 	}
 
@@ -47,83 +53,61 @@ class Parts extends Admin_Controller {
 	public function create()
 	{
         /* Breadcrumbs */
-        $this->breadcrumbs->unshift(2, 'Create part', 'admin/parts/create');
+        $this->breadcrumbs->unshift(2, 'New stock', 'admin/receiving/create');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
         /* Variables */
 		// $tables = $this->config->item('tables', 'ion_auth');
-        $cat = $this->categories_model->get_all();
-        
 
 		/* Validate form input */
-		$this->form_validation->set_rules('p_desc', 'lang:Description', 'required');
-		$this->form_validation->set_rules('p_boxno', 'lang:Box No', 'required|numeric');
-        $this->form_validation->set_rules('p_type', 'lang:Type', 'required');
-        $this->form_validation->set_rules('p_critical', 'lang:Critical Level', 'required|numeric|greater_than[0]');
-        $this->form_validation->set_rules('p_category', 'lang:Category', 'required');
+		$this->form_validation->set_rules('p_name', 'lang:Item Name', 'required');
+		$this->form_validation->set_rules('qty', 'lang:Quatity', 'required');
 	
 
-		// if ($this->form_validation->run() == TRUE)
-		// {
-		// 	$username = strtolower($this->input->post('first_name')) . ' ' . strtolower($this->input->post('last_name'));
-		// 	$email    = strtolower($this->input->post('email'));
-		// 	$password = $this->input->post('password');
-
 			$data = array(
-				'p_desc' => $this->input->post('p_desc'),
-				'p_boxno'  => $this->input->post('p_boxno'),
-                'p_type'  => $this->input->post('p_type'),
-                'p_c_level'  => $this->input->post('p_critical'),
-                'cat_id'  => $this->input->post('p_category')
-                
+				'p_id' => $this->input->post('p_id'),
+				'qty'  => $this->input->post('qty'),
+				'qtyout'  => 0,
+                's_date' => date('Y-m-d H:i:s'),
+                's_by' => $this->ion_auth->user()->row()->username,
 			);
 		
-
-		if ($this->form_validation->run() == TRUE && $this->parts_model->create($data))
+		if ($this->form_validation->run() == TRUE && $this->parts_model->check_part($this->input->post('p_name'))  && $this->receiving_model->create($data))
 		{
             $this->session->set_flashdata('message', $this->ion_auth->messages());
-			redirect('admin/parts', 'refresh');
+			redirect('admin/receiving', 'refresh');
 		}
 		else
 		{
+            
             $this->data['message'] = validation_errors();
-
-			$this->data['p_desc'] = array(
-				'name'  => 'p_desc',
-				'id'    => 'p_desc',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_desc'),
-			);
-			$this->data['p_boxno'] = array(
-				'name'  => 'p_boxno',
-				'id'    => 'p_boxno',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_boxno'),
-			);
-            $this->data['p_type'] = array(
-				'name'  => 'p_type',
-				'id'    => 'p_type',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_type'),
-			);
-            $this->data['p_critical'] = array(
-				'name'  => 'p_critical',
-				'id'    => 'p_critical',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_critical'),
-			);
-            $this->data['category'] = array();
-            $this->data['category'][''] = 'Please select a category';
-            foreach($cat as $category){
-                 $this->data['category'][$category->cat_id] = $category->cat_name;
+            if(isset($_POST) && ! empty($_POST) && $this->parts_model->check_part($this->input->post('p_name')) == false){
+                $this->data['message'] .= 'Please input a valid Part Desc.';
             }
-
+            
+			$this->data['p_name'] = array(
+				'name'  => 'p_name',
+				'id'    => 'p_name',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('p_name'),
+			);
+			$this->data['qty'] = array(
+				'name'  => 'qty',
+				'id'    => 'qty',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('qty'),
+			);
+            $this->data['p_id'] = array(
+				'name'  => 'p_id',
+				'id'    => 'p_id',
+                'type'  => 'hidden',
+                'class' => 'form-control',
+                'value' => $this->form_validation->set_value('p_id'),
+			);
             /* Load Template */
-            $this->template->admin_render('admin/parts/create', $this->data);
+            $this->template->admin_render('admin/receiving/create', $this->data);
         }
 	}
 
@@ -134,31 +118,33 @@ class Parts extends Admin_Controller {
 		$this->template->admin_render('admin/users/delete', $this->data);
 	}
 
+     public function getpartsname(){
+        $keyword=$this->input->post('keyword');
+        $data=$this->receiving_model->GetRow($keyword);        
+        echo json_encode($data);
+    }
+
 
 	public function edit($id)
 	{
         $id = (int) $id;
 
-		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id) )
+		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id))
 		{
 			redirect('auth', 'refresh');
 		}
 
         /* Breadcrumbs */
-        $this->breadcrumbs->unshift(2, 'Edit part', 'admin/parts/edit');
+        $this->breadcrumbs->unshift(2, 'Edit category', 'admin/categories/edit');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
         
 		/* Data */
-		$parts = $this->parts_model->get_part($id);
-        $cat = $this->categories_model->get_all();
+		$category = $this->categories_model->get_cat($id);
         
 		/* Validate form input */
-		$this->form_validation->set_rules('p_desc', 'lang:Description', 'required');
-		$this->form_validation->set_rules('p_boxno', 'lang:Box No', 'required|numeric');
-        $this->form_validation->set_rules('p_type', 'lang:Type', 'required');
-        $this->form_validation->set_rules('p_critical', 'lang:Critical Level', 'required|numeric|greater_than[0]');
-        $this->form_validation->set_rules('p_category', 'lang:Category', 'required');
+		$this->form_validation->set_rules('category_name', 'lang:category_name', 'required');
+		$this->form_validation->set_rules('category_desc', 'lang:category_desc', 'required');
 	
 
 		if (isset($_POST) && ! empty($_POST))
@@ -167,22 +153,18 @@ class Parts extends Admin_Controller {
 			if ($this->form_validation->run() == TRUE)
 			{
 				$data = array(
-				'p_desc' => $this->input->post('p_desc'),
-				'p_boxno'  => $this->input->post('p_boxno'),
-                'p_type'  => $this->input->post('p_type'),
-                'p_c_level'  => $this->input->post('p_critical'),
-                'cat_id'  => $this->input->post('p_category')
-                
-			);
+					'cat_name' => $this->input->post('category_name'),
+					'cat_desc'  => $this->input->post('category_desc'),
+				);
 
                 
-                if($this->parts_model->update($id, $data))
+                if($this->categories_model->update($id, $data))
 			    {
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
 
 				    if ($this->ion_auth->is_admin())
 					{
-						redirect('admin/parts', 'refresh');
+						redirect('admin/categories', 'refresh');
 					}
 					else
 					{
@@ -196,7 +178,7 @@ class Parts extends Admin_Controller {
 				    if ($this->ion_auth->is_admin())
 					{
                         
-						redirect('admin/parts', 'refresh');
+						redirect('admin/categories', 'refresh');
 					}
 					else
 					{
@@ -206,54 +188,33 @@ class Parts extends Admin_Controller {
 			}
 		}
 
+	
+
 		// set the flash data error message if there is one
 		$this->data['message'] = validation_errors();
 
 		// pass the user to the view
-		$this->data['p_desc']        = $parts->p_desc;
-		$this->data['p_boxno']        = $parts->p_boxno;
-        $this->data['p_type']        = $parts->p_type;
-        $this->data['p_critical']        = $parts->p_c_level;
-        $this->data['p_category_selected']        = $parts->cat_id;
+		$this->data['category_name']        = $category->cat_name;
+		$this->data['category_desc']        = $category->cat_desc;
 		
 
-		    $this->data['p_desc'] = array(
-				'name'  => 'p_desc',
-				'id'    => 'p_desc',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_desc',$parts->p_desc),
-			);
-			$this->data['p_boxno'] = array(
-				'name'  => 'p_boxno',
-				'id'    => 'p_boxno',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_boxno',$parts->p_boxno),
-			);
-            $this->data['p_type'] = array(
-				'name'  => 'p_type',
-				'id'    => 'p_type',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_type',$parts->p_type),
-			);
-            $this->data['p_critical'] = array(
-				'name'  => 'p_critical',
-				'id'    => 'p_critical',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_critical',$parts->p_c_level),
-			);
-            $this->data['category'] = array();
-            $this->data['category'][''] = 'Please select a category';
-            foreach($cat as $category){
-                 $this->data['category'][$category->cat_id] = $category->cat_name;
-            }
-            
+		$this->data['category_name'] = array(
+			'name'  => 'category_name',
+			'id'    => 'category_name',
+			'type'  => 'text',
+            'class' => 'form-control',
+			'value' => $this->form_validation->set_value('category_name', $category->cat_name)
+		);
+		$this->data['category_desc'] = array(
+			'name'  => 'category_desc',
+			'id'    => 'category_desc',
+			'type'  => 'text',
+            'class' => 'form-control',
+			'value' => $this->form_validation->set_value('category_desc', $category->cat_desc)
+		);
 	
         /* Load Template */
-		$this->template->admin_render('admin/parts/edit', $this->data);
+		$this->template->admin_render('admin/categories/edit', $this->data);
 	}
 
 

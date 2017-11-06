@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2017 at 10:11 AM
+-- Generation Time: Nov 06, 2017 at 10:45 AM
 -- Server version: 10.1.22-MariaDB
 -- PHP Version: 7.0.18
 
@@ -169,6 +169,29 @@ INSERT INTO `public_preferences` (`id`, `transition_page`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `stocks`
+--
+
+CREATE TABLE `stocks` (
+  `s_id` int(11) NOT NULL,
+  `p_id` int(11) NOT NULL,
+  `qty` int(11) NOT NULL,
+  `qtyout` int(11) NOT NULL,
+  `s_date` datetime NOT NULL,
+  `s_by` varchar(250) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `stocks`
+--
+
+INSERT INTO `stocks` (`s_id`, `p_id`, `qty`, `qtyout`, `s_date`, `s_by`) VALUES
+(4, 1, 2, 0, '2017-11-06 08:47:31', 'administrator'),
+(10, 1, 2, 0, '2017-11-06 09:23:39', 'administrator');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `users`
 --
 
@@ -197,7 +220,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1509758442, 1, 'Admin', 'istrator', 'ADMIN', '234234324'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1509935008, 1, 'Admin', 'istrator', 'ADMIN', '234234324'),
 (4, '::1', 'allan rabanillo', '$2y$08$nARdb5EHVJGgYwZ9VtlCpOA70wF/QQLUImZdsFBvSrfAbua5jWhWy', NULL, 'allanrabanillo@gmail.com', NULL, NULL, NULL, NULL, 1509690576, 1509701465, 1, 'Allan', 'Rabanillo', 'JSI', '09567383179');
 
 -- --------------------------------------------------------
@@ -267,6 +290,12 @@ ALTER TABLE `public_preferences`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `stocks`
+--
+ALTER TABLE `stocks`
+  ADD PRIMARY KEY (`s_id`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -320,6 +349,11 @@ ALTER TABLE `parts`
 --
 ALTER TABLE `public_preferences`
   MODIFY `id` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `stocks`
+--
+ALTER TABLE `stocks`
+  MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 --
 -- AUTO_INCREMENT for table `users`
 --
