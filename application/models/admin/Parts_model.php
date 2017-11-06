@@ -39,6 +39,13 @@ class Parts_model extends CI_Model {
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
+    public function check_part($keyword){
+        $this->db->where('p_desc', $keyword);
+        $query = $this->db->get('parts');
+        
+        return ($query->num_rows() > 0) ? true : false;
+    }
+
     
 
 
