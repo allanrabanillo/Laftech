@@ -32,7 +32,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <div class="form-group">
                                             <span class = 'col-sm-2 control-label'>Category:</span>
                                             <div class="col-sm-10">
-                                                <?php echo form_dropdown('p_category',$category,array(),array('class'=>'form-control'));?>
+                                                <?php echo form_dropdown($p_category);?>
                                             </div>
                                         </div>
                                         <div class="form-group">

@@ -17,7 +17,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <h3 class="box-title">Create category</h3>
                                 </div>
                                 <div class="box-body">
-                                    <?php echo $message;?>
+                                    
+                                    <?php
+                                    if(!empty($message)):
+                                    ?>
+                                    <div class="alert alert-danger" role="alert"><?php echo $message;?></div>
+                                    <?php
+                                    endif;
+                                    ?>
 
                                     <?php echo form_open(current_url(), array('class' => 'form-horizontal', 'id' => 'form-create_category')); ?>
                                         <div class="form-group">

@@ -49,8 +49,10 @@ class Customers extends Admin_Controller {
 		// $tables = $this->config->item('tables', 'ion_auth');
 
 		/* Validate form input */
-		$this->form_validation->set_rules('category_name', 'lang:category_name', 'required');
-		$this->form_validation->set_rules('category_desc', 'lang:category_desc', 'required');
+		$this->form_validation->set_rules('c_name', 'Company Name', 'required');
+		$this->form_validation->set_rules('c_person', 'Contact Person', 'required');
+		$this->form_validation->set_rules('c_contactno', 'Contact No', 'numeric');
+		$this->form_validation->set_rules('c_email', 'Email Address', 'valid_email');
 	
 
 		// if ($this->form_validation->run() == TRUE)
@@ -60,39 +62,64 @@ class Customers extends Admin_Controller {
 		// 	$password = $this->input->post('password');
 
 			$data = array(
-				'cat_name' => $this->input->post('category_name'),
-				'cat_desc'  => $this->input->post('category_desc'),
+				'c_name' => $this->input->post('c_name'),
+				'c_person'  => $this->input->post('c_person'),
+				'c_address'  => $this->input->post('c_address'),
+				'c_contactno'  => $this->input->post('c_contactno'),
+				'email'  => $this->input->post('c_email'),
+
 				
 			);
 		
 
-		if ($this->form_validation->run() == TRUE && $this->categories_model->create($data))
+		if ($this->form_validation->run() == TRUE && $this->customers_model->create($data))
 		{
             $this->session->set_flashdata('message', $this->ion_auth->messages());
-			redirect('admin/categories', 'refresh');
+			redirect('admin/customers', 'refresh');
 		}
 		else
 		{
             $this->data['message'] = validation_errors();
 
-			$this->data['category_name'] = array(
-				'name'  => 'category_name',
-				'id'    => 'category_name',
+			$this->data['c_name'] = array(
+				'name'  => 'c_name',
+				'id'    => 'c_name',
 				'type'  => 'text',
                 'class' => 'form-control',
-				'value' => $this->form_validation->set_value('category_name'),
+				'value' => $this->form_validation->set_value('c_name'),
 			);
-			$this->data['category_desc'] = array(
-				'name'  => 'category_desc',
-				'id'    => 'category_desc',
+			$this->data['c_person'] = array(
+				'name'  => 'c_person',
+				'id'    => 'c_person',
 				'type'  => 'text',
                 'class' => 'form-control',
-				'value' => $this->form_validation->set_value('category_desc'),
+				'value' => $this->form_validation->set_value('c_person'),
+			);
+			$this->data['c_address'] = array(
+				'name'  => 'c_address',
+				'id'    => 'c_address',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('c_address'),
+			);
+			$this->data['c_contactno'] = array(
+				'name'  => 'c_contactno',
+				'id'    => 'c_contactno',
+				'type'  => 'phone',
+				'pattern' => '^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('c_contactno'),
+			);
+			$this->data['c_email'] = array(
+				'name'  => 'c_email',
+				'id'    => 'c_email',
+				'type'  => 'email',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('c_email'),
 			);
 		
 
             /* Load Template */
-            $this->template->admin_render('admin/categories/create', $this->data);
+            $this->template->admin_render('admin/customers/create', $this->data);
         }
 	}
 
@@ -114,16 +141,18 @@ class Customers extends Admin_Controller {
 		}
 
         /* Breadcrumbs */
-        $this->breadcrumbs->unshift(2, 'Edit category', 'admin/categories/edit');
+        $this->breadcrumbs->unshift(2, 'Edit customer', 'admin/customer/edit');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
         
 		/* Data */
-		$category = $this->categories_model->get_cat($id);
+		$customer = $this->customers_model->get_customer($id);
         
 		/* Validate form input */
-		$this->form_validation->set_rules('category_name', 'lang:category_name', 'required');
-		$this->form_validation->set_rules('category_desc', 'lang:category_desc', 'required');
+		$this->form_validation->set_rules('c_name', 'Company Name', 'required');
+		$this->form_validation->set_rules('c_person', 'Contact Person', 'required');
+		$this->form_validation->set_rules('c_contactno', 'Contact No', 'numeric');
+		$this->form_validation->set_rules('c_email', 'Email Address', 'valid_email');
 	
 
 		if (isset($_POST) && ! empty($_POST))
@@ -132,18 +161,21 @@ class Customers extends Admin_Controller {
 			if ($this->form_validation->run() == TRUE)
 			{
 				$data = array(
-					'cat_name' => $this->input->post('category_name'),
-					'cat_desc'  => $this->input->post('category_desc'),
+					'c_name' => $this->input->post('c_name'),
+					'c_person'  => $this->input->post('c_person'),
+					'c_address'  => $this->input->post('c_address'),
+					'c_contactno'  => $this->input->post('c_contactno'),
+					'email'  => $this->input->post('c_email'),				
 				);
 
                 
-                if($this->categories_model->update($id, $data))
+                if($this->customers_model->update($id, $data))
 			    {
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
 
 				    if ($this->ion_auth->is_admin())
 					{
-						redirect('admin/categories', 'refresh');
+						redirect('admin/customers', 'refresh');
 					}
 					else
 					{
@@ -157,7 +189,7 @@ class Customers extends Admin_Controller {
 				    if ($this->ion_auth->is_admin())
 					{
                         
-						redirect('admin/categories', 'refresh');
+						redirect('admin/customers', 'refresh');
 					}
 					else
 					{
@@ -173,27 +205,46 @@ class Customers extends Admin_Controller {
 		$this->data['message'] = validation_errors();
 
 		// pass the user to the view
-		$this->data['category_name']        = $category->cat_name;
-		$this->data['category_desc']        = $category->cat_desc;
 		
 
-		$this->data['category_name'] = array(
-			'name'  => 'category_name',
-			'id'    => 'category_name',
+		$this->data['c_name'] = array(
+			'name'  => 'c_name',
+			'id'    => 'c_name',
 			'type'  => 'text',
-            'class' => 'form-control',
-			'value' => $this->form_validation->set_value('category_name', $category->cat_name)
+			'class' => 'form-control',
+			'value' => $this->form_validation->set_value('c_name',$customer->c_name),
 		);
-		$this->data['category_desc'] = array(
-			'name'  => 'category_desc',
-			'id'    => 'category_desc',
+		$this->data['c_person'] = array(
+			'name'  => 'c_person',
+			'id'    => 'c_person',
 			'type'  => 'text',
-            'class' => 'form-control',
-			'value' => $this->form_validation->set_value('category_desc', $category->cat_desc)
+			'class' => 'form-control',
+			'value' => $this->form_validation->set_value('c_person',$customer->c_person),
+		);
+		$this->data['c_address'] = array(
+			'name'  => 'c_address',
+			'id'    => 'c_address',
+			'class' => 'form-control',
+			'value' => $this->form_validation->set_value('c_address',$customer->c_address),
+		);
+		$this->data['c_contactno'] = array(
+			'name'  => 'c_contactno',
+			'id'    => 'c_contactno',
+			'type'  => 'phone',
+			'pattern' => '^((\+\d{1,3}(-| )?\(?\d\)?(-| )?\d{1,5})|(\(?\d{2,6}\)?))(-| )?(\d{3,4})(-| )?(\d{4})(( x| ext)\d{1,5}){0,1}$',
+			'class' => 'form-control',
+			'value' => $this->form_validation->set_value('c_contactno',$customer->c_contactno),
+		);
+		$this->data['c_email'] = array(
+			'name'  => 'c_email',
+			'id'    => 'c_email',
+			'type'  => 'email',
+			'class' => 'form-control',
+			'value' => $this->form_validation->set_value('c_email',$customer->email),
 		);
 	
         /* Load Template */
-		$this->template->admin_render('admin/categories/edit', $this->data);
+		$this->template->admin_render('admin/customers/edit', $this->data);
 	}
 
 

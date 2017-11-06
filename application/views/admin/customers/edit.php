@@ -14,11 +14,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="col-md-12">
                              <div class="box">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Edit part</h3>
+                                    <h3 class="box-title">Edit customer</h3>
                                 </div>
                                 <div class="box-body">
-
-
+                                    
                                     <?php
                                     if(!empty($message)):
                                     ?>
@@ -27,36 +26,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     endif;
                                     ?>
 
-
-                                    <?php echo form_open(current_url(), array('class' => 'form-horizontal', 'id' => 'form-edit_parts')); ?>
+                                    <?php echo form_open(current_url(), array('class' => 'form-horizontal', 'id' => 'form-edit_customer')); ?>
                                         <div class="form-group">
-                                            <span class = 'col-sm-2 control-label'>Category:</span>
+                                            <span class = 'col-sm-2 control-label'>Company Name:</span>
                                             <div class="col-sm-10">
-                                                <?php echo form_dropdown($p_category);?>
+                                                <?php echo form_input($c_name);?>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <span class = 'col-sm-2 control-label'>Description:</span>
+                                            <span class = 'col-sm-2 control-label'>Contact Person:</span>
                                             <div class="col-sm-10">
-                                                <?php echo form_input($p_desc);?>
+                                                <?php echo form_input($c_person);?>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <span class = 'col-sm-2 control-label'>Box No:</span>
+                                            <span class = 'col-sm-2 control-label'>Address:</span>
                                             <div class="col-sm-10">
-                                                <?php echo form_input($p_boxno);?>
+                                                <?php echo form_textarea($c_address);?>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <span class = 'col-sm-2 control-label'>Type:</span>
+                                            <span class = 'col-sm-2 control-label'>Contact No:</span>
                                             <div class="col-sm-10">
-                                                <?php echo form_input($p_type);?>
+                                                <?php echo form_input($c_contactno);?>
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <span class = 'col-sm-2 control-label'>Critical Lvl:</span>
+                                            <span class = 'col-sm-2 control-label'>Email:</span>
                                             <div class="col-sm-10">
-                                                <?php echo form_input($p_critical);?>
+                                                <?php echo form_input($c_email);?>
                                             </div>
                                         </div>
                                         
@@ -65,7 +63,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <div class="btn-group">
                                                     <?php echo form_button(array('type' => 'submit', 'class' => 'btn btn-primary btn-flat', 'content' => lang('actions_submit'))); ?>
                                                     <?php echo form_button(array('type' => 'reset', 'class' => 'btn btn-warning btn-flat', 'content' => lang('actions_reset'))); ?>
-                                                    <?php echo anchor('admin/parts', lang('actions_cancel'), array('class' => 'btn btn-default btn-flat')); ?>
+                                                    <?php echo anchor('admin/customers', lang('actions_cancel'), array('class' => 'btn btn-default btn-flat')); ?>
                                                 </div>
                                             </div>
                                         </div>

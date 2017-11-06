@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <h3 class="box-title"><?php echo anchor('admin/groups/create', '<i class="fa fa-plus"></i> '. lang('groups_create'), array('class' => 'btn btn-block btn-primary btn-flat')); ?></h3>
                                 </div>
                                 <div class="box-body">
-                                    <table class="table table-striped table-hover">
+                                    <table class="table table-striped table-bordered display">
                                         <thead>
                                             <tr>
                                                 <th><?php echo lang('groups_name');?></th>

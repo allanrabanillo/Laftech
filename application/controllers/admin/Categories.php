@@ -173,8 +173,7 @@ class Categories extends Admin_Controller {
 		$this->data['message'] = validation_errors();
 
 		// pass the user to the view
-		$this->data['category_name']        = $category->cat_name;
-		$this->data['category_desc']        = $category->cat_desc;
+		
 		
 
 		$this->data['category_name'] = array(

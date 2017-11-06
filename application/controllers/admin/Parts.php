@@ -117,11 +117,21 @@ class Parts extends Admin_Controller {
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('p_critical'),
 			);
-            $this->data['category'] = array();
-            $this->data['category'][''] = 'Please select a category';
+
+			$options = array();
+			$options[''] = 'Please select a category';
             foreach($cat as $category){
-                 $this->data['category'][$category->cat_id] = $category->cat_name;
-            }
+                $options[$category->cat_id] = $category->cat_name;
+			}
+			
+			$this->data['p_category'] = array(
+				'name'  => 'p_category',
+				'id'    => 'p_category',
+				'class' => 'form-control',
+				'options' => $options,
+			);
+
+           	
 
             /* Load Template */
             $this->template->admin_render('admin/parts/create', $this->data);
@@ -211,11 +221,8 @@ class Parts extends Admin_Controller {
 		$this->data['message'] = validation_errors();
 
 		// pass the user to the view
-		$this->data['p_desc']        = $parts->p_desc;
-		$this->data['p_boxno']        = $parts->p_boxno;
-        $this->data['p_type']        = $parts->p_type;
-        $this->data['p_critical']        = $parts->p_c_level;
-        $this->data['p_category_selected']        = $parts->cat_id;
+		
+       
 		
 
 		    $this->data['p_desc'] = array(
@@ -246,11 +253,20 @@ class Parts extends Admin_Controller {
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('p_critical',$parts->p_c_level),
 			);
-            $this->data['category'] = array();
-            $this->data['category'][''] = 'Please select a category';
+            
+			$options = array();
+			$options[''] = 'Please select a category';
             foreach($cat as $category){
-                 $this->data['category'][$category->cat_id] = $category->cat_name;
-            }
+                $options[$category->cat_id] = $category->cat_name;
+			}
+			
+			$this->data['p_category'] = array(
+				'name'  => 'p_category',
+				'id'    => 'p_category',
+				'class' => 'form-control',
+				'options' => $options,
+				'selected' =>$parts->cat_id,
+			);
             
 	
         /* Load Template */

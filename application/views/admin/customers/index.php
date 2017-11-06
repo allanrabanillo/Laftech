@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <h3 class="box-title"><?php echo anchor('admin/customers/create', '<i class="fa fa-plus"></i> '. 'New Customer', array('class' => 'btn btn-block btn-primary btn-flat')); ?></h3>
                                 </div>
                                 <div class="box-body">
-                                    <table class="table table-striped table-hover">
+                                    <table class="table table-striped table-bordered display" cellspacing="0" width="100%" id = 'customer_tbl'>
                                         <thead>
                                             <tr>
                                                 <th>Company Name</th>
@@ -26,6 +26,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <th>Action</th>
                                             </tr>
                                         </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <th>Company Name</th>
+                                                <th>Contact Person</th>
+                                                <th>Contact No</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </tfoot>
                                         <tbody>
                                             <?php foreach ($customers as $customer):?>
                                             <tr>
@@ -35,8 +43,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 
                                                 <td>
                                                     
-                                                    <?php echo anchor('admin/customers/edit/'.$part->p_id, '<i class="fa fa-edit"></i> Edit',array('class' => 'btn btn-primary btn-flat')); ?> 
-                                                    <!--<?php echo anchor('admin/parts/profile/'.$part->p_id, '<i class="fa fa-user-o"></i> Profile',array('class' => 'btn btn-warning btn-flat')); ?>-->
+                                                    <?php echo anchor('admin/customers/edit/'.$customer->c_id, '<i class="fa fa-edit"></i> Edit',array('class' => 'btn btn-primary btn-flat')); ?> 
+                                                    <!--<?php echo anchor('admin/parts/profile/'.$customer->c_id, '<i class="fa fa-user-o"></i> Profile',array('class' => 'btn btn-warning btn-flat')); ?>-->
                                                 </td>
                                             </tr>
                                             <?php endforeach;?>
@@ -48,3 +56,4 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     </div>
                 </section>
             </div>
+

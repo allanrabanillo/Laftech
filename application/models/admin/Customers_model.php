@@ -25,7 +25,7 @@ class Customers_model extends CI_Model {
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
-    public function get_cat($id = null)
+    public function get_customer($id = null)
     {
         return $row = $this->db->get_where('customers', array('c_id' => $id))->row();
     }
