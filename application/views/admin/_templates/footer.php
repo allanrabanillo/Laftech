@@ -27,7 +27,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php if ($this->router->fetch_class() == 'users' && ($this->router->fetch_method() == 'create' OR $this->router->fetch_method() == 'edit')): ?>
         <script src="<?php echo base_url($plugins_dir . '/pwstrength/pwstrength.min.js'); ?>"></script>
 <?php endif; ?>
-<?php if ($this->router->fetch_class() == 'groups' && ($this->router->fetch_method() == 'create' OR $this->router->fetch_method() == 'edit')): ?>
+<?php if (($this->router->fetch_class() == 'groups' || $this->router->fetch_class() == 'categories') && ($this->router->fetch_method() == 'create' OR $this->router->fetch_method() == 'edit')): ?>
         <script src="<?php echo base_url($plugins_dir . '/tinycolor/tinycolor.min.js'); ?>"></script>
         <script src="<?php echo base_url($plugins_dir . '/colorpickersliders/colorpickersliders.min.js'); ?>"></script>
 <?php endif; ?>

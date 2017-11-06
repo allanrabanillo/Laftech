@@ -37,7 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <label class="col-sm-2 control-label"><?php echo lang('prefs_sidebar_form'); ?></label>
                                                 <div class="col-sm-10">
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="sidebar_form" id="sidebar_form1" value="1" <?php echo set_value('sidebar_form', $value['sidebar_form']) == 1 ? 'checked' : NULL; ?>> <?php echo strtoupper(lang('actions_yes')); ?>
+                                                        <input type="radio" name="sidebar_form" id="sidebar_form1" value="1" <?php echo set_value('sidebar_form', $value['sidebar_form']) == 1 ? 'checked' : NULL; ?> disabled> <?php echo strtoupper(lang('actions_yes')); ?>
                                                     </label>
                                                     <label class="radio-inline">
                                                         <input type="radio" name="sidebar_form" id="sidebar_form0" value="0" <?php echo set_value('sidebar_form', $value['sidebar_form']) == 0 ? 'checked' : NULL; ?>> <?php echo strtoupper(lang('actions_no')); ?>
@@ -48,7 +48,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <label class="col-sm-2 control-label"><?php echo lang('prefs_messages_menu'); ?></label>
                                                 <div class="col-sm-10">
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="messages_menu" id="messages_menu1" value="1" <?php echo set_value('messages_menu', $value['messages_menu']) == 1 ? 'checked' : NULL; ?>> <?php echo strtoupper(lang('actions_yes')); ?>
+                                                        <input type="radio" name="messages_menu" id="messages_menu1" value="1" <?php echo set_value('messages_menu', $value['messages_menu']) == 1 ? 'checked' : NULL; ?> disabled> <?php echo strtoupper(lang('actions_yes')); ?>
                                                     </label>
                                                     <label class="radio-inline">
                                                         <input type="radio" name="messages_menu" id="messages_menu0" value="0" <?php echo set_value('messages_menu', $value['messages_menu']) == 0 ? 'checked' : NULL; ?>> <?php echo strtoupper(lang('actions_no')); ?>
@@ -59,7 +59,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <label class="col-sm-2 control-label"><?php echo lang('prefs_notifications_menu'); ?></label>
                                                 <div class="col-sm-10">
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="notifications_menu" id="notifications_menu1" value="1" <?php echo set_value('notifications_menu', $value['notifications_menu']) == 1 ? 'checked' : NULL; ?>> <?php echo strtoupper(lang('actions_yes')); ?>
+                                                        <input type="radio" name="notifications_menu" id="notifications_menu1" value="1" <?php echo set_value('notifications_menu', $value['notifications_menu']) == 1 ? 'checked' : NULL; ?> disabled> <?php echo strtoupper(lang('actions_yes')); ?>
                                                     </label>
                                                     <label class="radio-inline">
                                                         <input type="radio" name="notifications_menu" id="notifications_menu0" value="0" <?php echo set_value('notifications_menu', $value['notifications_menu']) == 0 ? 'checked' : NULL; ?>> <?php echo strtoupper(lang('actions_no')); ?>
@@ -70,7 +70,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <label class="col-sm-2 control-label"><?php echo lang('prefs_tasks_menu'); ?></label>
                                                 <div class="col-sm-10">
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="tasks_menu" id="tasks_menu1" value="1" <?php echo set_value('tasks_menu', $value['tasks_menu']) == 1 ? 'checked' : NULL; ?>> <?php echo strtoupper(lang('actions_yes')); ?>
+                                                        <input type="radio" name="tasks_menu" id="tasks_menu1" value="1" <?php echo set_value('tasks_menu', $value['tasks_menu']) == 1 ? 'checked' : NULL; ?> disabled> <?php echo strtoupper(lang('actions_yes')); ?>
                                                     </label>
                                                     <label class="radio-inline">
                                                         <input type="radio" name="tasks_menu" id="tasks_menu0" value="0" <?php echo set_value('tasks_menu', $value['tasks_menu']) == 0 ? 'checked' : NULL; ?>> <?php echo strtoupper(lang('actions_no')); ?>
@@ -92,7 +92,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <label class="col-sm-2 control-label"><?php echo lang('prefs_ctrl_sidebar'); ?></label>
                                                 <div class="col-sm-10">
                                                     <label class="radio-inline">
-                                                        <input type="radio" name="ctrl_sidebar" id="ctrl_sidebar1" value="1" <?php echo set_value('ctrl_sidebar', $value['ctrl_sidebar']) == 1 ? 'checked' : NULL; ?>> <?php echo strtoupper(lang('actions_yes')); ?>
+                                                        <input type="radio" name="ctrl_sidebar" id="ctrl_sidebar1" value="1" <?php echo set_value('ctrl_sidebar', $value['ctrl_sidebar']) == 1 ? 'checked' : NULL; ?> disabled> <?php echo strtoupper(lang('actions_yes')); ?>
                                                     </label>
                                                     <label class="radio-inline">
                                                         <input type="radio" name="ctrl_sidebar" id="ctrl_sidebar0" value="0" <?php echo set_value('ctrl_sidebar', $value['ctrl_sidebar']) == 0 ? 'checked' : NULL; ?>> <?php echo strtoupper(lang('actions_no')); ?>

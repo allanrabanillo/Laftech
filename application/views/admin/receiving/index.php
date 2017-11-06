@@ -18,14 +18,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                                 <div class="box-body">
                                     
-                                    <table class="table table-striped table-hover">
+                                    <table class="table table-striped table-bordered display">
                                         <thead>
                                             <tr>
                                                 <th>Category</th>
-                                                <th>Descrption</th>
+                                                <th>Description</th>
                                                 <th>Qty</th>
                                                 <th>Received Date</th>
                                                 <th>Received By</th>
+                                                <th>Action</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -35,7 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <?php foreach ($receive->parts as $part):?>
                                                 <td>
                                                     <?php foreach ($part->categories as $category):?>
-                                                        <?php echo anchor('admin/categories/edit/'.$category->cat_id, '<span class="label" style="background:orange;">'.htmlspecialchars($category->cat_name, ENT_QUOTES, 'UTF-8').'</span>'); ?>
+                                                        <?php echo anchor('admin/categories/edit/'.$category->cat_id, '<span class="label" style="background:'.$category->cat_color.';">'.htmlspecialchars($category->cat_name, ENT_QUOTES, 'UTF-8').'</span>'); ?>
                                                     <?php endforeach?>
                                                 </td>
                                                 <td>

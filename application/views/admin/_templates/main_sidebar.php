@@ -44,18 +44,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <i class="fa fa-dashboard"></i> <span><?php echo lang('menu_dashboard'); ?></span>
                             </a>
                         </li>
-<<<<<<< HEAD
-                        <li class="<?=active_link_controller('dashboard')?>">
+
+                        <li class="<?=active_link_controller('inandout')?>">
                             <a href="<?php echo site_url('admin/dashboard'); ?>">
                                 <i class="fa fa-files-o"></i> <span>In and Out</span>
                             </a>
                         </li>
-                        <li class="<?=active_link_controller('dashboard')?>">
-                            <a href="<?php echo site_url('admin/dashboard'); ?>">
-                                <i class="fa fa-sign-in"></i> <span>Receiving</span>
-                            </a>
-                        </li>
-=======
+
                         <li class="<?=active_link_controller('stocks')?>">
                             <a href="<?php echo site_url('admin/stocks'); ?>">
                                 <i class="fa fa-inbox"></i> <span>Stocks</span>
@@ -66,8 +61,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <i class="fa fa-sign-in"></i> <span>Receiving</span>
                             </a>
                         </li>
-
->>>>>>> 052ecff655e22af263f1249277c608239cb5b8c4
 
                         <li class="header text-uppercase"><?php echo lang('menu_administration'); ?></li>
                          <li class="treeview <?=active_link_controller('prefs')?>">

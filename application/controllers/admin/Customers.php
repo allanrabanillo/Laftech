@@ -205,7 +205,7 @@ class Customers extends Admin_Controller {
 		$this->data['message'] = validation_errors();
 
 		// pass the user to the view
-		
+	
 
 		$this->data['c_name'] = array(
 			'name'  => 'c_name',

@@ -49,8 +49,8 @@ class Categories extends Admin_Controller {
 		// $tables = $this->config->item('tables', 'ion_auth');
 
 		/* Validate form input */
-		$this->form_validation->set_rules('category_name', 'lang:Category Name', 'required');
-		$this->form_validation->set_rules('category_desc', 'lang:Category Description', 'required');
+		$this->form_validation->set_rules('category_name', 'Category Name', 'required');
+		$this->form_validation->set_rules('category_desc', 'Category Description', 'required');
 	
 
 		// if ($this->form_validation->run() == TRUE)
@@ -62,6 +62,7 @@ class Categories extends Admin_Controller {
 			$data = array(
 				'cat_name' => $this->input->post('category_name'),
 				'cat_desc'  => $this->input->post('category_desc'),
+				'cat_color' => '#000',
 				
 			);
 		
@@ -122,8 +123,8 @@ class Categories extends Admin_Controller {
 		$category = $this->categories_model->get_cat($id);
         
 		/* Validate form input */
-		$this->form_validation->set_rules('category_name', 'lang:category_name', 'required');
-		$this->form_validation->set_rules('category_desc', 'lang:category_desc', 'required');
+		$this->form_validation->set_rules('category_name', 'Category Name', 'required');
+		$this->form_validation->set_rules('category_desc', 'Category Desc', 'required');
 	
 
 		if (isset($_POST) && ! empty($_POST))
@@ -134,6 +135,7 @@ class Categories extends Admin_Controller {
 				$data = array(
 					'cat_name' => $this->input->post('category_name'),
 					'cat_desc'  => $this->input->post('category_desc'),
+					'cat_color' => $this->input->post('group_bgcolor'),
 				);
 
                 
@@ -189,6 +191,14 @@ class Categories extends Admin_Controller {
 			'type'  => 'text',
             'class' => 'form-control',
 			'value' => $this->form_validation->set_value('category_desc', $category->cat_desc)
+		);
+		$this->data['group_bgcolor'] = array(
+			'type'     => 'text',
+			'name'     => 'group_bgcolor',
+			'id'       => 'group_bgcolor',
+			'value'    => $this->form_validation->set_value('group_bgcolor', $group->bgcolor),
+			'data-src' => $group->bgcolor,
+            'class'    => 'form-control'
 		);
 	
         /* Load Template */

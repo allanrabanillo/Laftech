@@ -37,9 +37,18 @@ class Stocks extends Admin_Controller {
             foreach ($this->data['stocks'] as $k => $receive)
             {
                 $this->data['stocks'][$k]->parts = $this->parts_model->get_all($receive->p_id);
-                 
+                    
                     foreach ($this->data['stocks'][$k]->parts as $r => $part)
                     {
+                        $stock = $receive->balance;
+                        $c_lvl = $part->p_c_level;
+                        if($stock > $c_lvl){
+                            $this->data['stocks'][$k]->parts[$r]->s_color = 'green';
+                        }else if ($stock == $c_lvl ){
+                            $this->data['stocks'][$k]->parts[$r]->s_color = 'orange';
+                        }else {
+                            $this->data['stocks'][$k]->parts[$r]->s_color = 'red';
+                        }
                         $this->data['stocks'][$k]->parts[$r]->categories = $this->categories_model->get_all($part->cat_id);
                     }
             }

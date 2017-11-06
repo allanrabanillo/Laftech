@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <tr>
                                                 <td>
                                                 <?php foreach ($part->categories as $category):?>
-                                                    <?php echo anchor('admin/categories/edit/'.$category->cat_id, '<span class="label" style="background:orange;">'.htmlspecialchars($category->cat_name, ENT_QUOTES, 'UTF-8').'</span>'); ?>
+                                                    <?php echo anchor('admin/categories/edit/'.$category->cat_id, '<span class="label" style="background:'.$category->cat_color.';">'.htmlspecialchars($category->cat_name, ENT_QUOTES, 'UTF-8').'</span>'); ?>
                                                 <?php endforeach?>
                                                 </td>
                                                 <td><?php echo htmlspecialchars($part->p_desc, ENT_QUOTES, 'UTF-8'); ?></td>

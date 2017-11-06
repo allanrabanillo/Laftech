@@ -22,6 +22,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <tr>
                                                 <th>Name</th>
                                                 <th>Desc</th>
+                                                <th>Color</th>
                                                 <th>Actions</th>
                                             </tr>
                                         </thead>
@@ -30,6 +31,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <tr>
                                                 <td><?php echo htmlspecialchars($category->cat_name, ENT_QUOTES, 'UTF-8'); ?></td>
                                                 <td><?php echo htmlspecialchars($category->cat_desc, ENT_QUOTES, 'UTF-8'); ?></td>
+                                                <td><i class="fa fa-stop" style="color:<?php echo $category->cat_color; ?>"></i></td>
                                                 
                                                 <td>
                                                     

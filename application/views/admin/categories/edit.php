@@ -32,7 +32,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <?php echo form_input($category_desc);?>
                                             </div>
                                         </div>
-                                        
+                                        <div class="form-group">
+                                            <span class = 'col-sm-2 control-label'>Color:</span>
+                                            <div class="col-sm-3">
+                                                <?php echo form_input($group_bgcolor); ?>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10">
                                                 <div class="btn-group">
