@@ -78,6 +78,157 @@ class InandOut extends Admin_Controller {
         }
 	}
 
+	public function create(){
+
+		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() )
+		{
+			redirect('auth', 'refresh');
+		}
+
+		$customers = $this->customers_model->get_all();
+
+		 /* Breadcrumbs */
+		 $this->breadcrumbs->unshift(2, 'New Job', 'admin/inandout/create');
+		 $this->data['breadcrumb'] = $this->breadcrumbs->show();
+ 
+		 
+		 
+		 /* Validate form input */
+		 $this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
+		 $this->form_validation->set_rules('partno', 'Part No', 'required');
+		 $this->form_validation->set_rules('date_in', 'Date In', 'required');
+		 $this->form_validation->set_rules('customer', 'lang:Customer', 'required');
+
+
+		 
+		if ($this->form_validation->run() == TRUE && $this->parts_model->create($data))
+		{
+            $this->session->set_flashdata('message', $this->ion_auth->messages());
+			redirect('admin/parts', 'refresh');
+		}
+		else
+		{
+			$this->data['message'] = validation_errors();
+			
+			$this->data['job_no'] = array(
+				'name'  => 'job_no',
+				'id'    => 'job_no',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('job_no'),
+			);
+
+			$this->data['item_desc'] = array(
+				'name'  => 'item_desc',
+				'id'    => 'item_desc',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('item_desc'),
+			);
+			$this->data['serialno'] = array(
+				'name'  => 'serialno',
+				'id'    => 'serialno',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('serialno'),
+			);
+			$this->data['partno'] = array(
+				'name'  => 'partno',
+				'id'    => 'partno',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('partno'),
+			);
+				$this->data['modelno'] = array(
+				'name'  => 'modelno',
+				'id'    => 'modelno',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('modelno'),
+			);
+				$this->data['refno'] = array(
+				'name'  => 'refno',
+				'id'    => 'refno',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('refno'),
+			);
+				$this->data['date_in'] = array(
+				'name'  => 'date_in',
+				'id'    => 'date_in',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('date_in'),
+			);
+				$this->data['date_out'] = array(
+				'name'  => 'date_out',
+				'id'    => 'date_out',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('date_out'),
+			);
+				$this->data['drno'] = array(
+				'name'  => 'drno',
+				'id'    => 'drno',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('drno'),
+			);
+			$status = array(""=>"Please select a status","GOOD"=>"GOOD","FAILED"=>"FAILED","UNDERWARRANTY"=>"UNDERWARRANTY","FORTEST"=>"FORTEST","NAU"=>"NAU");	
+			$this->data['status'] = array(
+				'name'  => 'status',
+				'id'    => 'status',
+				'class' => 'form-control',
+				'options' => $status,
+				
+			);
+				$this->data['dn_no'] = array(
+				'name'  => 'dn_no',
+				'id'    => 'dn_no',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('dn_no'),
+			);
+				$this->data['invno'] = array(
+				'name'  => 'invno',
+				'id'    => 'invno',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('invno'),
+			);
+			$this->data['remarks'] = array(
+				'name'  => 'remarks',
+				'id'    => 'remarks',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'rows'  => '3',
+				'value' => $this->form_validation->set_value('remarks'),
+			);
+			
+			$options = array();
+			$options[''] = 'Please select a customer';
+			
+			foreach($customers as $customer){
+				$options[$customer->c_id] = $customer->c_name;
+			}
+			
+			$this->data['customer'] = array(
+				'name'  => 'customer',
+				'id'    => 'customer',
+				'class' => 'form-control',
+				'options' => $options,
+			);
+
+			
+			
+
+			/* Load Template */
+			$this->template->admin_render('admin/inandout/create', $this->data);
+
+		}
+
+	}
+
     public function edit($id){
          $id = $id;
 
@@ -244,7 +395,8 @@ class InandOut extends Admin_Controller {
 				'name'  => 'remarks',
 				'id'    => 'remarks',
 				'type'  => 'text',
-                'class' => 'form-control',
+				'class' => 'form-control',
+				'rows'  => '3',
 				'value' => $this->form_validation->set_value('remarks',$jobs->remarks),
 			);
             

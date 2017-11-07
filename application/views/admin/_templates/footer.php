@@ -18,6 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         
         <script src="<?php echo base_url($plugins_dir . '/slimscroll/slimscroll.min.js'); ?>"></script>
         <script src="<?php echo base_url($plugins_dir . '/easyautocomplete/js/jquery.easy-autocomplete.min.js'); ?>"></script>
+        <script src="<?php echo base_url($frameworks_dir . '/jqueryui1.12/jquery-ui.min.js'); ?>"></script>
 <?php if ($mobile == TRUE): ?>
         <script src="<?php echo base_url($plugins_dir . '/fastclick/fastclick.min.js'); ?>"></script>
 <?php endif; ?>
