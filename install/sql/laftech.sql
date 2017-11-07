@@ -1,13 +1,15 @@
 -- phpMyAdmin SQL Dump
--- version 4.6.5.2
+-- version 4.7.0
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 06, 2017 at 04:47 PM
--- Server version: 10.1.21-MariaDB
--- PHP Version: 7.1.1
+-- Generation Time: Nov 07, 2017 at 10:50 AM
+-- Server version: 10.1.22-MariaDB
+-- PHP Version: 7.0.18
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+SET AUTOCOMMIT = 0;
+START TRANSACTION;
 SET time_zone = "+00:00";
 
 
@@ -87,7 +89,7 @@ CREATE TABLE `customers` (
 --
 
 INSERT INTO `customers` (`c_id`, `c_name`, `c_person`, `c_address`, `c_contactno`, `email`) VALUES
-(1, 'AAFSOFTWAREWORS', 'Allan Rabanillo', 'Stark Bldg, USA', 553232, 'aafsoftwareworks@gmail.com');
+(1, 'AAFSOFTWAREWORKS', 'Allan Rabanillo', 'Stark Bldg, USA', 2147483647, 'aafsoftwareworks@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -110,6 +112,37 @@ INSERT INTO `groups` (`id`, `name`, `description`, `bgcolor`) VALUES
 (1, 'admin', 'Administrator', '#F44336'),
 (2, 'members', 'General User', '#2196F3'),
 (3, 'Technician', 'Group for Technician', '#009688');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `in_and_out`
+--
+
+CREATE TABLE `in_and_out` (
+  `job_no` varchar(50) NOT NULL,
+  `c_id` int(11) NOT NULL,
+  `item_desc` varchar(150) NOT NULL,
+  `serialno` varchar(50) NOT NULL,
+  `partno` varchar(50) NOT NULL,
+  `modelno` varchar(50) NOT NULL,
+  `refno` varchar(50) NOT NULL,
+  `date_in` date NOT NULL,
+  `date_out` date NOT NULL,
+  `drno` varchar(50) NOT NULL,
+  `status` varchar(20) NOT NULL,
+  `dn_no` varchar(50) NOT NULL,
+  `invno` varchar(50) NOT NULL,
+  `date_inv` date DEFAULT NULL,
+  `remarks` varchar(150) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `in_and_out`
+--
+
+INSERT INTO `in_and_out` (`job_no`, `c_id`, `item_desc`, `serialno`, `partno`, `modelno`, `refno`, `date_in`, `date_out`, `drno`, `status`, `dn_no`, `invno`, `date_inv`, `remarks`) VALUES
+('LIS-15263', 1, 'VEHICLE MANAGER (BR243 ZENNITH FOODS)', '1401170025', '1045780/106R', '', '', '2015-12-17', '2016-03-27', '0810', 'UNDERWARRANTY', '31207', '', NULL, 'FORTEST BTHI in');
 
 -- --------------------------------------------------------
 
@@ -222,7 +255,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1509976650, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1510048142, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
 (4, '::1', 'allan rabanillo', '$2y$08$nARdb5EHVJGgYwZ9VtlCpOA70wF/QQLUImZdsFBvSrfAbua5jWhWy', NULL, 'allanrabanillo@gmail.com', NULL, NULL, NULL, NULL, 1509690576, 1509701465, 1, 'Allan', 'Rabanillo', 'JSI', '09567383179'),
 (5, '::1', 'reymark rabanillo', '$2y$08$B11FZmzpg2ZJVSsqXsHDGOZNywsI87swKvheOAcWVfjieIsjCpJDG', NULL, 'reymark@gmail.com', NULL, NULL, NULL, NULL, 1509979757, NULL, 1, 'Reymark', 'Rabanillo', 'Laftech', '09234422332');
 
@@ -274,6 +307,12 @@ ALTER TABLE `customers`
 --
 ALTER TABLE `groups`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `in_and_out`
+--
+ALTER TABLE `in_and_out`
+  ADD PRIMARY KEY (`job_no`);
 
 --
 -- Indexes for table `login_attempts`
@@ -378,6 +417,7 @@ ALTER TABLE `users_groups`
 ALTER TABLE `users_groups`
   ADD CONSTRAINT `fk_users_groups_groups1` FOREIGN KEY (`group_id`) REFERENCES `groups` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION,
   ADD CONSTRAINT `fk_users_groups_users1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE ON UPDATE NO ACTION;
+COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
