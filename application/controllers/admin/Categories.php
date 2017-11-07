@@ -62,7 +62,7 @@ class Categories extends Admin_Controller {
 			$data = array(
 				'cat_name' => $this->input->post('category_name'),
 				'cat_desc'  => $this->input->post('category_desc'),
-				'cat_color' => '#000',
+				'cat_color' => '#ff5722',
 				
 			);
 		

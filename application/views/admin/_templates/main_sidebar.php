@@ -46,7 +46,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </li>
 
                         <li class="<?=active_link_controller('inandout')?>">
-                            <a href="<?php echo site_url('admin/dashboard'); ?>">
+                            <a href="<?php echo site_url('admin/inandout'); ?>">
                                 <i class="fa fa-files-o"></i> <span>In and Out</span>
                             </a>
                         </li>
