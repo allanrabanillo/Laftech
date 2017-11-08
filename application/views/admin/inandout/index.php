@@ -37,7 +37,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <tr>
                                                 
                                                 <td>
-                                                    <?php echo anchor('admin/inandout/edit/'.$job->job_no, '<span class="label" style="background:red;">'.htmlspecialchars($job->job_no, ENT_QUOTES, 'UTF-8').'</span>'); ?>
+                                                    <?php 
+                                                            $images = explode(',',$job->images);
+                                                            $data = '';
+                                                            foreach($images as $image){
+                                                                $data .= '&lt;img src=&quot;../upload/job_pic/'.$image.'&quot; width = &quot;100&quot; /&gt;&nbsp;&nbsp;';
+                                                            }
+                                                            echo anchor('admin/inandout/edit/'.$job->job_no, '<span class="label" style="background:red;" title="'.$data.'">'.htmlspecialchars($job->job_no, ENT_QUOTES, 'UTF-8').'</span>'); 
+                                                            
+                                                    ?>
                                                 </td>
                                                 <td>
                                                     <?php echo anchor('admin/customers/edit/'.$job->c_id, '<span class="label" style="background:orange;">'.htmlspecialchars($job->c_name, ENT_QUOTES, 'UTF-8').'</span>'); ?>
@@ -51,6 +59,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <?php endforeach;?>
                                         </tbody>
                                     </table>
+
+                                   
                                 </div>
                             </div>
                          </div>

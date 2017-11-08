@@ -85,7 +85,6 @@ class InandOut extends Admin_Controller {
 			redirect('auth', 'refresh');
 		}
 
-		$customers = $this->customers_model->get_all();
 
 		 /* Breadcrumbs */
 		 $this->breadcrumbs->unshift(2, 'New Job', 'admin/inandout/create');
@@ -94,28 +93,84 @@ class InandOut extends Admin_Controller {
 		 
 		 
 		 /* Validate form input */
-		 $this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
-		 $this->form_validation->set_rules('partno', 'Part No', 'required');
-		 $this->form_validation->set_rules('date_in', 'Date In', 'required');
-		 $this->form_validation->set_rules('customer', 'lang:Customer', 'required');
+		 $this->form_validation->set_rules('job_no', 'Job No', 'required');
+		//  $this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
+		//  $this->form_validation->set_rules('partno', 'Part No', 'required');
+		//  $this->form_validation->set_rules('date_in', 'Date In', 'required');
+		//  $this->form_validation->set_rules('customer', 'lang:Customer', 'required');
 
-
+         
+        
+		$this->data['message'] = '';
 		 
-		if ($this->form_validation->run() == TRUE && $this->parts_model->create($data))
+		if ($this->form_validation->run() == TRUE)
 		{
-            $this->session->set_flashdata('message', $this->ion_auth->messages());
-			redirect('admin/parts', 'refresh');
+			if(isset($_POST) && ! empty($_POST) && $this->customers_model->check_customer($this->input->post('customer')) == false){
+                $this->data['message'] .= 'Please input a valid Customer.';
+            }else{
+
+				if (!empty($_FILES['upload']['name'][0]))
+            	{
+					
+					$images = $this->upload_files('./upload/job_pic/',$this->input->post('job_no'),$_FILES['upload']);
+					$filenames = implode(',',$images);
+
+				}else{
+					$filenames = '';
+				}
+
+						$data = array(
+							'job_no'  => $this->input->post('job_no'),
+							'item_desc'  => $this->input->post('item_desc'),
+							'serialno'  => $this->input->post('serialno'),
+							'partno'  => $this->input->post('partno'),
+							'modelno'  => $this->input->post('modelno'),
+							'refno'  => $this->input->post('refno'),
+							'date_in'  => $this->input->post('date_in'),
+						
+							'drno'  => $this->input->post('drno'),
+							'status'  => $this->input->post('status'),
+							'dn_no'  => $this->input->post('dn_no'),
+							
+							'remarks'  => $this->input->post('remarks'),
+							'c_id'  => $this->input->post('c_id'),
+							'images' => $filenames,
+						);
+
+
+					 	if($this->inandout_model->create($data)){
+							$this->session->set_flashdata('message', $this->ion_auth->messages());
+            				redirect('admin/inandout', 'refresh');
+					 	}else{
+							$this->data['message'] .= 'Something went wrong. Please try agian later.';
+						}
+
+					
+				
+			}
+        
+            // $this->session->set_flashdata('message', $this->ion_auth->messages());
+            // redirect('admin/parts', 'refresh');
 		}
 		else
 		{
-			$this->data['message'] = validation_errors();
-			
+			$this->data['message'] .= validation_errors();
+		}
+
 			$this->data['job_no'] = array(
 				'name'  => 'job_no',
 				'id'    => 'job_no',
 				'type'  => 'text',
 				'class' => 'form-control',
 				'value' => $this->form_validation->set_value('job_no'),
+			);
+
+            $this->data['upload'] = array(
+				'name'  => 'upload[]',
+				'id'    => 'upload',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('upload'),
+				'multiple' => true,
 			);
 
 			$this->data['item_desc'] = array(
@@ -205,18 +260,20 @@ class InandOut extends Admin_Controller {
 				'value' => $this->form_validation->set_value('remarks'),
 			);
 			
-			$options = array();
-			$options[''] = 'Please select a customer';
-			
-			foreach($customers as $customer){
-				$options[$customer->c_id] = $customer->c_name;
-			}
-			
 			$this->data['customer'] = array(
 				'name'  => 'customer',
 				'id'    => 'customer',
+                'type'  => 'text',
 				'class' => 'form-control',
-				'options' => $options,
+                'value' => $this->form_validation->set_value('customer'),
+			);
+
+            $this->data['c_id'] = array(
+				'name'  => 'c_id',
+				'id'    => 'c_id',
+                'type'  => 'hidden',
+				'class' => 'form-control',
+                'value' => $this->form_validation->set_value('c_id'),
 			);
 
 			
@@ -225,9 +282,52 @@ class InandOut extends Admin_Controller {
 			/* Load Template */
 			$this->template->admin_render('admin/inandout/create', $this->data);
 
-		}
+		
 
 	}
+
+	private function upload_files($path, $title, $files)
+    {
+        $config = array(
+            'upload_path'   => $path,
+            'allowed_types' => 'jpg|gif|png',
+            'overwrite'     => 1,                       
+        );
+
+        $this->load->library('upload', $config);
+
+        $images = array();
+
+        foreach ($files['name'] as $key => $image) {
+            $_FILES['images[]']['name']= $files['name'][$key];
+            $_FILES['images[]']['type']= $files['type'][$key];
+            $_FILES['images[]']['tmp_name']= $files['tmp_name'][$key];
+            $_FILES['images[]']['error']= $files['error'][$key];
+            $_FILES['images[]']['size']= $files['size'][$key];
+
+            $fileName = $title .'_'. $image;
+
+            $images[] = $fileName;
+
+            $config['file_name'] = $fileName;
+
+            $this->upload->initialize($config);
+
+            if ($this->upload->do_upload('images[]')) {
+                $this->upload->data();
+            } else {
+                return false;
+            }
+        }
+
+        return $images;
+    }
+
+    public function getcustomersname(){
+        $keyword=$this->input->post('keyword');
+        $data=$this->customers_model->GetRow($keyword);        
+        echo json_encode($data);
+    }
 
     public function edit($id){
          $id = $id;
@@ -244,7 +344,7 @@ class InandOut extends Admin_Controller {
         
 		/* Data */
 		$jobs = $this->inandout_model->get_job($id);
-        $customers = $this->customers_model->get_all();
+      
         
 		/* Validate form input */
 		$this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
@@ -400,19 +500,20 @@ class InandOut extends Admin_Controller {
 				'value' => $this->form_validation->set_value('remarks',$jobs->remarks),
 			);
             
-			$options = array();
-			$options[''] = 'Please select a customer';
-            
-            foreach($customers as $customer){
-                $options[$customer->c_id] = $customer->c_name;
-			}
-			
 			$this->data['customer'] = array(
 				'name'  => 'customer',
 				'id'    => 'customer',
+                'type'  => 'text',
 				'class' => 'form-control',
-				'options' => $options,
-				'selected' =>$jobs->c_id,
+                'value' => $this->form_validation->set_value('customer'),
+			);
+
+            $this->data['c_id'] = array(
+				'name'  => 'c_id',
+				'id'    => 'c_id',
+                'type'  => 'hidden',
+				'class' => 'form-control',
+                'value' => $this->form_validation->set_value('c_id'),
 			);
 
             

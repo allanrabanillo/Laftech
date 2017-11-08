@@ -35,9 +35,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <div class="col-md-6">
                                        
                                             <div class="form-group">
-                                                <span class = 'col-sm-2 control-label'>Customer:</span>
-                                                <div class="col-sm-10">
-                                                    <?php echo form_dropdown($customer);?>
+                                                <span class = 'col-sm-3 control-label'>Customer:</span>
+                                                <div class="col-sm-7">
+                                                    <?php echo form_input($customer);?>
+                                                    <?php echo form_input($c_id);?>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <?php echo anchor('admin/customers/create', '<i class="fa fa-plus"></i> '.' Add', array('class' => 'btn btn-block btn-primary btn-flat')); ?>
                                                 </div>
                                             </div>
                                            

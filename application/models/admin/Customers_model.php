@@ -38,6 +38,19 @@ class Customers_model extends CI_Model {
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
+    public function check_customer($keyword){
+        $this->db->where('c_name', $keyword);
+        $query = $this->db->get('customers');
+        
+        return ($query->num_rows() > 0) ? true : false;
+    }
+
+     public function GetRow($keyword) {        
+        $this->db->select('c_id,c_name,c_person');
+        $this->db->from('customers');
+        return $this->db->get()->result_array();
+    }
+
     
 
 

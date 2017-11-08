@@ -26,9 +26,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <?php
                                     endif;
                                     ?>
-                                     <?php echo form_open(current_url(), array('class' => 'form-horizontal', 'id' => 'form-create_inandout')); ?>
+                                     <?php echo form_open_multipart(current_url(), array('class' => 'form-horizontal', 'id' => 'form-create_inandout')); ?>
+                        
+                        
+                        <div id="tabs">
+                            <ul>
+                                <li><a href="#tabs-1">Job Info</a></li>
+                                <li><a href="#tabs-2">Pictures</a></li>
+                            </ul>
+                                <div id="tabs-1">
                                     <div class="col-md-6">
 
+
+                                    
                                             <div class="form-group">
                                                 <span class = 'col-sm-3 control-label'>Job No:</span>
                                                 <div class="col-sm-9">
@@ -39,8 +49,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                        
                                             <div class="form-group">
                                                 <span class = 'col-sm-3 control-label'>Customer:</span>
-                                                <div class="col-sm-9">
-                                                    <?php echo form_dropdown($customer);?>
+                                                <div class="col-sm-7">
+                                                    <?php echo form_input($customer);?>
+                                                    <?php echo form_input($c_id);?>
+                                                </div>
+                                                <div class="col-sm-2">
+                                                    <?php echo anchor('admin/customers/create', '<i class="fa fa-plus"></i> '.' Add', array('class' => 'btn btn-block btn-primary btn-flat')); ?>
                                                 </div>
                                             </div>
 
@@ -120,6 +134,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </div>
 
                                         </div>
+                                        </div>
+                                        <div id="tabs-2">
+                                            <div class="col-md-6">
+                                            <div class="form-group">
+                                                <span class = 'col-sm-3 control-label'>Images:</span>
+                                                <div class="col-sm-9">
+                                                    <?php echo form_upload($upload);?>
+                                                    <div class="gallery"></div>
+                                                </div>
+                                            </div>
+
+                                            </div>
+                                        </div>
+
                                         
                                         <div class="form-group">
                                             <div class="col-sm-offset-3 col-sm-10">
