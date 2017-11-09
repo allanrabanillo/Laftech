@@ -94,10 +94,10 @@ class InandOut extends Admin_Controller {
 		 
 		 /* Validate form input */
 		 $this->form_validation->set_rules('job_no', 'Job No', 'required');
-		//  $this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
-		//  $this->form_validation->set_rules('partno', 'Part No', 'required');
-		//  $this->form_validation->set_rules('date_in', 'Date In', 'required');
-		//  $this->form_validation->set_rules('customer', 'lang:Customer', 'required');
+		 $this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
+		 $this->form_validation->set_rules('partno', 'Part No', 'required');
+		 $this->form_validation->set_rules('date_in', 'Date In', 'required');
+		 $this->form_validation->set_rules('customer', 'lang:Customer', 'required');
 
          
         
@@ -244,13 +244,7 @@ class InandOut extends Admin_Controller {
 				'class' => 'form-control',
 				'value' => $this->form_validation->set_value('dn_no'),
 			);
-				$this->data['invno'] = array(
-				'name'  => 'invno',
-				'id'    => 'invno',
-				'type'  => 'text',
-				'class' => 'form-control',
-				'value' => $this->form_validation->set_value('invno'),
-			);
+			
 			$this->data['remarks'] = array(
 				'name'  => 'remarks',
 				'id'    => 'remarks',
@@ -295,6 +289,7 @@ class InandOut extends Admin_Controller {
         );
 
         $this->load->library('upload', $config);
+		$this->load->library('image_lib');
 
         $images = array();
 
@@ -314,7 +309,21 @@ class InandOut extends Admin_Controller {
             $this->upload->initialize($config);
 
             if ($this->upload->do_upload('images[]')) {
-                $this->upload->data();
+                
+				$image_data =   $this->upload->data();
+
+				$configer =  array(
+				'image_library'   => 'gd2',
+				'source_image'    =>  $image_data['full_path'],
+				'maintain_ratio'  =>  TRUE,
+				'width'           =>  250,
+				'height'          =>  250,
+				);
+
+				$this->image_lib->clear();
+				$this->image_lib->initialize($configer);
+				$this->image_lib->resize();
+
             } else {
                 return false;
             }
@@ -329,7 +338,9 @@ class InandOut extends Admin_Controller {
         echo json_encode($data);
     }
 
-    public function edit($id){
+    public function edit($id)
+	{
+
          $id = $id;
 
 		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id) )
@@ -342,76 +353,122 @@ class InandOut extends Admin_Controller {
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
         
-		/* Data */
-		$jobs = $this->inandout_model->get_job($id);
+		
       
         
 		/* Validate form input */
 		$this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
         $this->form_validation->set_rules('partno', 'Part No', 'required');
         $this->form_validation->set_rules('date_in', 'Date In', 'required');
-        $this->form_validation->set_rules('customer', 'lang:Customer', 'required');
+        $this->form_validation->set_rules('customer2', 'lang:Customer', 'required');
 	
+		$this->data['message'] = '';
+		$this->data['message_suc'] = '';
 
 		if (isset($_POST) && ! empty($_POST))
 		{
+
+			if(isset($_POST) && ! empty($_POST) && $this->customers_model->check_customer($this->input->post('customer2')) == false){
+
+                $this->data['message'] .= 'Please input a valid Customer.';
+
+            }else{
+
+				
            
-			if ($this->form_validation->run() == TRUE)
-			{
-				$data = array(
-				'item_desc'  => $this->input->post('item_desc'),
-                'serialno'  => $this->input->post('serialno'),
-                'partno'  => $this->input->post('partno'),
-                'modelno'  => $this->input->post('modelno'),
-                'refno'  => $this->input->post('refno'),
-                'date_in'  => $this->input->post('date_in'),
-                'date_out'  => $this->input->post('date_out'),
-                'drno'  => $this->input->post('drno'),
-                'status'  => $this->input->post('status'),
-                'dn_no'  => $this->input->post('dn_no'),
-                'invno'  => $this->input->post('invno'),
-                'remarks'  => $this->input->post('remarks'),
-                'c_id'  => $this->input->post('customer')
-                
-			);
+					if ($this->form_validation->run() == TRUE)
+					{
 
-                
-                if($this->inandout_model->update($id, $data))
-			    {
-                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+						if (!empty($_FILES['upload']['name'][0]))
+						{
+							
+							$images = $this->upload_files('./upload/job_pic/',$id,$_FILES['upload']);
+							$filenames = implode(',',$images);
 
-				    if ($this->ion_auth->is_admin())
-					{
-						redirect('admin/inandout', 'refresh');
-					}
-					else
-					{
-						redirect('admin', 'refresh');
-					}
-			    }
-			    else
-			    {
-                    $this->session->set_flashdata('message', $this->ion_auth->errors());
+							$data = array(
+								'item_desc'  => $this->input->post('item_desc'),
+								'serialno'  => $this->input->post('serialno'),
+								'partno'  => $this->input->post('partno'),
+								'modelno'  => $this->input->post('modelno'),
+								'refno'  => $this->input->post('refno'),
+								'date_in'  => $this->input->post('date_in'),
+								'date_out'  => $this->input->post('date_out'),
+								'drno'  => $this->input->post('drno'),
+								'status'  => $this->input->post('status'),
+								'dn_no'  => $this->input->post('dn_no'),
+								'invno'  => $this->input->post('invno'),
+								'date_inv'  => $this->input->post('date_inv'),
+								'remarks'  => $this->input->post('remarks'),
+								'c_id'  => $this->input->post('c_id'),
+								'images' => $filenames
+							);
 
-				    if ($this->ion_auth->is_admin())
-					{
-                        
-						redirect('admin/inandout', 'refresh');
+						}else{
+
+							$data = array(
+							'item_desc'  => $this->input->post('item_desc'),
+							'serialno'  => $this->input->post('serialno'),
+							'partno'  => $this->input->post('partno'),
+							'modelno'  => $this->input->post('modelno'),
+							'refno'  => $this->input->post('refno'),
+							'date_in'  => $this->input->post('date_in'),
+							'date_out'  => $this->input->post('date_out'),
+							'drno'  => $this->input->post('drno'),
+							'status'  => $this->input->post('status'),
+							'dn_no'  => $this->input->post('dn_no'),
+							'invno'  => $this->input->post('invno'),
+							'date_inv'  => $this->input->post('date_inv'),
+							'remarks'  => $this->input->post('remarks'),
+							'c_id'  => $this->input->post('c_id'),
+							);
+						}
+
+						
+
+						
+						if($this->inandout_model->update($id, $data))
+						{
+							$this->session->set_flashdata('message', $this->ion_auth->messages());
+
+							if ($this->ion_auth->is_admin())
+							{
+								$this->data['message_suc'] .= 'Update Successful.';
+							}
+							else
+							{
+								redirect('admin', 'refresh');
+							}
+						}
+						else
+						{
+							$this->data['message'] .= "Nothing updated.";
+						}
+					}else{
+							$this->data['message'] .= validation_errors();
 					}
-					else
-					{
-						redirect('/', 'refresh');
-					}
-			    }
+
 			}
 		}
 
 		// set the flash data error message if there is one
-		$this->data['message'] = validation_errors();
+	
 
 		// pass the user to the view
+
+			/* Data */
+			$jobs = $this->inandout_model->get_job($id);
+			$customer = $this->customers_model->get_customer($jobs->c_id);
 		
 		    $this->data['job_no'] = $jobs->job_no;
+		    $this->data['job_images'] = $jobs->images;
+		
+			$this->data['upload'] = array(
+				'name'  => 'upload[]',
+				'id'    => 'upload',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('upload'),
+				'multiple' => true,
+			);
 				
 			$this->data['item_desc'] = array(
 				'name'  => 'item_desc',
@@ -462,6 +519,21 @@ class InandOut extends Admin_Controller {
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('date_out',$jobs->date_out),
 			);
+			$this->data['invno'] = array(
+				'name'  => 'invno',
+				'id'    => 'invno',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('invno',$jobs->invno),
+			);
+			$this->data['date_inv'] = array(
+				'name'  => 'date_inv',
+				'id'    => 'date_inv',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'aria-describedby' => 'basic-addon1',
+				'value' => $this->form_validation->set_value('date_inv',$jobs->date_inv),
+			);
              $this->data['drno'] = array(
 				'name'  => 'drno',
 				'id'    => 'drno',
@@ -500,12 +572,12 @@ class InandOut extends Admin_Controller {
 				'value' => $this->form_validation->set_value('remarks',$jobs->remarks),
 			);
             
-			$this->data['customer'] = array(
-				'name'  => 'customer',
-				'id'    => 'customer',
+			$this->data['customer2'] = array(
+				'name'  => 'customer2',
+				'id'    => 'customer2',
                 'type'  => 'text',
 				'class' => 'form-control',
-                'value' => $this->form_validation->set_value('customer'),
+                'value' => $this->form_validation->set_value('customer2',$customer->c_name),
 			);
 
             $this->data['c_id'] = array(
@@ -513,7 +585,7 @@ class InandOut extends Admin_Controller {
 				'id'    => 'c_id',
                 'type'  => 'hidden',
 				'class' => 'form-control',
-                'value' => $this->form_validation->set_value('c_id'),
+                'value' => $this->form_validation->set_value('c_id',$jobs->c_id),
 			);
 
             
@@ -523,6 +595,74 @@ class InandOut extends Admin_Controller {
 		$this->template->admin_render('admin/inandout/edit', $this->data);
     }
 
+	public function history($id)
+	{
 
+         $id = $id;
+
+		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id) )
+		{
+			redirect('auth', 'refresh');
+		}
+
+        /* Breadcrumbs */
+        $this->breadcrumbs->unshift(2, 'Job History', 'admin/inandout/history');
+        $this->data['breadcrumb'] = $this->breadcrumbs->show();
+
+		$jobs = $this->inandout_model->get_job($id);
+
+		$this->data['job_no'] = $jobs->job_no;
+		$this->data['job_images'] = $jobs->images;
+
+
+		$this->template->admin_render('admin/inandout/history', $this->data);
+	}
+
+
+	public function traveller($id)
+	{
+
+         $id = $id;
+
+		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id) )
+		{
+			redirect('auth', 'refresh');
+		}
+
+        /* Breadcrumbs */
+        $this->breadcrumbs->unshift(2, 'Job Traveller', 'admin/inandout/traveller');
+        $this->data['breadcrumb'] = $this->breadcrumbs->show();
+
+		$jobs = $this->inandout_model->get_job($id);
+
+		$this->data['job_no'] = $jobs->job_no;
+		$this->data['job_images'] = $jobs->images;
+
+
+		$this->template->admin_render('admin/inandout/traveller', $this->data);
+	}
+
+	public function drawing($id)
+	{
+
+         $id = $id;
+
+		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id) )
+		{
+			redirect('auth', 'refresh');
+		}
+
+        /* Breadcrumbs */
+        $this->breadcrumbs->unshift(2, 'Job Drawing', 'admin/inandout/drawing');
+        $this->data['breadcrumb'] = $this->breadcrumbs->show();
+
+		$jobs = $this->inandout_model->get_job($id);
+
+		$this->data['job_no'] = $jobs->job_no;
+		$this->data['job_images'] = $jobs->images;
+
+
+		$this->template->admin_render('admin/inandout/drawing', $this->data);
+	}
 	
 }

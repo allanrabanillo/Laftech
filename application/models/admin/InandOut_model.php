@@ -32,6 +32,14 @@ class InandOut_model extends CI_Model {
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
+    public function update($id,$data)
+    {
+        $this->db->where('job_no', $id);
+        $this->db->update('in_and_out',$data);
+
+        return ($this->db->affected_rows() != 1) ? false : true;
+    }
+
 
      
     
