@@ -40,6 +40,47 @@ class InandOut_model extends CI_Model {
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
+    public function get_history($id=null)
+    {
+        if($id != null){
+            $this->db->where('job_no', $id);
+        }
+        $query = $this->db->get('job_history');
+
+        return $query->result();
+    }
+
+
+    public function getjobs($keyword) {        
+        $this->db->select('job_no,status');
+        $this->db->where('job_no !=', $keyword);
+        $this->db->from('in_and_out');
+        return $this->db->get()->result_array();
+    }
+
+
+    public function check_jobno($keyword){
+        $this->db->where('job_no', $keyword);
+        $query = $this->db->get('in_and_out');
+        
+        return ($query->num_rows() > 0) ? true : false;
+    }
+
+    public function check_jobno_exist($keyword,$old){
+        $this->db->where('job_no', $keyword);
+        $this->db->where('old_job_no', $old);
+        $query = $this->db->get('job_history');
+        
+        return ($query->num_rows() > 0) ? true : false;
+    }
+
+
+    public function history($data)
+    {
+        $query = $this->db->insert('job_history',$data);
+
+        return ($this->db->affected_rows() != 1) ? false : true;
+    }
 
      
     

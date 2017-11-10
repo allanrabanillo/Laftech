@@ -38,10 +38,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url($frameworks_dir . '/adminlte/css/skins/skin-red.min.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url($plugins_dir . '/easyautocomplete/css/easy-autocomplete.min.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url($plugins_dir . '/tooltipster/tooltipster.bundle.min.css'); ?>">
+        <!--<link rel="stylesheet" href="<?php echo base_url($plugins_dir . '/zooming/custom.css'); ?>">-->
+         
         <link rel="stylesheet" href="<?php echo base_url($frameworks_dir . '/jqueryui1.12/jquery-ui.min.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url($frameworks_dir . '/jqueryui1.12/jquery-ui.theme.min.css'); ?>">
+
 <?php if ($mobile === FALSE && $admin_prefs['transition_page'] == TRUE): ?>
         <link rel="stylesheet" href="<?php echo base_url($plugins_dir . '/animsition/animsition.min.css'); ?>">
+        
 <?php endif; ?>
 <?php if (($this->router->fetch_class() == 'groups' || $this->router->fetch_class() == 'categories') && ($this->router->fetch_method() == 'create' OR $this->router->fetch_method() == 'edit')): ?>
         <link rel="stylesheet" href="<?php echo base_url($plugins_dir . '/colorpickersliders/colorpickersliders.min.css'); ?>">

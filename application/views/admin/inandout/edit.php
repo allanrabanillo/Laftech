@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             $images = explode(',',$job_images);
                                             $data = '';
                                             foreach($images as $image){
-                                                $data .= '&lt;img src=&quot;../../../upload/job_pic/'.$image.'&quot; width = &quot;100&#37;&quot; /&gt;&nbsp;&nbsp;';
+                                                $data .= '&lt;img src=&quot;../../../upload/job_pic/'.$image.'&quot; width = &quot;200&quot; /&gt;&nbsp;&nbsp;';
                                             }
                                     
                                     ?>
@@ -181,7 +181,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <span class = 'col-sm-3 control-label'>Images:</span>
                                                 <div class="col-sm-9">
                                                     <?php echo form_upload($upload);?>
-                                                    <div class="gallery"></div>
+                                                    <br>
+                                                    <div class="gallery">
+                                                         <?php
+                                                            $images = explode(',',$job_images);
+                                                            $data = '';
+                                                            foreach($images as $image){
+                                                                ?>
+
+                                                                
+                                                               <img src="../../../upload/job_pic/<?php echo $image; ?>" class="magnify" width = "100%" data-action="zoom" data-original="../../../upload/job_pic/<?php echo $image; ?>"/>
+	                                                            
+                                                                
+                                                                <!--<img src = "../../../upload/job_pic/<?php echo $image; ?>" />-->
+                                                            
+                                                            <?php
+                                                            }
+                                    
+                                                        ?>
+                                                    </div>
                                                 </div>
                                             </div>
 

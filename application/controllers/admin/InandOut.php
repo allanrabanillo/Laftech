@@ -180,6 +180,7 @@ class InandOut extends Admin_Controller {
 				'class' => 'form-control',
 				'value' => $this->form_validation->set_value('item_desc'),
 			);
+
 			$this->data['serialno'] = array(
 				'name'  => 'serialno',
 				'id'    => 'serialno',
@@ -187,6 +188,7 @@ class InandOut extends Admin_Controller {
 				'class' => 'form-control',
 				'value' => $this->form_validation->set_value('serialno'),
 			);
+
 			$this->data['partno'] = array(
 				'name'  => 'partno',
 				'id'    => 'partno',
@@ -194,42 +196,49 @@ class InandOut extends Admin_Controller {
 				'class' => 'form-control',
 				'value' => $this->form_validation->set_value('partno'),
 			);
-				$this->data['modelno'] = array(
+
+			$this->data['modelno'] = array(
 				'name'  => 'modelno',
 				'id'    => 'modelno',
 				'type'  => 'text',
 				'class' => 'form-control',
 				'value' => $this->form_validation->set_value('modelno'),
 			);
-				$this->data['refno'] = array(
+
+			$this->data['refno'] = array(
 				'name'  => 'refno',
 				'id'    => 'refno',
 				'type'  => 'text',
 				'class' => 'form-control',
 				'value' => $this->form_validation->set_value('refno'),
 			);
-				$this->data['date_in'] = array(
+
+			$this->data['date_in'] = array(
 				'name'  => 'date_in',
 				'id'    => 'date_in',
 				'type'  => 'text',
 				'class' => 'form-control',
 				'value' => $this->form_validation->set_value('date_in'),
 			);
-				$this->data['date_out'] = array(
+
+			$this->data['date_out'] = array(
 				'name'  => 'date_out',
 				'id'    => 'date_out',
 				'type'  => 'text',
 				'class' => 'form-control',
 				'value' => $this->form_validation->set_value('date_out'),
 			);
-				$this->data['drno'] = array(
+
+			$this->data['drno'] = array(
 				'name'  => 'drno',
 				'id'    => 'drno',
 				'type'  => 'text',
 				'class' => 'form-control',
 				'value' => $this->form_validation->set_value('drno'),
 			);
-			$status = array(""=>"Please select a status","GOOD"=>"GOOD","FAILED"=>"FAILED","UNDERWARRANTY"=>"UNDERWARRANTY","FORTEST"=>"FORTEST","NAU"=>"NAU");	
+
+			$status = array(""=>"Please select a status","GOOD"=>"GOOD","FAILED"=>"FAILED","UNDERWARRANTY"=>"UNDERWARRANTY","FORTEST"=>"FORTEST","NAU"=>"NAU");
+
 			$this->data['status'] = array(
 				'name'  => 'status',
 				'id'    => 'status',
@@ -237,7 +246,8 @@ class InandOut extends Admin_Controller {
 				'options' => $status,
 				
 			);
-				$this->data['dn_no'] = array(
+
+			$this->data['dn_no'] = array(
 				'name'  => 'dn_no',
 				'id'    => 'dn_no',
 				'type'  => 'text',
@@ -338,6 +348,12 @@ class InandOut extends Admin_Controller {
         echo json_encode($data);
     }
 
+	public function getjobs($keyword){
+    
+        $data=$this->inandout_model->getjobs($keyword);        
+        echo json_encode($data);
+    }
+
     public function edit($id)
 	{
 
@@ -353,8 +369,6 @@ class InandOut extends Admin_Controller {
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
         
-		
-      
         
 		/* Validate form input */
 		$this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
@@ -609,10 +623,101 @@ class InandOut extends Admin_Controller {
         $this->breadcrumbs->unshift(2, 'Job History', 'admin/inandout/history');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
-		$jobs = $this->inandout_model->get_job($id);
+		
+		
 
+		/* Validate form input */
+		 $this->form_validation->set_rules('jobno', 'Job No', 'required');
+	
+
+         
+        
+		$this->data['message'] = '';
+		$this->data['message_suc'] = '';
+		 
+		if ($this->form_validation->run() == TRUE)
+		{
+			if(isset($_POST) && ! empty($_POST) && $this->inandout_model->check_jobno($this->input->post('jobno')) == false){
+                $this->data['message'] .= 'Please input a valid Job No.';
+            }else{
+				if($this->inandout_model->check_jobno_exist($id,$this->input->post('jobno'))){
+
+					$this->data['message'] .= 'Job No: '.$this->input->post('jobno').' already existed.';
+					
+				}else{
+						$data = array(
+							'job_no'  => $id,
+							'old_job_no'  => $this->input->post('jobno'),
+							
+						);
+
+					 	if($this->inandout_model->history($data)){
+							$this->data['message_suc'] .= 'Job No: '.$this->input->post('jobno').' has been successfully added.';
+
+
+						}else{
+							$this->data['message'] .= 'Failed adding the Job No.';
+						}
+				}
+						
+			}
+		}else{
+			$this->data['message'] .= validation_errors();
+		}
+
+
+		$jobs = $this->inandout_model->get_job($id);
+		$this->data['history'] = $this->inandout_model->get_history($id);
+
+		foreach ($this->data['history'] as $k => $history)
+        {
+                $this->data['history'][$k]->jobs = $this->inandout_model->get_job($history->old_job_no);
+
+				
+					switch(strtoupper($this->data['history'][$k]->jobs->status)){
+						case 'GOOD':
+						$this->data['history'][$k]->jobs->color = 'green';
+						break;
+						case 'FAILED':
+						$this->data['history'][$k]->jobs->color = 'red';
+						break;
+						case 'UNDERWARRANTY':
+						$this->data['history'][$k]->jobs->color = '#DCB239';
+						break;
+						case 'FORTEST':
+						$this->data['history'][$k]->jobs->color = 'orange';
+						break;
+						case 'NAU':
+						$this->data['history'][$k]->jobs->color = '#aa863a';
+						break;
+					}
+				
+				
+				
+				
+        }
+		
 		$this->data['job_no'] = $jobs->job_no;
 		$this->data['job_images'] = $jobs->images;
+
+		$this->data['jobno'] = array(
+				'name'  => 'jobno',
+				'id'    => 'jobno',
+                'type'  => 'text',
+				'class' => 'form-control',
+                'value' => $this->form_validation->set_value('jobno'),
+		);
+
+		$this->data['jobno_h'] = array(
+				'name'  => 'jobno_h',
+				'id'    => 'jobno_h',
+                'type'  => 'hidden',
+				'class' => 'form-control',
+                'value' => $this->form_validation->set_value('jobno_h',$jobs->job_no),
+		);
+
+
+
 
 
 		$this->template->admin_render('admin/inandout/history', $this->data);
