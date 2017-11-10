@@ -190,7 +190,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                 ?>
 
                                                                 
-                                                               <img src="../../../upload/job_pic/<?php echo $image; ?>" class="magnify" width = "100%" data-action="zoom" data-original="../../../upload/job_pic/<?php echo $image; ?>"/>
+                                                               <img src="../../../upload/job_pic/<?php echo $image; ?>" class="magnify" width = "50%" data-action="zoom" data-original="../../../upload/job_pic/<?php echo $image; ?>"/>
 	                                                            
                                                                 
                                                                 <!--<img src = "../../../upload/job_pic/<?php echo $image; ?>" />-->

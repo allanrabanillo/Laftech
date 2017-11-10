@@ -301,7 +301,11 @@ class InandOut extends Admin_Controller {
         $this->load->library('upload', $config);
 		$this->load->library('image_lib');
 
-        $images = array();
+		$images = array();
+		
+		foreach (glob($path.'*'.$title.'*') as $filename) {
+			unlink($filename);
+		}
 
         foreach ($files['name'] as $key => $image) {
             $_FILES['images[]']['name']= $files['name'][$key];
@@ -318,21 +322,23 @@ class InandOut extends Admin_Controller {
 
             $this->upload->initialize($config);
 
+			
+
             if ($this->upload->do_upload('images[]')) {
                 
 				$image_data =   $this->upload->data();
 
-				$configer =  array(
-				'image_library'   => 'gd2',
-				'source_image'    =>  $image_data['full_path'],
-				'maintain_ratio'  =>  TRUE,
-				'width'           =>  250,
-				'height'          =>  250,
-				);
+				// $configer =  array(
+				// 'image_library'   => 'gd2',
+				// 'source_image'    =>  $image_data['full_path'],
+				// 'maintain_ratio'  =>  TRUE,
+				// 'width'           =>  500,
+				// 'height'          =>  500,
+				// );
 
-				$this->image_lib->clear();
-				$this->image_lib->initialize($configer);
-				$this->image_lib->resize();
+				// $this->image_lib->clear();
+				// $this->image_lib->initialize($configer);
+				// $this->image_lib->resize();
 
             } else {
                 return false;

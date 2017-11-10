@@ -16,12 +16,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url($frameworks_dir . '/bootstrap/js/bootstrap.min.js'); ?>"></script>
         <script src="<?php echo base_url($frameworks_dir . '/jqueryui1.12/jquery-ui.js'); ?>"></script>
         <script src="<?php echo base_url($frameworks_dir . '/jquery/jquery.dataTables.min.js'); ?>"></script>
+        <script src="<?php echo base_url($frameworks_dir . '/jquery/dataTables.rowReorder.min.js'); ?>"></script>
+        <script src="<?php echo base_url($frameworks_dir . '/jquery/dataTables.responsive.min.js'); ?>"></script>
         <script src="<?php echo base_url($frameworks_dir . '/jquery/dataTables.bootstrap.min.js'); ?>"></script>
         <script src="<?php echo base_url($plugins_dir . '/slimscroll/slimscroll.min.js'); ?>"></script>
         <script src="<?php echo base_url($plugins_dir . '/easyautocomplete/js/jquery.easy-autocomplete.min.js'); ?>"></script>
         <script src="<?php echo base_url($plugins_dir . '/tooltipster/tooltipster.bundle.min.js'); ?>"></script>
+        
         <script src="<?php echo base_url($plugins_dir . '/zooming/zooming.js'); ?>"></script>
-        <script src="<?php echo base_url($plugins_dir . '/zooming/custom.js'); ?>"></script>
+        <!-- <script src="<?php echo base_url($plugins_dir . '/zooming/custom.js'); ?>"></script> -->
         
         
        

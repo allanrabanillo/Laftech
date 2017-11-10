@@ -24,11 +24,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <thead>
                                             <tr>
                                                 <th>Job No</th>
+                                                <th>Status</th>
                                                 <th>Customer</th>
                                                 <th>Item Desc</th>
                                                 <th>Part No</th>
                                                 <th>Date In</th>
-                                                <th>Status</th>
+                                                
                                                 
                                             </tr>
                                         </thead>
@@ -47,13 +48,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                             
                                                     ?>
                                                 </td>
+                                                <td><span class="label" style="background:<?php echo $job->color; ?>"><?php echo htmlspecialchars($job->status, ENT_QUOTES, 'UTF-8'); ?></span></td>
                                                 <td>
                                                     <?php echo anchor('admin/customers/edit/'.$job->c_id, '<span class="label" style="background:orange;">'.htmlspecialchars($job->c_name, ENT_QUOTES, 'UTF-8').'</span>'); ?>
                                                 </td>
                                                 <td><?php echo htmlspecialchars($job->item_desc, ENT_QUOTES, 'UTF-8'); ?></td>
                                                 <td><?php echo htmlspecialchars($job->partno, ENT_QUOTES, 'UTF-8'); ?></td>
                                                 <td><?php echo htmlspecialchars($job->date_in, ENT_QUOTES, 'UTF-8'); ?></td>
-                                                <td><span class="label" style="background:<?php echo $job->color; ?>"><?php echo htmlspecialchars($job->status, ENT_QUOTES, 'UTF-8'); ?></span></td>
+                                                
                                                 
                                             </tr>
                                         <?php endforeach;?>
