@@ -11,6 +11,7 @@ class InandOut extends Admin_Controller {
         $this->lang->load('admin/users');
         $this->load->model('admin/inandout_model');
         $this->load->model('admin/customers_model');
+       
         /* Title Page :: Common */
         $this->page_title->push('In and Out');
         $this->data['pagetitle'] = $this->page_title->show();
@@ -470,10 +471,10 @@ class InandOut extends Admin_Controller {
 			}
 		}
 
-		// set the flash data error message if there is one
+			// set the flash data error message if there is one
 	
 
-		// pass the user to the view
+			// pass the user to the view
 
 			/* Data */
 			$jobs = $this->inandout_model->get_job($id);
@@ -744,10 +745,67 @@ class InandOut extends Admin_Controller {
         $this->breadcrumbs->unshift(2, 'Job Traveller', 'admin/inandout/traveller');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
+		/* Validate form input */
+		 $this->form_validation->set_rules('test_no', 'Test No', 'required|numeric');
+		 //$this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
+
+		 $this->data['message'] = '';
+
+		 if ($this->form_validation->run() == TRUE)
+		{
+			if($this->inandout_model->check_testno_exist($id,$this->input->post('jobno'))){
+
+				$this->data['message'] .= 'Test No already existed.';
+			}else{
+				$data = array(
+							'job_no'  => $id,
+							'test_no'  => $this->input->post('test_no'),
+							't_remarks'  => $this->input->post('remarks'),
+							't_user' => $this->ion_auth->user()->row()->id,
+						);
+
+					 	if($this->inandout_model->insertTraveller($data)){
+							$this->data['message_suc'] .= 'Test No: '.$this->input->post('test_no').' has been successfully added.';
+
+
+						}else{
+							$this->data['message'] .= 'Failed adding Test: '.$this->input->post('test_no').'.';
+						}
+			}
+
+		}else{
+			$this->data['message'] .= validation_errors();
+		}
+
+
+
 		$jobs = $this->inandout_model->get_job($id);
+		$this->data['travellers'] = $this->inandout_model->get_traveller($id);
+		foreach ($this->data['travellers'] as $k => $traveller)
+        {
+                $this->data['travellers'][$k]->users = $this->ion_auth->user($traveller->t_user)->result();
+        }
+
 
 		$this->data['job_no'] = $jobs->job_no;
 		$this->data['job_images'] = $jobs->images;
+
+		$this->data['test_no'] = array(
+				'name'  => 'test_no',
+				'id'    => 'test_no',
+                'type'  => 'text',
+				'class' => 'form-control',
+                'value' => $this->form_validation->set_value('test_no'),
+		);
+
+		$this->data['remarks'] = array(
+				'name'  => 'remarks',
+				'id'    => 'remarks',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'rows'  => '3',
+				'value' => $this->form_validation->set_value('remarks'),
+			);
 
 
 		$this->template->admin_render('admin/inandout/traveller', $this->data);
@@ -766,12 +824,53 @@ class InandOut extends Admin_Controller {
         /* Breadcrumbs */
         $this->breadcrumbs->unshift(2, 'Job Drawing', 'admin/inandout/drawing');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
+		
+		$this->data['message_suc'] = "";
+		$this->data['message'] = "";
+
+			if (!empty($_FILES['upload']['name'][0]))
+			{
+							
+				$images = $this->upload_files('./upload/drawing/',$id,$_FILES['upload']);
+				$filenames = implode(',',$images);
+
+				$data = array(
+					'drawing' => $filenames
+				);
+
+				if($this->inandout_model->update($id, $data))
+				{
+					$this->session->set_flashdata('message', $this->ion_auth->messages());
+
+					if ($this->ion_auth->is_admin())
+					{
+						$this->data['message_suc'] .= 'Update Successful.';
+					}
+					else
+					{
+						redirect('admin', 'refresh');
+					}
+
+				}else{
+					$this->data['message'] .= "Nothing updated.";
+				}
+
+			}
 
 		$jobs = $this->inandout_model->get_job($id);
 
 		$this->data['job_no'] = $jobs->job_no;
 		$this->data['job_images'] = $jobs->images;
+		$this->data['job_drawing'] = $jobs->drawing;
 
+
+		$this->data['upload'] = array(
+				'name'  => 'upload[]',
+				'id'    => 'upload',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('upload'),
+				'multiple' => true,
+			);
 
 		$this->template->admin_render('admin/inandout/drawing', $this->data);
 	}

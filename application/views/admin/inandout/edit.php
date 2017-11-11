@@ -176,13 +176,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </div>
                                         </div>
                                          <div id="tabs-2">
-                                            <div class="col-md-6">
+                                            
+                                            <div class="alert alert-warning" role="alert">
+                                                <strong>Note:</strong> Please make sure that the file name does not have a space.
+                                            </div>
                                             <div class="form-group">
                                                 <span class = 'col-sm-3 control-label'>Images:</span>
                                                 <div class="col-sm-9">
                                                     <?php echo form_upload($upload);?>
                                                     <br>
-                                                    <div class="gallery">
+                                                    
+                                                </div>
+                                            </div>
+
+                                            <div class="gallery" class = "col-md-9">
                                                          <?php
                                                             $images = explode(',',$job_images);
                                                             $data = '';
@@ -190,7 +197,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                                 ?>
 
                                                                 
-                                                               <img src="../../../upload/job_pic/<?php echo $image; ?>" class="magnify" width = "50%" data-action="zoom" data-original="../../../upload/job_pic/<?php echo $image; ?>"/>
+                                                               <img src="../../../upload/job_pic/<?php echo $image; ?>" class="magnify col-md-4"  data-action="zoom" data-original="../../../upload/job_pic/<?php echo $image; ?>"/>
 	                                                            
                                                                 
                                                                 <!--<img src = "../../../upload/job_pic/<?php echo $image; ?>" />-->
@@ -200,13 +207,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     
                                                         ?>
                                                     </div>
-                                                </div>
-                                            </div>
 
-                                            </div>
+                                         
                                         </div>
                                         <div class="form-group">
-                                            <div class="col-sm-offset-3 col-sm-10">
+                                            <div class="col-sm-offset-3 col-sm-10" style="padding:20px;">
                                                 <div class="btn-group">
                                                     <?php echo form_button(array('type' => 'submit', 'class' => 'btn btn-primary btn-flat', 'content' => lang('actions_submit'))); ?>
                                                     <?php echo anchor('admin/inandout', lang('actions_cancel'), array('class' => 'btn btn-default btn-flat')); ?>

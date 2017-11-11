@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 08, 2017 at 10:53 AM
+-- Generation Time: Nov 11, 2017 at 10:24 AM
 -- Server version: 10.1.22-MariaDB
 -- PHP Version: 7.0.18
 
@@ -137,16 +137,59 @@ CREATE TABLE `in_and_out` (
   `invno` varchar(50) NOT NULL,
   `date_inv` date DEFAULT NULL,
   `remarks` varchar(150) NOT NULL,
-  `images` varchar(250) NOT NULL
+  `images` varchar(250) NOT NULL,
+  `drawing` varchar(300) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `in_and_out`
 --
 
-INSERT INTO `in_and_out` (`job_no`, `c_id`, `item_desc`, `serialno`, `partno`, `modelno`, `refno`, `date_in`, `date_out`, `drno`, `status`, `dn_no`, `invno`, `date_inv`, `remarks`, `images`) VALUES
-('LIS-15263', 1, 'VEHICLE MANAGER (BR243 ZENNITH FOODS)', '1401170025', '1045780/106R', '', '', '2015-12-17', '2016-03-27', '0810', 'UNDERWARRANTY', '31207', '', NULL, 'FORTEST BTHI in', ''),
-('LIS-23213213', 2, 'asdsadasdasd', 'dasdas', 'asdas', 'dasdasd', 'asdasad', '0000-00-00', '0000-00-00', 'sadas', 'NAU', 'dasdasd', '', NULL, 'dasdasd', 'LIS-23213213_wms-customer-231.png,LIS-23213213_wms-customer-232.png');
+INSERT INTO `in_and_out` (`job_no`, `c_id`, `item_desc`, `serialno`, `partno`, `modelno`, `refno`, `date_in`, `date_out`, `drno`, `status`, `dn_no`, `invno`, `date_inv`, `remarks`, `images`, `drawing`) VALUES
+('LIS-15263', 1, 'VEHICLE MANAGER (BR243 ZENNITH FOODS)', '1401170025', '1045780/106R', '', '', '2015-12-17', '2016-03-27', '0810', 'UNDERWARRANTY', '31207', '', '0000-00-00', 'FORTEST BTHI in', 'LIS-15263_p1.png,LIS-15263_sa1.png', 'LIS-15263_316701b.png,LIS-15263_epak.png,LIS-15263_impinj1.PNG,LIS-15263_impinj2.PNG,LIS-15263_impinj3.PNG,LIS-15263_magento_credentials.PNG'),
+('LIS-16045', 2, 'VEHICLE MANAGER (POLAR BEAR)', '13082301592', '1045780/105', '', '', '2016-05-12', '0000-00-00', '', 'NAU', '0038843', '', '0000-00-00', 'NO AVAILABLE UNIT', 'LIS-16045_epak.png,LIS-16045_iam+_order.PNG,LIS-16045_impinj2.PNG', 'LIS-16045_s9.png,LIS-16045_s10.png');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_history`
+--
+
+CREATE TABLE `job_history` (
+  `id` int(11) NOT NULL,
+  `job_no` varchar(50) NOT NULL,
+  `old_job_no` varchar(50) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `job_history`
+--
+
+INSERT INTO `job_history` (`id`, `job_no`, `old_job_no`) VALUES
+(1, 'LIS-16045', 'LIS-15263'),
+(11, 'LIS-15263', 'LIS-16045');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_traveler`
+--
+
+CREATE TABLE `job_traveler` (
+  `job_no` varchar(150) NOT NULL,
+  `test_no` int(11) NOT NULL,
+  `t_remarks` varchar(150) NOT NULL,
+  `t_status` int(50) NOT NULL,
+  `t_user` varchar(50) NOT NULL,
+  `t_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `job_traveler`
+--
+
+INSERT INTO `job_traveler` (`job_no`, `test_no`, `t_remarks`, `t_status`, `t_user`, `t_id`) VALUES
+('LIS-15263', 1, 'Error code 404', 0, '1', 1);
 
 -- --------------------------------------------------------
 
@@ -259,7 +302,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1510116596, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1510387782, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
 (4, '::1', 'allan rabanillo', '$2y$08$nARdb5EHVJGgYwZ9VtlCpOA70wF/QQLUImZdsFBvSrfAbua5jWhWy', NULL, 'allanrabanillo@gmail.com', NULL, NULL, NULL, NULL, 1509690576, 1509701465, 1, 'Allan', 'Rabanillo', 'JSI', '09567383179'),
 (5, '::1', 'reymark rabanillo', '$2y$08$B11FZmzpg2ZJVSsqXsHDGOZNywsI87swKvheOAcWVfjieIsjCpJDG', NULL, 'reymark@gmail.com', NULL, NULL, NULL, NULL, 1509979757, NULL, 1, 'Reymark', 'Rabanillo', 'Laftech', '09234422332');
 
@@ -317,6 +360,18 @@ ALTER TABLE `groups`
 --
 ALTER TABLE `in_and_out`
   ADD PRIMARY KEY (`job_no`);
+
+--
+-- Indexes for table `job_history`
+--
+ALTER TABLE `job_history`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `job_traveler`
+--
+ALTER TABLE `job_traveler`
+  ADD PRIMARY KEY (`t_id`);
 
 --
 -- Indexes for table `login_attempts`
@@ -381,6 +436,16 @@ ALTER TABLE `customers`
 --
 ALTER TABLE `groups`
   MODIFY `id` mediumint(8) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
+-- AUTO_INCREMENT for table `job_history`
+--
+ALTER TABLE `job_history`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+--
+-- AUTO_INCREMENT for table `job_traveler`
+--
+ALTER TABLE `job_traveler`
+  MODIFY `t_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `login_attempts`
 --

@@ -11,7 +11,7 @@ class InandOut_model extends CI_Model {
     public function get_all()
     {
         //SELECT parts.p_id,COALESCE((qty - qtyout), 0 ) as balance from parts left outer join stocks on stocks.p_id = parts.p_id GROUP BY parts.p_id
-        $this->db->select('job_no,customers.c_id,c_name,item_desc,partno,date_in,status,images');
+        $this->db->select('job_no,customers.c_id,c_name,item_desc,partno,date_in,status,images,drawing');
         $this->db->from('in_and_out');
         $this->db->join('customers', 'customers.c_id = in_and_out.c_id');
         // $this->db->group_by("parts.p_id");
@@ -50,6 +50,16 @@ class InandOut_model extends CI_Model {
         return $query->result();
     }
 
+    public function get_traveller($id=null)
+    {
+        if($id != null){
+            $this->db->where('job_no', $id);
+        }
+        $query = $this->db->get('job_traveler');
+
+        return $query->result();
+    }
+
 
     public function getjobs($keyword) {        
         $this->db->select('job_no,status');
@@ -74,10 +84,25 @@ class InandOut_model extends CI_Model {
         return ($query->num_rows() > 0) ? true : false;
     }
 
+    public function check_testno_exist($keyword,$old){
+        $this->db->where('job_no', $keyword);
+        $this->db->where('test_no', $old);
+        $query = $this->db->get('job_traveler');
+        
+        return ($query->num_rows() > 0) ? true : false;
+    }
+
 
     public function history($data)
     {
         $query = $this->db->insert('job_history',$data);
+
+        return ($this->db->affected_rows() != 1) ? false : true;
+    }
+
+    public function insertTraveller($data)
+    {
+        $query = $this->db->insert('job_traveler',$data);
 
         return ($this->db->affected_rows() != 1) ? false : true;
     }

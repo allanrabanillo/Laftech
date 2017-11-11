@@ -21,6 +21,7 @@ class Auth extends MY_Controller {
         }
         else
         {
+
             redirect('/', 'refresh');
         }
 	}
@@ -98,7 +99,20 @@ class Auth extends MY_Controller {
         }
         else
         {
-            redirect('/', 'refresh');
+            if ( ! $this->ion_auth->is_admin())
+            {
+                $this->session->set_flashdata('message', $this->ion_auth->messages());
+                redirect('/', 'refresh');
+            }
+            else
+            {
+                /* Data */
+                $this->data['message'] = (validation_errors()) ? validation_errors() : $this->session->flashdata('message');
+
+                /* Load Template */
+                // $this->template->auth_render('admin/choice', $this->data);
+                redirect('admin/dashboard');
+            }
         }
    }
 

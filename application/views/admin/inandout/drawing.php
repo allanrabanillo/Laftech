@@ -18,7 +18,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             $images = explode(',',$job_images);
                                             $data = '';
                                             foreach($images as $image){
-                                                $data .= '&lt;img src=&quot;../../../upload/job_pic/'.$image.'&quot; width = &quot;100&#37;&quot; /&gt;&nbsp;&nbsp;';
+                                                $data .= '&lt;img src=&quot;../../../upload/job_pic/'.$image.'&quot; width = &quot;200;&quot; /&gt;&nbsp;&nbsp;';
                                             }
                                     
                                     ?>
@@ -53,23 +53,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                      <?php
                                     endif;
                                     ?>
-                                     <?php echo form_open_multipart(current_url(), array('class' => 'form-horizontal', 'id' => 'form-edit_inandout')); ?>
+                                     <?php echo form_open_multipart(current_url(), array('class' => 'form-horizontal', 'id' => 'form-edit_drawing')); ?>
                         
-                                    <div class="col-md-6">
-                                       
-                                            
-                                           
-                                           
-                                           
-                                        </div>
-                                        <div class="col-md-6">
+                                    <div class="alert alert-warning" role="alert">
+                                                <strong>Note:</strong> Please make sure that the file name does not have a space.
+                                    </div>
+                                            <div class="form-group">
+                                                <span class = 'col-sm-2 control-label'>Images:</span>
+                                                <div class="col-sm-9">
+                                                    <?php echo form_upload($upload);?>
+                                                    <br>
+                                                   
+                                                </div>
+                                                 
+                                            </div>
 
-                                           
-                                           
-                                        </div>
+                                            <div class="gallery" class = "col-md-9">
+                                                     
+                                                         <?php
+                                                            $images = explode(',',$job_drawing);
+                                                            $data = '';
+                                                            
+                                                            foreach($images as $image){
+                                                                ?>
+
+                                                                
+                                                                   
+                                                                            <img src="../../../upload/drawing/<?php echo $image; ?>" class="magnify col-sm-4"  data-action="zoom" data-original="../../../upload/drawing/<?php echo $image; ?>"/>
+	                                                            
+                                                                        
+                                                                <!--<img src = "../../../upload/job_pic/<?php echo $image; ?>" />-->
+                                                            
+                                                            <?php
+                                                            }
+                                    
+                                                        ?>
+                                                       
+                                                    </div>
 
                                         <div class="form-group">
-                                            <div class="col-sm-offset-3 col-sm-10">
+                                             <div class="col-sm-offset-3 col-sm-10" style="padding:20px;">
                                                 <div class="btn-group">
                                                     <?php echo form_button(array('type' => 'submit', 'class' => 'btn btn-primary btn-flat', 'content' => lang('actions_submit'))); ?>
                                                     <?php echo anchor('admin/inandout', lang('actions_cancel'), array('class' => 'btn btn-default btn-flat')); ?>

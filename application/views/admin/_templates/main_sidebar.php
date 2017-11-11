@@ -51,6 +51,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </a>
                         </li>
 
+                        <li class="<?=active_link_controller('request')?>">
+                            <a href="<?php echo site_url('admin/request'); ?>">
+                                <i class="fa fa-exchange"></i> <span>Request</span>
+                            </a>
+                        </li>
+
                         <li class="<?=active_link_controller('stocks')?>">
                             <a href="<?php echo site_url('admin/stocks'); ?>">
                                 <i class="fa fa-inbox"></i> <span>Stocks</span>
