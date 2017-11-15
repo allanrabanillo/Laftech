@@ -14,41 +14,55 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="col-md-12">
                              <div class="box">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title"><?php echo anchor('admin/parts/create', '<i class="fa fa-plus"></i> '. 'New Request', array('class' => 'btn btn-block btn-primary btn-flat')); ?></h3>
+                                    <h3 class="box-title"><?php echo anchor('admin/request/create', '<i class="fa fa-plus"></i> '. 'New Request', array('class' => 'btn btn-block btn-primary btn-flat')); ?></h3>
                                 </div>
                                 <div class="box-body">
-                                    <!--<table class="table table-striped table-bordered display">
+                                    <table class="table table-striped table-bordered display">
                                         <thead>
                                             <tr>
-                                                <th>Category</th>
-                                                <th>Descrption</th>
-                                                <th>Box No</th>
-                                                <th>Type</th>
-                                                <th>Critical Lvl</th>
-                                                <th>Action</th>
+                                                <th>RQ-ID</th>
+                                                <th>Job No</th>
+                                                <th>Test No</th>
+                                                <th>Technician</th>
+                                                <th>Status</th>
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            <?php foreach ($parts as $part):?>
-                                            <tr>
-                                                <td>
-                                                <?php foreach ($part->categories as $category):?>
-                                                    <?php echo anchor('admin/categories/edit/'.$category->cat_id, '<span class="label" style="background:'.$category->cat_color.';">'.htmlspecialchars($category->cat_name, ENT_QUOTES, 'UTF-8').'</span>'); ?>
-                                                <?php endforeach?>
-                                                </td>
-                                                <td><?php echo htmlspecialchars($part->p_desc, ENT_QUOTES, 'UTF-8'); ?></td>
-                                                <td><?php echo htmlspecialchars($part->p_boxno, ENT_QUOTES, 'UTF-8'); ?></td>
-                                                <td><?php echo htmlspecialchars($part->p_type, ENT_QUOTES, 'UTF-8'); ?></td>
-                                                <td><?php echo htmlspecialchars($part->p_c_level, ENT_QUOTES, 'UTF-8'); ?></td>
-                                                <td>
+                                            <!--<?php var_dump($requests); ?>-->
+                                             <?php foreach ($requests as $request):?>
+                                                <tr>
+
+                                                    <td><?php  echo anchor('admin/request/edit/'.$request->r_id, '<span class="label label-info" >'.htmlspecialchars('RQ-'.$request->r_id, ENT_QUOTES, 'UTF-8').'</span>'); ?></td>
                                                     
-                                                    <?php echo anchor('admin/parts/edit/'.$part->p_id, '<i class="fa fa-edit"></i> Edit',array('class' => 'btn btn-primary btn-flat')); ?> 
-                                                    <!--<?php echo anchor('admin/parts/profile/'.$part->p_id, '<i class="fa fa-user-o"></i> Profile',array('class' => 'btn btn-warning btn-flat')); ?>-->
-                                                </td>
-                                            </tr>
-                                            <?php endforeach;?>
+                                                    <td>
+                                                            <?php 
+                                                                
+                                                                echo anchor('admin/inandout/edit/'.$request->job_no,'<span class="label" style="background:red;" >'.htmlspecialchars($request->job_no, ENT_QUOTES, 'UTF-8').'</span>'); 
+                                                                    
+                                                            ?>
+                                                    </td>
+                                                    <td>
+                                                        <?php 
+                                                            
+                                                            echo anchor('admin/inandout/travellertest/'.$request->job_no.'/'.$request->test_no, '<span class="label" style="background:red;" >'.htmlspecialchars($request->test_no, ENT_QUOTES, 'UTF-8').'</span>'); 
+                                                                
+                                                        ?>
+                                                    </td>
+                                                    
+                                                    
+                                                    <td>
+                                                        <?php foreach ($request->tech as $user):
+                                                            echo anchor('admin/users/profile/'.$user->id, '<span class="label label-default"  >'.htmlspecialchars(ucwords($user->username), ENT_QUOTES, 'UTF-8').'</span>'); 
+
+                                                        endforeach;?>
+                                                    </td> 
+                                                   <td><span class="label" style="background:<?php echo $request->color; ?>"><?php echo htmlspecialchars($request->status, ENT_QUOTES, 'UTF-8'); ?></span></td>
+
+
+                                                </tr>
+                                         <?php endforeach;?>
                                         </tbody>
-                                    </table>-->
+                                    </table>
                                 </div>
                             </div>
                          </div>

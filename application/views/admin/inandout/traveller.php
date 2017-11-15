@@ -86,7 +86,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             
                                             <td>
                                                 <?php foreach ($traveller->users as $user):
-                                                    echo anchor('admin/users/profile/'.$user->id, '<span class="label" style="background:orange;" >'.htmlspecialchars($user->first_name.' '.$user->last_name, ENT_QUOTES, 'UTF-8').'</span>'); 
+                                                    echo anchor('admin/users/profile/'.$user->id, '<span class="label" style="background:orange;" >'.htmlspecialchars(ucwords($user->username), ENT_QUOTES, 'UTF-8').'</span>'); 
 
                                                  endforeach;?>
                                             </td> 

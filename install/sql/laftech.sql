@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 11, 2017 at 10:24 AM
+-- Generation Time: Nov 15, 2017 at 10:18 AM
 -- Server version: 10.1.22-MariaDB
 -- PHP Version: 7.0.18
 
@@ -91,7 +91,7 @@ CREATE TABLE `customers` (
 INSERT INTO `customers` (`c_id`, `c_name`, `c_person`, `c_address`, `c_contactno`, `email`) VALUES
 (1, 'AAFSOFTWAREWORKS', 'Allan Rabanillo', 'Stark Bldg, USA', 2147483647, 'aafsoftwareworks@gmail.com'),
 (2, 'JSI Logistics', 'John Doe', 'Pascor Drive, Sky freight Paranaque', 2147483647, 'jsilogistics@gmail.com'),
-(3, 'asdasdsad', 'sadasd', 'asdasd', 213213213, 'asdasdasd@gmail.com');
+(3, 'asdasdsad', 'sadasd', 'ASD\'s Room', 213213213, 'asdasdasd@gmail.com');
 
 -- --------------------------------------------------------
 
@@ -189,7 +189,7 @@ CREATE TABLE `job_traveler` (
 --
 
 INSERT INTO `job_traveler` (`job_no`, `test_no`, `t_remarks`, `t_status`, `t_user`, `t_id`) VALUES
-('LIS-15263', 1, 'Error code 404', 0, '1', 1);
+('LIS-15263', 1, 'Error code 404', 0, '5', 1);
 
 -- --------------------------------------------------------
 
@@ -249,6 +249,50 @@ INSERT INTO `public_preferences` (`id`, `transition_page`) VALUES
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `requests`
+--
+
+CREATE TABLE `requests` (
+  `r_id` int(11) NOT NULL,
+  `job_no` varchar(50) NOT NULL,
+  `test_no` varchar(50) NOT NULL,
+  `admin_approval` int(11) NOT NULL,
+  `tech_approval` int(11) NOT NULL,
+  `admin_id` int(11) NOT NULL,
+  `tech_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `requests`
+--
+
+INSERT INTO `requests` (`r_id`, `job_no`, `test_no`, `admin_approval`, `tech_approval`, `admin_id`, `tech_id`) VALUES
+(1, 'LIS-15263', '1', 0, 0, 1, 5);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `request_items`
+--
+
+CREATE TABLE `request_items` (
+  `r_item_id` int(11) NOT NULL,
+  `r_id` int(11) NOT NULL,
+  `s_id` int(11) NOT NULL,
+  `p_id` int(11) NOT NULL,
+  `qty` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `request_items`
+--
+
+INSERT INTO `request_items` (`r_item_id`, `r_id`, `s_id`, `p_id`, `qty`) VALUES
+(1, 1, 0, 1, 2);
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `stocks`
 --
 
@@ -302,7 +346,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1510387782, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1510737316, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
 (4, '::1', 'allan rabanillo', '$2y$08$nARdb5EHVJGgYwZ9VtlCpOA70wF/QQLUImZdsFBvSrfAbua5jWhWy', NULL, 'allanrabanillo@gmail.com', NULL, NULL, NULL, NULL, 1509690576, 1509701465, 1, 'Allan', 'Rabanillo', 'JSI', '09567383179'),
 (5, '::1', 'reymark rabanillo', '$2y$08$B11FZmzpg2ZJVSsqXsHDGOZNywsI87swKvheOAcWVfjieIsjCpJDG', NULL, 'reymark@gmail.com', NULL, NULL, NULL, NULL, 1509979757, NULL, 1, 'Reymark', 'Rabanillo', 'Laftech', '09234422332');
 
@@ -392,6 +436,18 @@ ALTER TABLE `public_preferences`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `requests`
+--
+ALTER TABLE `requests`
+  ADD PRIMARY KEY (`r_id`);
+
+--
+-- Indexes for table `request_items`
+--
+ALTER TABLE `request_items`
+  ADD PRIMARY KEY (`r_item_id`);
+
+--
 -- Indexes for table `stocks`
 --
 ALTER TABLE `stocks`
@@ -461,6 +517,16 @@ ALTER TABLE `parts`
 --
 ALTER TABLE `public_preferences`
   MODIFY `id` int(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `requests`
+--
+ALTER TABLE `requests`
+  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+--
+-- AUTO_INCREMENT for table `request_items`
+--
+ALTER TABLE `request_items`
+  MODIFY `r_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `stocks`
 --

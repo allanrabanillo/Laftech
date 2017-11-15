@@ -10,6 +10,7 @@ class Request extends Admin_Controller {
         /* Load :: Common */
         $this->lang->load('admin/users');
         $this->load->model('admin/parts_model');
+        $this->load->model('admin/request_model');
         $this->load->model('admin/categories_model');
         /* Title Page :: Common */
         $this->page_title->push('Request');
@@ -29,15 +30,26 @@ class Request extends Admin_Controller {
         else
         {
             /* Breadcrumbs */
-            // $this->data['breadcrumb'] = $this->breadcrumbs->show();
+            $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
-            // /* Get all categories */
-            // $this->data['parts'] = $this->parts_model->get_all();
-            // foreach ($this->data['parts'] as $k => $part)
-            // {
-            //     $this->data['parts'][$k]->categories = $this->categories_model->get_all($part->cat_id);
-            // }
-
+            /* Get all categories */
+            $this->data['requests'] = $this->request_model->get_all();
+            foreach ($this->data['requests'] as $k => $request)
+            {
+                $this->data['requests'][$k]->tech = $this->ion_auth->user($request->tech_id)->result();
+				if($request->admin_approval == 1){
+					if($request->tech_approval == 1){
+						$this->data['requests'][$k]->status = 'Tech-Approved';
+						$this->data['requests'][$k]->color = 'green';
+					}else{
+						$this->data['requests'][$k]->status = 'Admin-Approved';
+						$this->data['requests'][$k]->color = 'green';
+					}
+				}else{
+					$this->data['requests'][$k]->status = 'Pending';
+					$this->data['requests'][$k]->color = 'orange';
+				}
+            }
             /* Load Template */
             $this->template->admin_render('admin/request/index', $this->data);
         }
@@ -155,20 +167,20 @@ class Request extends Admin_Controller {
 		}
 
         /* Breadcrumbs */
-        $this->breadcrumbs->unshift(2, 'Edit part', 'admin/parts/edit');
+        $this->breadcrumbs->unshift(2, 'Request Info', 'admin/request/edit');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
         
 		/* Data */
-		$parts = $this->parts_model->get_part($id);
-        $cat = $this->categories_model->get_all();
+		
+        // $cat = $this->categories_model->get_all();
         
 		/* Validate form input */
-		$this->form_validation->set_rules('p_desc', 'lang:Description', 'required');
-		$this->form_validation->set_rules('p_boxno', 'lang:Box No', 'required|numeric');
-        $this->form_validation->set_rules('p_type', 'lang:Type', 'required');
-        $this->form_validation->set_rules('p_critical', 'lang:Critical Level', 'required|numeric|greater_than[0]');
-        $this->form_validation->set_rules('p_category', 'lang:Category', 'required');
+		// $this->form_validation->set_rules('p_desc', 'lang:Description', 'required');
+		// $this->form_validation->set_rules('p_boxno', 'lang:Box No', 'required|numeric');
+        // $this->form_validation->set_rules('p_type', 'lang:Type', 'required');
+        // $this->form_validation->set_rules('p_critical', 'lang:Critical Level', 'required|numeric|greater_than[0]');
+        // $this->form_validation->set_rules('p_category', 'lang:Category', 'required');
 	
 
 		if (isset($_POST) && ! empty($_POST))
@@ -220,56 +232,66 @@ class Request extends Admin_Controller {
 		$this->data['message'] = validation_errors();
 
 		// pass the user to the view
-		
-       
-		
-
-		    $this->data['p_desc'] = array(
-				'name'  => 'p_desc',
-				'id'    => 'p_desc',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_desc',$parts->p_desc),
-			);
-			$this->data['p_boxno'] = array(
-				'name'  => 'p_boxno',
-				'id'    => 'p_boxno',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_boxno',$parts->p_boxno),
-			);
-            $this->data['p_type'] = array(
-				'name'  => 'p_type',
-				'id'    => 'p_type',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_type',$parts->p_type),
-			);
-            $this->data['p_critical'] = array(
-				'name'  => 'p_critical',
-				'id'    => 'p_critical',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_critical',$parts->p_c_level),
-			);
-            
-			$options = array();
-			$options[''] = 'Please select a category';
-            foreach($cat as $category){
-                $options[$category->cat_id] = $category->cat_name;
+		$this->data['request_items'] = $this->request_model->get_request_items($id);
+		foreach ($this->data['request_items'] as $k => $request)
+        {
+            $this->data['request_items'][$k]->parts = $this->parts_model->get_all($request->p_id);
+			foreach ($this->data['request_items'][$k]->parts as $r => $part)
+			{
+				$this->data['request_items'][$k]->parts[$r]->categories = $this->categories_model->get_all($part->cat_id);
 			}
-			
-			$this->data['p_category'] = array(
-				'name'  => 'p_category',
-				'id'    => 'p_category',
-				'class' => 'form-control',
-				'options' => $options,
-				'selected' =>$parts->cat_id,
+        }
+		$request = $this->request_model->get_request($id);
+		$this->data['request'] = $this->request_model->get_request($id);
+		
+			$this->data['rqno'] = $id;
+
+		    $this->data['job_no'] = array(
+				'name'  => 'job_no',
+				'id'    => 'job_no',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('job_no',$request->job_no),
 			);
+			$this->data['test_no'] = array(
+				'name'  => 'test_no',
+				'id'    => 'test_no',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('test_no',$request->test_no),
+			);
+            // $this->data['p_type'] = array(
+			// 	'name'  => 'p_type',
+			// 	'id'    => 'p_type',
+			// 	'type'  => 'text',
+            //     'class' => 'form-control',
+			// 	'value' => $this->form_validation->set_value('p_type',$parts->p_type),
+			// );
+            // $this->data['p_critical'] = array(
+			// 	'name'  => 'p_critical',
+			// 	'id'    => 'p_critical',
+			// 	'type'  => 'text',
+            //     'class' => 'form-control',
+			// 	'value' => $this->form_validation->set_value('p_critical',$parts->p_c_level),
+			// );
+            
+			// $options = array();
+			// $options[''] = 'Please select a category';
+            // foreach($cat as $category){
+            //     $options[$category->cat_id] = $category->cat_name;
+			// }
+			
+			// $this->data['p_category'] = array(
+			// 	'name'  => 'p_category',
+			// 	'id'    => 'p_category',
+			// 	'class' => 'form-control',
+			// 	'options' => $options,
+			// 	'selected' =>$parts->cat_id,
+			// );
             
 	
         /* Load Template */
-		$this->template->admin_render('admin/parts/edit', $this->data);
+		$this->template->admin_render('admin/request/edit', $this->data);
 	}
 
 

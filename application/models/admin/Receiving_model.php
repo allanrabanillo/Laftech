@@ -25,9 +25,9 @@ class Receiving_model extends CI_Model {
         return ($this->db->affected_rows() != 1) ? false : true;
     }
 
-    public function get_cat($id = null)
+    public function get_request($id = null)
     {
-        return $row = $this->db->get_where('stocks', array('s_id' => $id))->row();
+        return $row = $this->db->get_where('request', array('r_id' => $id))->row();
     }
 
     public function update($id,$data)
@@ -44,6 +44,9 @@ class Receiving_model extends CI_Model {
         $this->db->join('categories', 'categories.cat_id = parts.cat_id');
         return $this->db->get()->result_array();
     }
+
+
+    
 
     
 
