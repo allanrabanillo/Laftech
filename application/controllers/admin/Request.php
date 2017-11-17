@@ -12,6 +12,7 @@ class Request extends Admin_Controller {
         $this->load->model('admin/parts_model');
         $this->load->model('admin/request_model');
         $this->load->model('admin/categories_model');
+        $this->load->model('admin/inandout_model');
         /* Title Page :: Common */
         $this->page_title->push('Request');
         $this->data['pagetitle'] = $this->page_title->show();
@@ -185,46 +186,51 @@ class Request extends Admin_Controller {
 
 		if (isset($_POST) && ! empty($_POST))
 		{
-           
-			if ($this->form_validation->run() == TRUE)
-			{
-				$data = array(
-				'p_desc' => $this->input->post('p_desc'),
-				'p_boxno'  => $this->input->post('p_boxno'),
-                'p_type'  => $this->input->post('p_type'),
-                'p_c_level'  => $this->input->post('p_critical'),
-                'cat_id'  => $this->input->post('p_category')
-                
-			);
+           if(isset($_POST) && ! empty($_POST) && $this->inandout_model->check_jobno($this->input->post('job_no')) == false){
 
-                
-                if($this->parts_model->update($id, $data))
-			    {
-                    $this->session->set_flashdata('message', $this->ion_auth->messages());
+                $this->data['message'] .= 'Please input a valid Job No.';
 
-				    if ($this->ion_auth->is_admin())
+            }else{
+					if ($this->form_validation->run() == TRUE)
 					{
-						redirect('admin/parts', 'refresh');
-					}
-					else
-					{
-						redirect('admin', 'refresh');
-					}
-			    }
-			    else
-			    {
-                    $this->session->set_flashdata('message', $this->ion_auth->errors());
+						$data = array(
+						'p_desc' => $this->input->post('p_desc'),
+						'p_boxno'  => $this->input->post('p_boxno'),
+						'p_type'  => $this->input->post('p_type'),
+						'p_c_level'  => $this->input->post('p_critical'),
+						'cat_id'  => $this->input->post('p_category')
+						
+					);
 
-				    if ($this->ion_auth->is_admin())
-					{
-                        
-						redirect('admin/parts', 'refresh');
+						
+						if($this->parts_model->update($id, $data))
+						{
+							$this->session->set_flashdata('message', $this->ion_auth->messages());
+
+							if ($this->ion_auth->is_admin())
+							{
+								redirect('admin/parts', 'refresh');
+							}
+							else
+							{
+								redirect('admin', 'refresh');
+							}
+						}
+						else
+						{
+							$this->session->set_flashdata('message', $this->ion_auth->errors());
+
+							if ($this->ion_auth->is_admin())
+							{
+								
+								redirect('admin/parts', 'refresh');
+							}
+							else
+							{
+								redirect('/', 'refresh');
+							}
+						}
 					}
-					else
-					{
-						redirect('/', 'refresh');
-					}
-			    }
 			}
 		}
 
@@ -248,7 +254,7 @@ class Request extends Admin_Controller {
 
 		    $this->data['job_no'] = array(
 				'name'  => 'job_no',
-				'id'    => 'job_no',
+				'id'    => 'jobno',
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('job_no',$request->job_no),
@@ -295,6 +301,19 @@ class Request extends Admin_Controller {
 	}
 
 
+	public function getjobs($keyword){
+    
+        $data=$this->inandout_model->getjobs($keyword);        
+        echo json_encode($data);
+    }
+
+	public function get_testno($keyword){
+    
+        $data=$this->inandout_model->get_testno($keyword);        
+        echo json_encode($data);
+    }
+
+
 	function activate($id, $code = FALSE)
 	{
         $id = (int) $id;
@@ -321,15 +340,15 @@ class Request extends Admin_Controller {
 	}
 
 
-	public function deactivate($id = NULL)
+	public function approval($id = NULL)
 	{
-		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin())
+		if ( ! $this->ion_auth->logged_in())
 		{
-            return show_error('You must be an administrator to view this page.');
+            return show_error('Please login.');
 		}
 
         /* Breadcrumbs */
-        $this->breadcrumbs->unshift(2, lang('menu_users_deactivate'), 'admin/users/deactivate');
+        $this->breadcrumbs->unshift(2, 'Request Approval', 'admin/request/index');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
 		/* Validate form input */
@@ -343,12 +362,10 @@ class Request extends Admin_Controller {
 			$user = $this->ion_auth->user($id)->row();
 
             $this->data['csrf']       = $this->_get_csrf_nonce();
-            $this->data['id']         = (int) $user->id;
-            $this->data['firstname']  = ! empty($user->first_name) ? htmlspecialchars($user->first_name, ENT_QUOTES, 'UTF-8') : NULL;
-            $this->data['lastname']   = ! empty($user->last_name) ? ' '.htmlspecialchars($user->last_name, ENT_QUOTES, 'UTF-8') : NULL;
+            $this->data['id']         = $id;
 
             /* Load Template */
-            $this->template->admin_render('admin/users/deactivate', $this->data);
+           $this->template->admin_render('admin/request/approval', $this->data);
 		}
 		else
 		{
@@ -356,16 +373,18 @@ class Request extends Admin_Controller {
 			{
                 if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
 				{
-                    show_error($this->lang->line('error_csrf'));
+                    redirect('admin/request/edit/'.$id, 'refresh'); 
 				}
 
                 if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
 				{
-					$this->ion_auth->deactivate($id);
+					$this->request_model->approve_admin($id);
+				} else {
+					$this->request_model->approve_tech($id);
 				}
 			}
-
-			redirect('admin/users', 'refresh');
+			
+			redirect('admin/request/edit/'.$id, 'refresh'); 
 		}
 	}
 

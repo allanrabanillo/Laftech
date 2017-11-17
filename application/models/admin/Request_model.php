@@ -124,6 +124,14 @@ class Request_model extends CI_Model {
         return $query->result();
     }
 
+    public function approve_admin($id=null){
+        $this->db->set('admin_approval', '1', FALSE);
+        $this->db->where('r_id', $id);
+        $this->db->update('requests');
+
+        return ($this->db->affected_rows() != 1) ? false : true;
+    }
+
      
     
 

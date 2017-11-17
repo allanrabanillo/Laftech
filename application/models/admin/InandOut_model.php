@@ -68,8 +68,22 @@ class InandOut_model extends CI_Model {
         return $this->db->get()->result_array();
     }
 
+    public function get_testno($keyword) {        
+        $this->db->select('test_no,(SELECT username from users where id = t_user) as t_user');
+        $this->db->where('job_no =', $keyword);
+        $this->db->from('job_traveler');
+        return $this->db->get()->result_array();
+    }
 
-    public function check_jobno($keyword){
+
+    public function check_testno($keyword){
+        $this->db->where('job_no', $keyword);
+        $query = $this->db->get('job_traveler');
+        
+        return ($query->num_rows() > 0) ? true : false;
+    }
+
+     public function check_jobno($keyword){
         $this->db->where('job_no', $keyword);
         $query = $this->db->get('in_and_out');
         
