@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 15, 2017 at 10:18 AM
+-- Generation Time: Nov 18, 2017 at 10:30 AM
 -- Server version: 10.1.22-MariaDB
 -- PHP Version: 7.0.18
 
@@ -189,7 +189,8 @@ CREATE TABLE `job_traveler` (
 --
 
 INSERT INTO `job_traveler` (`job_no`, `test_no`, `t_remarks`, `t_status`, `t_user`, `t_id`) VALUES
-('LIS-15263', 1, 'Error code 404', 0, '5', 1);
+('LIS-15263', 1, 'Error code 404', 0, '5', 1),
+('LIS-16045', 1, 'this is a test', 0, '1', 2);
 
 -- --------------------------------------------------------
 
@@ -267,7 +268,8 @@ CREATE TABLE `requests` (
 --
 
 INSERT INTO `requests` (`r_id`, `job_no`, `test_no`, `admin_approval`, `tech_approval`, `admin_id`, `tech_id`) VALUES
-(1, 'LIS-15263', '1', 0, 0, 1, 5);
+(1, 'LIS-15263', '1', 1, 0, 1, 5),
+(2, 'LIS-16045', '1', 0, 0, 1, 5);
 
 -- --------------------------------------------------------
 
@@ -288,7 +290,7 @@ CREATE TABLE `request_items` (
 --
 
 INSERT INTO `request_items` (`r_item_id`, `r_id`, `s_id`, `p_id`, `qty`) VALUES
-(1, 1, 0, 1, 2);
+(27, 2, 0, 1, 2);
 
 -- --------------------------------------------------------
 
@@ -346,7 +348,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1510737316, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1510986425, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
 (4, '::1', 'allan rabanillo', '$2y$08$nARdb5EHVJGgYwZ9VtlCpOA70wF/QQLUImZdsFBvSrfAbua5jWhWy', NULL, 'allanrabanillo@gmail.com', NULL, NULL, NULL, NULL, 1509690576, 1509701465, 1, 'Allan', 'Rabanillo', 'JSI', '09567383179'),
 (5, '::1', 'reymark rabanillo', '$2y$08$B11FZmzpg2ZJVSsqXsHDGOZNywsI87swKvheOAcWVfjieIsjCpJDG', NULL, 'reymark@gmail.com', NULL, NULL, NULL, NULL, 1509979757, NULL, 1, 'Reymark', 'Rabanillo', 'Laftech', '09234422332');
 
@@ -501,7 +503,7 @@ ALTER TABLE `job_history`
 -- AUTO_INCREMENT for table `job_traveler`
 --
 ALTER TABLE `job_traveler`
-  MODIFY `t_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `t_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `login_attempts`
 --
@@ -521,12 +523,12 @@ ALTER TABLE `public_preferences`
 -- AUTO_INCREMENT for table `requests`
 --
 ALTER TABLE `requests`
-  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `request_items`
 --
 ALTER TABLE `request_items`
-  MODIFY `r_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `r_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 --
 -- AUTO_INCREMENT for table `stocks`
 --

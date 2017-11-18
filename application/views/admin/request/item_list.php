@@ -64,8 +64,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                
                                 </div>
                                 <ul class="nav nav-tabs">
-                                <li role="presentation" class="active"><a href="">Info</a></li>
-                                <li role="presentation"><a href="../item_list/<?php echo $rqno; ?>">Item List</a></li>
+                                <li role="presentation"><a href="../edit/<?php echo $rqno; ?>">Info</a></li>
+                                <li role="presentation" class="active"><a href="">Item List</a></li>
                                 <li role="presentation"><a href="../approval/<?php echo $rqno; ?>">Approval</a></li>
             
                                 </ul>
@@ -93,29 +93,80 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     ?>
                                     
                         
-                                  
+                                   <div class="col-md-6">
+                                        <?php echo form_fieldset('Item List'); ?>
+                                       <!--<?php var_dump($request);?>-->
+                                        <table class="table table-striped table-bordered display" id ="tblItemList">
+
+                                        <thead>
+                                            <tr>
+                                                <th>Description</th>
+                                                <th>Category</th>
+                                                <th>Qty</th>
+                                                <th>Action</th>
+                                                
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                        <!--<?php var_dump($travellers);?>-->
+                                         <?php foreach ($request_items as $request_item):?>
+                                         <tr>
+                                         <?php foreach ($request_item->parts as $part):?>
+                                         
+                                            
+
+                                            <td>
+
+                                                <?php  echo anchor('admin/parts/edit/'.$part->p_id, '<span class="label" style="background:orange;" >'.htmlspecialchars($part->p_desc, ENT_QUOTES, 'UTF-8').'</span>'); ?>
+
+                                                    
+                                            </td> 
+
+                                            <td>
+                                                <?php foreach ($part->categories as $category):?>
+                                                    <?php  echo anchor('admin/categories/edit/'.$category->cat_id, '<span class="label" style="background:orange;" >'.htmlspecialchars($category->cat_name, ENT_QUOTES, 'UTF-8').'</span>'); ?>
+                                                 <?php endforeach;?>
+                                                    
+                                            </td> 
+
+                                        <?php endforeach;?>
+                                            <td><?php echo htmlspecialchars($request_item->qty, ENT_QUOTES, 'UTF-8'); ?></td>
+                                            <td><button data-id = "<?php echo $request_item->r_item_id?>" class = "btn btn-danger btn-circle" id ="btnRemoveItem"><i class="glyphicon glyphicon-remove"></i></button></td>
+                                            
+                                         </tr>
+                                         <?php endforeach;?>
+                                        </tbody>
+
+                                        </table>
                                         
+                                        <?php echo form_fieldset_close(); ?>
+                                       
+                                        
+                                        </div>
+                                        <div class="col-md-6">
                                          <?php echo form_open_multipart(current_url(), array('class' => 'form-horizontal', 'id' => 'form-edit_request')); ?>
-                                         <?php echo form_fieldset('Request Info'); ?>
+                                         <?php echo form_fieldset('Add Parts'); ?>
                                             
                                             
                                             <div class="form-group">
-                                                <span class = 'col-sm-2 control-label'>Job No:</span>
+                                                <span class = 'col-sm-2 control-label'>Desc:</span>
                                                 <div class="col-sm-10">
                                                    
                                                     
-                                                <?php echo form_input($job_no);?>
+                                                <?php echo form_input($p_name);?>
+                                                <?php echo form_input($p_id);?>
 
                                                 </div>
                                                
                                             </div>
 
                                             <div class="form-group">
-                                                <span class = 'col-sm-2 control-label'>Test No:</span>
+                                                <span class = 'col-sm-2 control-label'>Qty:</span>
                                                 <div class="col-sm-10">
                                                    
                                                     
-                                                <?php echo form_input($test_no);?>
+                                                <?php echo form_input($p_qty);?>
 
                                                 </div>
                                                
@@ -143,7 +194,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <?php echo form_fieldset_close(); ?>
                                            
                                             <?php echo form_close();?>
-                                        
+                                        </div>
                                 </div>
                             </div>
                          </div>

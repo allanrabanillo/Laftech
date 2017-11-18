@@ -14,9 +14,86 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <div class="col-md-12">
                              <div class="box">
                                 <div class="box-header with-border">
-                                    <h3 class="box-title">Approve <?php echo '<span class="label label-primary">RQ-'.$id.'</span>';?>?</h3>
+                                    
+                                    <h3 class="box-title"><span class = "label label-primary">RQ-<?php echo $id?></span></h3>
                                 </div>
+                                
+                                <div class="progress">
+                                <?php
+                                if($request->admin_approval == 1){
+                                    if($request->tech_approval == 1){
+                                        ?>
+                                      
+                                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
+                                            Admin <i class = "fa fa-check"></i>
+                                        </div>
+                                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
+                                            Tech <i class = "fa fa-check"></i>
+                                        </div>
+
+
+                                <?php
+                                        
+                                    }else{
+                                        ?>
+                                        
+                                        <div class="progress-bar progress-bar-success " role="progressbar" style="width:50%">
+                                            Admin <i class = "fa fa-check"></i>
+                                        </div>
+                                        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
+                                            Tech ***
+                                        </div>
+
+
+                                        <?php
+                                    }
+                                }else{
+                                ?>
+
+                                
+                                <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
+                                    Admin ***
+                                </div>
+                                <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
+                                    Tech ***
+                                </div>
+                                <?php
+                                }
+                                ?>
+                                
+                               
+                                </div>
+                                <ul class="nav nav-tabs">
+                                <li role="presentation"><a href="../edit/<?php echo $id; ?>">Info</a></li>
+                                <li role="presentation"><a href="../item_list/<?php echo $id; ?>">Item List</a></li>
+                                <li role="presentation" class="active"><a href="">Approval</a></li>
+            
+                                </ul>
                                 <div class="box-body">
+                                    
+                                    <?php
+                                    if(!empty($message)):
+                                    ?>
+                                    <div class="alert alert-danger alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <?php echo $message;?>
+                                    </div>
+                                    <?php
+                                    endif;
+                                    ?>
+                                    <?php
+                                    if(!empty($message_suc)):
+                                    ?>
+                                    <div class="alert alert-success alert-dismissible" role="alert">
+                                        <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                        <?php echo $message_suc;?>
+                                    </div>
+                                     <?php
+                                    endif;
+                                    ?>
+
+                                    <h4 class="box-title">Do you want to approve <span class = "label label-primary">RQ-<?php echo $id?></span>?</h4>
+                                    
                                     <?php echo form_open('admin/request/approval/'. $id, array('class' => 'form-horizontal', 'id' => 'form-status_user')); ?>
                                         <div class="form-group">
                                             <div class="col-sm-offset-2 col-sm-10">
@@ -39,9 +116,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </div>
                                         </div>
                                     <?php echo form_close();?>
+                        
+                                   
                                 </div>
                             </div>
                          </div>
                     </div>
                 </section>
             </div>
+
+
+

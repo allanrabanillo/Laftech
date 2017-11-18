@@ -22,6 +22,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <script src="<?php echo base_url($plugins_dir . '/slimscroll/slimscroll.min.js'); ?>"></script>
         <script src="<?php echo base_url($plugins_dir . '/easyautocomplete/js/jquery.easy-autocomplete.min.js'); ?>"></script>
         <script src="<?php echo base_url($plugins_dir . '/tooltipster/tooltipster.bundle.min.js'); ?>"></script>
+        <script src="<?php echo base_url($plugins_dir . '/sweetalert/sweetalert2.js'); ?>"></script>
+        <script src="<?php echo base_url($plugins_dir . '/sweetalert/sweetalert2.all.js'); ?>"></script>
         
         <script src="<?php echo base_url($plugins_dir . '/zooming/zooming.js'); ?>"></script>
         <!-- <script src="<?php echo base_url($plugins_dir . '/zooming/custom.js'); ?>"></script> -->

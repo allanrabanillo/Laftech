@@ -15,60 +15,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                              <div class="box">
                                 <div class="box-header with-border">
                                     
-                                    <h3 class="box-title"><span class = "label label-primary">RQ-<?php echo $rqno?></span></h3>
+                                    <h3 class="box-title">New request</h3>
                                 </div>
-                                
-                                <div class="progress">
-                                <?php
-                                if($request->admin_approval == 1){
-                                    if($request->tech_approval == 1){
-                                        ?>
-                                      
-                                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
-                                            Admin <i class = "fa fa-check"></i>
-                                        </div>
-                                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
-                                            Tech <i class = "fa fa-check"></i>
-                                        </div>
-
-
-                                <?php
-                                        
-                                    }else{
-                                        ?>
-                                        
-                                        <div class="progress-bar progress-bar-success " role="progressbar" style="width:50%">
-                                            Admin <i class = "fa fa-check"></i>
-                                        </div>
-                                        <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
-                                            Tech ***
-                                        </div>
-
-
-                                        <?php
-                                    }
-                                }else{
-                                ?>
-
-                                
-                                <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
-                                    Admin ***
-                                </div>
-                                <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
-                                    Tech ***
-                                </div>
-                                <?php
-                                }
-                                ?>
                                 
                                
-                                </div>
-                                <ul class="nav nav-tabs">
-                                <li role="presentation" class="active"><a href="">Info</a></li>
-                                <li role="presentation"><a href="../item_list/<?php echo $rqno; ?>">Item List</a></li>
-                                <li role="presentation"><a href="../approval/<?php echo $rqno; ?>">Approval</a></li>
-            
-                                </ul>
+                              
                                 <div class="box-body">
                                     
                                     <?php
@@ -96,7 +47,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                   
                                         
                                          <?php echo form_open_multipart(current_url(), array('class' => 'form-horizontal', 'id' => 'form-edit_request')); ?>
-                                         <?php echo form_fieldset('Request Info'); ?>
+                                         
                                             
                                             
                                             <div class="form-group">
@@ -140,7 +91,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     </div>
                                                 </div>
                                             </div>
-                                            <?php echo form_fieldset_close(); ?>
+                                           
                                            
                                             <?php echo form_close();?>
                                         

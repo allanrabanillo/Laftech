@@ -40,6 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <link rel="stylesheet" href="<?php echo base_url($frameworks_dir . '/adminlte/css/skins/skin-red.min.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url($plugins_dir . '/easyautocomplete/css/easy-autocomplete.min.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url($plugins_dir . '/tooltipster/tooltipster.bundle.min.css'); ?>">
+        <link rel="stylesheet" href="<?php echo base_url($plugins_dir . '/sweetalert/sweetalert2.css'); ?>">
         <!-- <link rel="stylesheet" href="<?php echo base_url($plugins_dir . '/zoomjs/zoom.css'); ?>"> -->
          
         <link rel="stylesheet" href="<?php echo base_url($frameworks_dir . '/jqueryui1.12/jquery-ui.min.css'); ?>">

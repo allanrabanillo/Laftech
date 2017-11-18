@@ -34,7 +34,21 @@ class Request_model extends CI_Model {
 
     public function create($data)
     {
-        $query = $this->db->insert('in_and_out',$data);
+        $query = $this->db->insert('requests',$data);
+         $last_id = $this->db->insert_id();
+        return ($this->db->affected_rows() != 1) ? false : $last_id;
+    }
+
+    public function item_create($data)
+    {
+        $query = $this->db->insert('request_items',$data);
+
+        return ($this->db->affected_rows() != 1) ? false : true;
+    }
+
+    public function item_delete($data)
+    {
+        $query = $this->db->delete('request_items',$data);
 
         return ($this->db->affected_rows() != 1) ? false : true;
     }
@@ -126,6 +140,14 @@ class Request_model extends CI_Model {
 
     public function approve_admin($id=null){
         $this->db->set('admin_approval', '1', FALSE);
+        $this->db->where('r_id', $id);
+        $this->db->update('requests');
+
+        return ($this->db->affected_rows() != 1) ? false : true;
+    }
+
+    public function reject_admin($id=null){
+        $this->db->set('admin_approval', '0', FALSE);
         $this->db->where('r_id', $id);
         $this->db->update('requests');
 
