@@ -60,6 +60,30 @@ class InandOut_model extends CI_Model {
         return $query->result();
     }
 
+    public function get_traveller_items($job_no,$testno){
+
+        $this->db->select('requests.r_id,p_id,qty');
+        $this->db->from('request_items');
+        $this->db->join('requests', 'requests.r_id = request_items.r_id');
+        $this->db->join('job_traveler', 'job_traveler.job_no = requests.job_no AND job_traveler.test_no = requests.test_no');
+        $this->db->where('job_traveler.job_no', $job_no);
+        $this->db->where('job_traveler.test_no', $testno);
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
+    public function get_test($id,$testno)
+    {
+        if($id != null){
+            $this->db->where('job_no', $id);
+            $this->db->where('test_no', $testno);
+        }
+        $query = $this->db->get('job_traveler');
+
+        return $query->row();
+    }
+
 
     public function getjobs($keyword) {        
         $this->db->select('job_no,status');
@@ -117,6 +141,15 @@ class InandOut_model extends CI_Model {
     public function insertTraveller($data)
     {
         $query = $this->db->insert('job_traveler',$data);
+
+        return ($this->db->affected_rows() != 1) ? false : true;
+    }
+
+    public function updateTraveller($id,$testno,$data)
+    {
+        $this->db->where('job_no', $id);
+        $this->db->where('test_no', $testno);
+        $this->db->update('job_traveler',$data);
 
         return ($this->db->affected_rows() != 1) ? false : true;
     }

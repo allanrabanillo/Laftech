@@ -132,7 +132,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                                         <?php endforeach;?>
                                             <td><?php echo htmlspecialchars($request_item->qty, ENT_QUOTES, 'UTF-8'); ?></td>
-                                            <td><button data-id = "<?php echo $request_item->r_item_id?>" class = "btn btn-danger btn-circle" id ="btnRemoveItem"><i class="glyphicon glyphicon-remove"></i></button></td>
+                                            <td><button data-id = "<?php echo $request_item->r_item_id?>" data-jobno = "<?php echo $rqno?>"  class = "btn btn-danger btn-circle" id ="btnRemoveItem"><i class="glyphicon glyphicon-remove"></i></button></td>
                                             
                                          </tr>
                                          <?php endforeach;?>

@@ -11,6 +11,8 @@ class InandOut extends Admin_Controller {
         $this->lang->load('admin/users');
         $this->load->model('admin/inandout_model');
         $this->load->model('admin/customers_model');
+        $this->load->model('admin/parts_model');
+        $this->load->model('admin/categories_model');
        
         /* Title Page :: Common */
         $this->page_title->push('In and Out');
@@ -23,7 +25,7 @@ class InandOut extends Admin_Controller {
 
 	public function index()
 	{
-        if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin())
+        if ( ! $this->ion_auth->logged_in() )
         {
             redirect('auth/login', 'refresh');
         }
@@ -81,7 +83,7 @@ class InandOut extends Admin_Controller {
 
 	public function create(){
 
-		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() )
+		if ( ! $this->ion_auth->logged_in()  )
 		{
 			redirect('auth', 'refresh');
 		}
@@ -366,7 +368,7 @@ class InandOut extends Admin_Controller {
 
          $id = $id;
 
-		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id) )
+		if ( ! $this->ion_auth->logged_in()  OR ! $id OR empty($id) )
 		{
 			redirect('auth', 'refresh');
 		}
@@ -472,7 +474,9 @@ class InandOut extends Admin_Controller {
 		}
 
 			// set the flash data error message if there is one
-	
+			
+		
+			
 
 			// pass the user to the view
 
@@ -483,12 +487,15 @@ class InandOut extends Admin_Controller {
 		    $this->data['job_no'] = $jobs->job_no;
 		    $this->data['job_images'] = $jobs->images;
 		
-			$this->data['upload'] = array(
+
+			if($this->ion_auth->is_admin()){
+				$this->data['upload'] = array(
 				'name'  => 'upload[]',
 				'id'    => 'upload',
 				'class' => 'form-control',
 				'value' => $this->form_validation->set_value('upload'),
 				'multiple' => true,
+				
 			);
 				
 			$this->data['item_desc'] = array(
@@ -497,6 +504,7 @@ class InandOut extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('item_desc',$jobs->item_desc),
+			
 			);
             $this->data['serialno'] = array(
 				'name'  => 'serialno',
@@ -504,6 +512,7 @@ class InandOut extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('serialno',$jobs->serialno),
+				
 			);
             $this->data['partno'] = array(
 				'name'  => 'partno',
@@ -511,6 +520,7 @@ class InandOut extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('partno',$jobs->partno),
+			
 			);
              $this->data['modelno'] = array(
 				'name'  => 'modelno',
@@ -518,6 +528,7 @@ class InandOut extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('modelno',$jobs->modelno),
+				
 			);
              $this->data['refno'] = array(
 				'name'  => 'refno',
@@ -525,6 +536,7 @@ class InandOut extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('refno',$jobs->refno),
+			
 			);
              $this->data['date_in'] = array(
 				'name'  => 'date_in',
@@ -532,6 +544,7 @@ class InandOut extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('date_in',$jobs->date_in),
+			
 			);
              $this->data['date_out'] = array(
 				'name'  => 'date_out',
@@ -539,6 +552,7 @@ class InandOut extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('date_out',$jobs->date_out),
+		
 			);
 			$this->data['invno'] = array(
 				'name'  => 'invno',
@@ -546,6 +560,7 @@ class InandOut extends Admin_Controller {
 				'type'  => 'text',
 				'class' => 'form-control',
 				'value' => $this->form_validation->set_value('invno',$jobs->invno),
+		
 			);
 			$this->data['date_inv'] = array(
 				'name'  => 'date_inv',
@@ -554,6 +569,7 @@ class InandOut extends Admin_Controller {
                 'class' => 'form-control',
 				'aria-describedby' => 'basic-addon1',
 				'value' => $this->form_validation->set_value('date_inv',$jobs->date_inv),
+		
 			);
              $this->data['drno'] = array(
 				'name'  => 'drno',
@@ -561,6 +577,7 @@ class InandOut extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('drno',$jobs->drno),
+		
 			);
             $status = array(""=>"Please select a status","GOOD"=>"GOOD","FAILED"=>"FAILED","UNDERWARRANTY"=>"UNDERWARRANTY","FORTEST"=>"FORTEST","NAU"=>"NAU");	
 			$this->data['status'] = array(
@@ -569,6 +586,7 @@ class InandOut extends Admin_Controller {
 				'class' => 'form-control',
 				'options' => $status,
 				'selected' =>$jobs->status,
+	
 			);
              $this->data['dn_no'] = array(
 				'name'  => 'dn_no',
@@ -576,6 +594,7 @@ class InandOut extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('dn_no',$jobs->dn_no),
+		
 			);
              $this->data['invno'] = array(
 				'name'  => 'invno',
@@ -583,6 +602,7 @@ class InandOut extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('invno',$jobs->invno),
+				
 			);
             $this->data['remarks'] = array(
 				'name'  => 'remarks',
@@ -591,6 +611,7 @@ class InandOut extends Admin_Controller {
 				'class' => 'form-control',
 				'rows'  => '3',
 				'value' => $this->form_validation->set_value('remarks',$jobs->remarks),
+			
 			);
             
 			$this->data['customer2'] = array(
@@ -599,6 +620,7 @@ class InandOut extends Admin_Controller {
                 'type'  => 'text',
 				'class' => 'form-control',
                 'value' => $this->form_validation->set_value('customer2',$customer->c_name),
+		
 			);
 
             $this->data['c_id'] = array(
@@ -607,7 +629,154 @@ class InandOut extends Admin_Controller {
                 'type'  => 'hidden',
 				'class' => 'form-control',
                 'value' => $this->form_validation->set_value('c_id',$jobs->c_id),
+				
 			);
+			}else{
+				$this->data['upload'] = array(
+				'name'  => 'upload[]',
+				'id'    => 'upload',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('upload'),
+				'multiple' => true,
+				'disabled'=>true
+			);
+				
+			$this->data['item_desc'] = array(
+				'name'  => 'item_desc',
+				'id'    => 'item_desc',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('item_desc',$jobs->item_desc),
+				'disabled'=>true
+			);
+            $this->data['serialno'] = array(
+				'name'  => 'serialno',
+				'id'    => 'serialno',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('serialno',$jobs->serialno),
+				'disabled'=>true
+			);
+            $this->data['partno'] = array(
+				'name'  => 'partno',
+				'id'    => 'partno',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('partno',$jobs->partno),
+				'disabled'=>true
+			);
+             $this->data['modelno'] = array(
+				'name'  => 'modelno',
+				'id'    => 'modelno',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('modelno',$jobs->modelno),
+				'disabled'=>true
+			);
+             $this->data['refno'] = array(
+				'name'  => 'refno',
+				'id'    => 'refno',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('refno',$jobs->refno),
+				'disabled'=>true
+			);
+             $this->data['date_in'] = array(
+				'name'  => 'date_in',
+				'id'    => 'date_in',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('date_in',$jobs->date_in),
+				'disabled'=>true
+			);
+             $this->data['date_out'] = array(
+				'name'  => 'date_out',
+				'id'    => 'date_out',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('date_out',$jobs->date_out),
+				'disabled'=>true
+			);
+			$this->data['invno'] = array(
+				'name'  => 'invno',
+				'id'    => 'invno',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('invno',$jobs->invno),
+				'disabled'=>true
+			);
+			$this->data['date_inv'] = array(
+				'name'  => 'date_inv',
+				'id'    => 'date_inv',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'aria-describedby' => 'basic-addon1',
+				'value' => $this->form_validation->set_value('date_inv',$jobs->date_inv),
+				'disabled'=>true
+			);
+             $this->data['drno'] = array(
+				'name'  => 'drno',
+				'id'    => 'drno',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('drno',$jobs->drno),
+				'disabled'=>true
+			);
+            $status = array(""=>"Please select a status","GOOD"=>"GOOD","FAILED"=>"FAILED","UNDERWARRANTY"=>"UNDERWARRANTY","FORTEST"=>"FORTEST","NAU"=>"NAU");	
+			$this->data['status'] = array(
+				'name'  => 'status',
+				'id'    => 'status',
+				'class' => 'form-control',
+				'options' => $status,
+				'selected' =>$jobs->status,
+				'disabled'=>true
+			);
+             $this->data['dn_no'] = array(
+				'name'  => 'dn_no',
+				'id'    => 'dn_no',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('dn_no',$jobs->dn_no),
+				'disabled'=>true
+			);
+             $this->data['invno'] = array(
+				'name'  => 'invno',
+				'id'    => 'invno',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('invno',$jobs->invno),
+				'disabled'=>true
+			);
+            $this->data['remarks'] = array(
+				'name'  => 'remarks',
+				'id'    => 'remarks',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'rows'  => '3',
+				'value' => $this->form_validation->set_value('remarks',$jobs->remarks),
+				'disabled'=>true
+			);
+            
+			$this->data['customer2'] = array(
+				'name'  => 'customer2',
+				'id'    => 'customer2',
+                'type'  => 'text',
+				'class' => 'form-control',
+                'value' => $this->form_validation->set_value('customer2',$customer->c_name),
+				'disabled'=>true
+			);
+
+            $this->data['c_id'] = array(
+				'name'  => 'c_id',
+				'id'    => 'c_id',
+                'type'  => 'hidden',
+				'class' => 'form-control',
+                'value' => $this->form_validation->set_value('c_id',$jobs->c_id),
+				'disabled'=>true
+			
+			);
+			}
+			
 
             
             
@@ -621,7 +790,7 @@ class InandOut extends Admin_Controller {
 
          $id = $id;
 
-		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id) )
+		if ( ! $this->ion_auth->logged_in()  OR ! $id OR empty($id) )
 		{
 			redirect('auth', 'refresh');
 		}
@@ -736,7 +905,7 @@ class InandOut extends Admin_Controller {
 
          $id = $id;
 
-		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id) )
+		if ( ! $this->ion_auth->logged_in()  OR ! $id OR empty($id) )
 		{
 			redirect('auth', 'refresh');
 		}
@@ -811,12 +980,97 @@ class InandOut extends Admin_Controller {
 		$this->template->admin_render('admin/inandout/traveller', $this->data);
 	}
 
+	public function travellertest($id,$testno){
+		if ( ! $this->ion_auth->logged_in())
+		{
+			redirect('auth', 'refresh');
+		}
+
+		$this->breadcrumbs->unshift(2, 'Job Test', 'admin/inandout/traveller');
+        $this->data['breadcrumb'] = $this->breadcrumbs->show();
+
+		/* Validate form input */
+		 $this->form_validation->set_rules('test_no', 'Test No', 'required|numeric');
+		 //$this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
+
+		 $this->data['message'] = '';
+
+		 if ($this->form_validation->run() == TRUE)
+		{
+			// if($this->inandout_model->check_testno_exist($id,$this->input->post('jobno'))){
+
+			// 	$this->data['message'] .= 'Test No already existed.';
+			// }else{
+						$data = array(
+					
+							't_remarks'  => $this->input->post('remarks'),
+						);
+
+					 	if($this->inandout_model->updateTraveller($id,$testno,$data)){
+							$this->data['message_suc'] .= 'Test No: '.$this->input->post('test_no').' has been successfully updated.';
+
+
+						}else{
+							$this->data['message'] .= 'Failed updating Test: '.$this->input->post('test_no').'.';
+						}
+			//}
+
+		}else{
+			$this->data['message'] .= validation_errors();
+		}
+
+
+
+		
+		
+		
+
+		$jobs = $this->inandout_model->get_job($id);
+		$traveller = $this->inandout_model->get_test($id,$testno);
+		
+
+		$this->data['traveller_items'] = $this->inandout_model->get_traveller_items($id,$testno);
+		foreach ($this->data['traveller_items'] as $k => $item)
+        {
+            $this->data['traveller_items'][$k]->parts = $this->parts_model->get_all($item->p_id);
+			foreach ($this->data['traveller_items'][$k]->parts as $r => $part)
+			{
+				$this->data['traveller_items'][$k]->parts[$r]->categories = $this->categories_model->get_all($part->cat_id);
+			}
+        }
+
+
+		$this->data['job_no'] = $jobs->job_no;
+		$this->data['job_images'] = $jobs->images;
+
+		$this->data['test_no'] = array(
+				'name'  => 'test_no',
+				'id'    => 'test_no',
+                'type'  => 'text',
+				'class' => 'form-control',
+                'value' => $this->form_validation->set_value('test_no',$traveller->test_no),
+				'readonly' => true
+		);
+
+		$this->data['remarks'] = array(
+				'name'  => 'remarks',
+				'id'    => 'remarks',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'rows'  => '3',
+				'value' => $this->form_validation->set_value('remarks',$traveller->t_remarks),
+			);
+		
+
+		$this->template->admin_render('admin/inandout/travellertest', $this->data);
+	}
+
 	public function drawing($id)
 	{
 
          $id = $id;
 
-		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id) )
+		if ( ! $this->ion_auth->logged_in()  OR ! $id OR empty($id) )
 		{
 			redirect('auth', 'refresh');
 		}

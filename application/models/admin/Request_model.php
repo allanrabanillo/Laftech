@@ -55,8 +55,8 @@ class Request_model extends CI_Model {
 
     public function update($id,$data)
     {
-        $this->db->where('job_no', $id);
-        $this->db->update('in_and_out',$data);
+        $this->db->where('r_id', $id);
+        $this->db->update('requests',$data);
 
         return ($this->db->affected_rows() != 1) ? false : true;
     }
@@ -148,6 +148,22 @@ class Request_model extends CI_Model {
 
     public function reject_admin($id=null){
         $this->db->set('admin_approval', '0', FALSE);
+        $this->db->where('r_id', $id);
+        $this->db->update('requests');
+
+        return ($this->db->affected_rows() != 1) ? false : true;
+    }
+    
+    public function approve_tech($id=null){
+        $this->db->set('tech_approval', '1', FALSE);
+        $this->db->where('r_id', $id);
+        $this->db->update('requests');
+
+        return ($this->db->affected_rows() != 1) ? false : true;
+    }
+
+    public function reject_tech($id=null){
+        $this->db->set('tech_approval', '0', FALSE);
         $this->db->where('r_id', $id);
         $this->db->update('requests');
 

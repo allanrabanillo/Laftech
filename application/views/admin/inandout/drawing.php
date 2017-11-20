@@ -54,7 +54,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     endif;
                                     ?>
                                      <?php echo form_open_multipart(current_url(), array('class' => 'form-horizontal', 'id' => 'form-edit_drawing')); ?>
-                        
+                                     <?php if($is_admin): ?>
+                                                   
+                                               
                                     <div class="alert alert-warning" role="alert">
                                                 <strong>Note:</strong> Please make sure that the file name does not have a space.
                                     </div>
@@ -67,7 +69,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 </div>
                                                  
                                             </div>
-
+                                    <?php endif;?>
                                             <div class="gallery" class = "col-md-9">
                                                      
                                                          <?php
@@ -94,7 +96,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <div class="form-group">
                                              <div class="col-sm-offset-3 col-sm-10" style="padding:20px;">
                                                 <div class="btn-group">
+                                                <?php if($is_admin): ?>
                                                     <?php echo form_button(array('type' => 'submit', 'class' => 'btn btn-primary btn-flat', 'content' => lang('actions_submit'))); ?>
+                                                <?php endif;?>
+                                                    
                                                     <?php echo anchor('admin/inandout', lang('actions_cancel'), array('class' => 'btn btn-default btn-flat')); ?>
                                                 </div>
                                             </div>

@@ -10,12 +10,13 @@ class Dashboard extends Admin_Controller {
         /* Load :: Common */
         $this->load->helper('number');
         $this->load->model('admin/dashboard_model');
+      
     }
 
 
 	public function index()
 	{
-        if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin())
+        if ( ! $this->ion_auth->logged_in())
         {
             redirect('auth/login', 'refresh');
         }
@@ -30,6 +31,10 @@ class Dashboard extends Admin_Controller {
 
             /* Data */
             $this->data['count_users']       = $this->dashboard_model->get_count_record('users');
+            $this->data['count_critical_parts']   = $this->dashboard_model->get_count_critical_parts();
+            $this->data['count_outofstock_parts']   = $this->dashboard_model->get_count_outofstock_parts();
+            $this->data['count_pending_requests']   = $this->dashboard_model->get_count_pending_request();
+            $this->data['count_jobs']   = $this->dashboard_model->get_count_jobs();
             $this->data['count_groups']      = $this->dashboard_model->get_count_record('groups');
             $this->data['disk_totalspace']   = $this->dashboard_model->disk_totalspace(DIRECTORY_SEPARATOR);
             $this->data['disk_freespace']    = $this->dashboard_model->disk_freespace(DIRECTORY_SEPARATOR);
@@ -38,7 +43,6 @@ class Dashboard extends Admin_Controller {
             $this->data['memory_usage']      = $this->dashboard_model->memory_usage();
             $this->data['memory_peak_usage'] = $this->dashboard_model->memory_peak_usage(TRUE);
             $this->data['memory_usepercent'] = $this->dashboard_model->memory_usepercent(TRUE, FALSE);
-            
             $this->data['users'] = $this->dashboard_model->top_user_login();
             // foreach ($this->data['users'] as $k => $user)
             // {

@@ -18,19 +18,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             $images = explode(',',$job_images);
                                             $data = '';
                                             foreach($images as $image){
-                                                $data .= '&lt;img src=&quot;../../../upload/job_pic/'.$image.'&quot; width = &quot;200&quot; /&gt;&nbsp;&nbsp;';
+                                                $data .= '&lt;img src=&quot;../../../../upload/job_pic/'.$image.'&quot; width = &quot;200&quot; /&gt;&nbsp;&nbsp;';
                                             }
                                     
                                     ?>
                                     <h3 class="box-title"><span class = "label" style = "background:red;" title = "<?php echo $data; ?>"><?php echo $job_no?></span></h3>
                                 </div>
                                 
-                                <ul class="nav nav-tabs">
-                                <li role="presentation"><a href="../edit/<?php echo $job_no; ?>">Job Info</a></li>
-                                <li role="presentation" class="active"><a href="">History</a></li>
-                                <li role="presentation"><a href="../traveller/<?php echo $job_no; ?>">Traveller</a></li>
-                                <li role="presentation"><a href="../drawing/<?php echo $job_no; ?>">Drawing</a></li>
-                                </ul>
+                                
                                 <div class="box-body">
                                     
                                     <?php
@@ -54,44 +49,57 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     endif;
                                     ?>
                                     
-                                        <?php if($is_admin): ?>
-                                             <div class="col-md-6">
+                                 <!--<?php var_dump($traveller_items);?>-->
+                                     <?php echo form_open_multipart(current_url(), array('class' => 'form-horizontal', 'id' => 'form-edit_inandout')); ?>
+                        
+                                   <div class="col-md-6">
                                         <table class="table table-striped table-bordered display">
 
                                         <thead>
                                             <tr>
-                                                <th>Job No</th>
+                                                <th>RQ-ID</th>
+                                                <th>Desc</th>
                                                 
-                                                <th>Item Desc</th>
+                                                <th>Category</th>
                                                 
-                                                <th>Status</th>
+                                                <th>Qty</th>
                                                 
                                             </tr>
                                         </thead>
                                         <tbody>
-                                        <!--<?php var_dump($history);?>-->
-                                         <?php foreach ($history as $h):?>
+                                        
+                                         <?php foreach ($traveller_items as $item):?>
+                                         <?php foreach ($item->parts as $part):?>
                                          <tr>
 
                                            
-
                                             <td>
                                                     <?php 
-                                                            $images = explode(',',$h->jobs->images);
-                                                            $data = '';
-                                                            foreach($images as $image){
-                                                                $data .= '&lt;img src=&quot;../../../upload/job_pic/'.$image.'&quot; width = &quot;100&#37;&quot; /&gt;&nbsp;&nbsp;';
-                                                            }
-                                                            echo anchor('admin/inandout/edit/'.$h->jobs->job_no, '<span class="label" style="background:red;" title="'.$data.'">'.htmlspecialchars($h->jobs->job_no, ENT_QUOTES, 'UTF-8').'</span>'); 
+                                                        
+                                                        echo anchor('admin/request/edit/'.$item->r_id, '<span class="label label-info">'.htmlspecialchars('RQ-'.$item->r_id, ENT_QUOTES, 'UTF-8').'</span>'); 
                                                             
                                                     ?>
                                             </td>
-                                            <td><?php echo htmlspecialchars($h->jobs->item_desc, ENT_QUOTES, 'UTF-8'); ?></td>
-                                            <td><span class="label" style="background:<?php echo $h->jobs->color; ?>"><?php echo htmlspecialchars($h->jobs->status, ENT_QUOTES, 'UTF-8'); ?></span></td>
-                                          
+                                            <td>
+                                                    <?php 
+                                                        
+                                                        echo anchor('admin/parts/edit/'.$part->p_id, '<span class="label" style="background:red;" >'.htmlspecialchars($part->p_desc, ENT_QUOTES, 'UTF-8').'</span>'); 
+                                                            
+                                                    ?>
+                                            </td>
+                                            
+                                            
+                                            <td>
+                                                <?php foreach ($part->categories as $category):
+                                                    echo anchor('admin/categories/edit/'.$category->cat_id, '<span class="label" style="background:orange;" >'.htmlspecialchars($category->cat_name, ENT_QUOTES, 'UTF-8').'</span>'); 
+
+                                                 endforeach;?>
+                                            </td> 
+                                            <td><?php echo htmlspecialchars($item->qty, ENT_QUOTES, 'UTF-8'); ?></td>
 
 
                                          </tr>
+                                          <?php endforeach;?>
                                          <?php endforeach;?>
                                         </tbody>
 
@@ -103,14 +111,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         </div>
                                         <div class="col-md-6">
                                          <?php echo form_open_multipart(current_url(), array('class' => 'form-horizontal', 'id' => 'form-edit_history')); ?>
-                                         <?php echo form_fieldset('Add Old Jobs'); ?>
+                                         <?php echo form_fieldset('Traveller Info'); ?>
+                                            
+                                            
                                             <div class="form-group">
-                                                <span class = 'col-sm-3 control-label'>Job No:</span>
-                                                <div class="col-sm-9">
+                                                <span class = 'col-sm-2 control-label'>Test No:</span>
+                                                <div class="col-sm-10">
                                                    
                                                     
-                                                <?php echo form_input($jobno);?>
-                                                <?php echo form_input($jobno_h);?>
+                                                <?php echo form_input($test_no);?>
+                                             
                                                  
                                                      
                                                     
@@ -120,6 +130,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                </div>-->
                                             </div>
 
+                                            <div class="form-group">
+                                                <span class = 'col-sm-2 control-label'>Remarks:</span>
+                                                <div class="col-sm-10">
+                                                   
+                                                    
+                                                <?php echo form_textarea($remarks);?>
+                                             
+                                                 
+                                                     
+                                                    
+                                                </div>
+                                            
+                                            </div>
+
                                             
 
 
@@ -127,7 +151,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <div class="col-sm-offset-3 col-sm-10">
                                                     <div class="btn-group">
                                                         <?php echo form_button(array('type' => 'submit', 'class' => 'btn btn-primary btn-flat', 'content' => lang('actions_submit'))); ?>
-                                                        <?php echo anchor('admin/inandout', lang('actions_cancel'), array('class' => 'btn btn-default btn-flat')); ?>
+                                                        <?php echo anchor('admin/inandout/traveller/'.$job_no, lang('actions_cancel'), array('class' => 'btn btn-default btn-flat')); ?>
                                                     </div>
                                                 </div>
                                             </div>
@@ -135,54 +159,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                            
                                             <?php echo form_close();?>
                                         </div>
-                                        <?php else:?>
-                                            <table class="table table-striped table-bordered display">
-
-                                        <thead>
-                                            <tr>
-                                                <th>Job No</th>
-                                                
-                                                <th>Item Desc</th>
-                                                
-                                                <th>Status</th>
-                                                
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                        <!--<?php var_dump($history);?>-->
-                                         <?php foreach ($history as $h):?>
-                                         <tr>
-
-                                           
-
-                                            <td>
-                                                    <?php 
-                                                            $images = explode(',',$h->jobs->images);
-                                                            $data = '';
-                                                            foreach($images as $image){
-                                                                $data .= '&lt;img src=&quot;../../../upload/job_pic/'.$image.'&quot; width = &quot;100&#37;&quot; /&gt;&nbsp;&nbsp;';
-                                                            }
-                                                            echo anchor('admin/inandout/edit/'.$h->jobs->job_no, '<span class="label" style="background:red;" title="'.$data.'">'.htmlspecialchars($h->jobs->job_no, ENT_QUOTES, 'UTF-8').'</span>'); 
-                                                            
-                                                    ?>
-                                            </td>
-                                            <td><?php echo htmlspecialchars($h->jobs->item_desc, ENT_QUOTES, 'UTF-8'); ?></td>
-                                            <td><span class="label" style="background:<?php echo $h->jobs->color; ?>"><?php echo htmlspecialchars($h->jobs->status, ENT_QUOTES, 'UTF-8'); ?></span></td>
-                                          
-
-
-                                         </tr>
-                                         <?php endforeach;?>
-                                        </tbody>
-
-                                        </table>
-                                        
-                                        <?php endif;?>
-                                       
-
-                                        
-                                        
-                                   
                                 </div>
                             </div>
                          </div>

@@ -91,7 +91,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                      <?php
                                     endif;
                                     ?>
-
+                                    <?php if($is_admin) : ?>
+                                    
+                                        <h4 class="box-title">Do you want to approve <span class = "label label-primary">RQ-<?php echo $id?></span>?</h4>
+                                    
+                                    <?php echo form_open('admin/request/approval/'. $id, array('class' => 'form-horizontal', 'id' => 'form-status_user')); ?>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="confirm" id="confirm1" value="yes" checked="checked"> <?php echo strtoupper(lang('actions_yes', 'confirm')); ?>
+                                                </label>
+                                                <label class="radio-inline">
+                                                    <input type="radio" name="confirm" id="confirm0" value="no"> <?php echo strtoupper(lang('actions_no', 'confirm')); ?>
+                                                </label>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="col-sm-offset-2 col-sm-10">
+                                                <?php echo form_hidden($csrf); ?>
+                                                <?php echo form_hidden(array('id'=>$id)); ?>
+                                                <div class="btn-group">
+                                                    <?php echo form_button(array('type' => 'submit', 'class' => 'btn btn-primary btn-flat', 'content' => lang('actions_submit'))); ?>
+                                                    <?php echo anchor('admin/request/edit/'.$id, lang('actions_cancel'), array('class' => 'btn btn-default btn-flat')); ?>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php echo form_close();?>
+                                    <?php else:?>
+                                    <?php if($tech_id == $user_login['id']):?>
                                     <h4 class="box-title">Do you want to approve <span class = "label label-primary">RQ-<?php echo $id?></span>?</h4>
                                     
                                     <?php echo form_open('admin/request/approval/'. $id, array('class' => 'form-horizontal', 'id' => 'form-status_user')); ?>
@@ -116,6 +143,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </div>
                                         </div>
                                     <?php echo form_close();?>
+                                    <?php else:?>
+                                     <div class="alert alert-warning" role="alert">
+                                       
+                                    <h4 class="box-title"> <i class="fa fa-warning"></i> Your not the owner of this request.</h4>
+                                    </div>
+                                    <?php endif;?>
+                                    
+                                     
+                                    <?php endif;?>
+                                    
                         
                                    
                                 </div>

@@ -25,7 +25,7 @@ class Request extends Admin_Controller {
 
 	public function index()
 	{
-        if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin())
+        if ( ! $this->ion_auth->logged_in())
         {
             redirect('auth/login', 'refresh');
         }
@@ -60,6 +60,7 @@ class Request extends Admin_Controller {
 
 	public function create()
 	{
+
         /* Breadcrumbs */
         $this->breadcrumbs->unshift(2, 'New request', 'admin/request/create');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
@@ -90,8 +91,7 @@ class Request extends Admin_Controller {
 				'test_no'  => $this->input->post('test_no'),
                 'admin_approval'  => '0',
                 'tech_approval'  => '0',
-                'admin_id'  => '1',
-                'tech_id'  => '5'
+                'tech_id'  => $this->ion_auth->user()->row()->id,
                 
 			);
 
@@ -152,9 +152,9 @@ class Request extends Admin_Controller {
 	{
         $id = (int) $id;
 
-		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id) )
+		if ( ! $this->ion_auth->logged_in() OR ! $id OR empty($id) )
 		{
-			redirect('auth', 'refresh');
+			redirect('admin/request', 'refresh');
 		}
 
         /* Breadcrumbs */
@@ -167,65 +167,50 @@ class Request extends Admin_Controller {
         // $cat = $this->categories_model->get_all();
         
 		/* Validate form input */
-		// $this->form_validation->set_rules('p_desc', 'lang:Description', 'required');
-		// $this->form_validation->set_rules('p_boxno', 'lang:Box No', 'required|numeric');
-        // $this->form_validation->set_rules('p_type', 'lang:Type', 'required');
+		$this->form_validation->set_rules('job_no', 'lang:Description', 'required');
+		$this->form_validation->set_rules('test_no', 'Test No', 'required|numeric');
         // $this->form_validation->set_rules('p_critical', 'lang:Critical Level', 'required|numeric|greater_than[0]');
         // $this->form_validation->set_rules('p_category', 'lang:Category', 'required');
 	
 
 		if (isset($_POST) && ! empty($_POST))
 		{
-           if(isset($_POST) && ! empty($_POST) && $this->inandout_model->check_jobno($this->input->post('job_no')) == false){
+          
 
-                $this->data['message'] .= 'Please input a valid Job No.';
-
-            }else{
 					if ($this->form_validation->run() == TRUE)
 					{
-						$data = array(
-						'p_desc' => $this->input->post('p_desc'),
-						'p_boxno'  => $this->input->post('p_boxno'),
-						'p_type'  => $this->input->post('p_type'),
-						'p_c_level'  => $this->input->post('p_critical'),
-						'cat_id'  => $this->input->post('p_category')
-						
-					);
+						 if(isset($_POST) && ! empty($_POST) && $this->inandout_model->check_jobno($this->input->post('job_no')) == false){
+
+                			$this->data['message'] .= 'Please input a valid Job No.';
+
+            			}else{
+							if(!$this->inandout_model->check_testno($this->input->post('job_no'))){
+								$this->data['message'] .= 'Please input a valid Test No.';
+							}else{
+								$data = array(
+								'job_no' => $this->input->post('job_no'),
+								'test_no'  => $this->input->post('test_no')
+								);
+								if($this->request_model->update($id,$data)){
+									$this->data['message_suc'] .= 'Update Successful.';
+								}else{
+									$this->data['message'] .= 'Something went wrong.';
+								}
+
+							}
+							
 
 						
-						if($this->parts_model->update($id, $data))
-						{
-							$this->session->set_flashdata('message', $this->ion_auth->messages());
-
-							if ($this->ion_auth->is_admin())
-							{
-								redirect('admin/parts', 'refresh');
-							}
-							else
-							{
-								redirect('admin', 'refresh');
-							}
-						}
-						else
-						{
-							$this->session->set_flashdata('message', $this->ion_auth->errors());
-
-							if ($this->ion_auth->is_admin())
-							{
-								
-								redirect('admin/parts', 'refresh');
-							}
-							else
-							{
-								redirect('/', 'refresh');
-							}
-						}
+						
 					}
-			}
+			
+				}else{
+						$this->data['message'] = validation_errors();
+				}
 		}
 
 		// set the flash data error message if there is one
-		$this->data['message'] = validation_errors();
+	
 
 		// pass the user to the view
 		$this->data['request_items'] = $this->request_model->get_request_items($id);
@@ -242,76 +227,75 @@ class Request extends Admin_Controller {
 		
 			$this->data['rqno'] = $id;
 
-		    $this->data['job_no'] = array(
+			if(!$this->ion_auth->is_admin() && $request->tech_id != $this->ion_auth->user()->row()->id){
+				$this->data['job_no'] = array(
 				'name'  => 'job_no',
 				'id'    => 'jobno',
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('job_no',$request->job_no),
-			);
-			$this->data['test_no'] = array(
-				'name'  => 'test_no',
-				'id'    => 'test_no',
+				'disabled' => true
+				);
+				$this->data['test_no'] = array(
+					'name'  => 'test_no',
+					'id'    => 'test_no',
+					'type'  => 'text',
+					'class' => 'form-control',
+					'value' => $this->form_validation->set_value('test_no',$request->test_no),
+					'disabled' => true
+				);
+			}else{
+				$this->data['job_no'] = array(
+				'name'  => 'job_no',
+				'id'    => 'jobno',
 				'type'  => 'text',
                 'class' => 'form-control',
-				'value' => $this->form_validation->set_value('test_no',$request->test_no),
-			);
-            $this->data['p_desc'] = array(
-				'name'  => 'p_desc',
-				'id'    => 'p_desc',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_desc'),
-			);
-			$this->data['p_qty'] = array(
-				'name'  => 'p_qty',
-				'id'    => 'p_qty',
-				'type'  => 'text',
-                'class' => 'form-control',
-				'value' => $this->form_validation->set_value('p_qty'),
-			);
-            // $this->data['p_critical'] = array(
-			// 	'name'  => 'p_critical',
-			// 	'id'    => 'p_critical',
-			// 	'type'  => 'text',
-            //     'class' => 'form-control',
-			// 	'value' => $this->form_validation->set_value('p_critical',$parts->p_c_level),
-			// );
+				'value' => $this->form_validation->set_value('job_no',$request->job_no),
+				);
+				$this->data['test_no'] = array(
+					'name'  => 'test_no',
+					'id'    => 'test_no',
+					'type'  => 'text',
+					'class' => 'form-control',
+					'value' => $this->form_validation->set_value('test_no',$request->test_no),
+				);
+			}
+
+		    
             
-			// $options = array();
-			// $options[''] = 'Please select a category';
-            // foreach($cat as $category){
-            //     $options[$category->cat_id] = $category->cat_name;
-			// }
-			
-			// $this->data['p_category'] = array(
-			// 	'name'  => 'p_category',
-			// 	'id'    => 'p_category',
-			// 	'class' => 'form-control',
-			// 	'options' => $options,
-			// 	'selected' =>$parts->cat_id,
-			// );
-            
-	
         /* Load Template */
 		$this->template->admin_render('admin/request/edit', $this->data);
 	}
 
-	public function item_remove($id){
+	public function item_remove($id,$rqno){
 
 		$data = array(
 			'r_item_id' => $id
 		);
 
-		$this->request_model->item_delete($data);
+		$request = $this->request_model->get_request($rqno);
+		
+		$mes = '';
+		if($this->ion_auth->is_admin()){
+			$this->request_model->item_delete($data);
+			$mes = 'success';
+		}else{
+			if($request->tech_id != $this->ion_auth->user()->row()->id){
+				$mes = 'Your not the owner of this request.';
+			}else{
+				$this->request_model->item_delete($data);
+				$mes = 'success';
+			}
+		}
 
+		echo $mes;
 		
 	}
 
 	public function item_list($id){
 		 $id = (int) $id;
 
-		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id) )
+		if ( ! $this->ion_auth->logged_in() OR ! $id OR empty($id) )
 		{
 			redirect('auth', 'refresh');
 		}
@@ -322,23 +306,26 @@ class Request extends Admin_Controller {
 
         
 		/* Data */
-		
+		$request = $this->request_model->get_request($id);
         // $cat = $this->categories_model->get_all();
         
 		/* Validate form input */
 		$this->form_validation->set_rules('p_name', 'lang:Description', 'required');
 		$this->form_validation->set_rules('p_qty', 'lang:Qty', 'required|numeric');
+
+		
      
 		$this->data['message'] = '';
 		$this->data['message_suc'] = '';
 
 		if (isset($_POST) && ! empty($_POST) && !empty($this->input->post('p_id')))
 		{
-           if(isset($_POST) && ! empty($_POST) && $this->parts_model->check_part($this->input->post('p_name')) == false){
+			if($this->ion_auth->is_admin()){ // if admin
+				if(isset($_POST) && ! empty($_POST) && $this->parts_model->check_part($this->input->post('p_name')) == false){
 
                 $this->data['message'] .= 'Please input a valid Part Desc.';
 
-            }else{
+            	}else{
 					if ($this->form_validation->run() == TRUE)
 					{
 						$data = array(
@@ -353,31 +340,63 @@ class Request extends Admin_Controller {
 						{
 							$this->session->set_flashdata('message', $this->ion_auth->messages());
 
-							if ($this->ion_auth->is_admin())
-							{
+						
 								$this->data['message_suc'] .= 'Item has been added.';
-							}
-							else
-							{
-								redirect('admin', 'refresh');
-							}
+							
 						}
 						else
 						{
 							$this->session->set_flashdata('message', $this->ion_auth->errors());
 
-							if ($this->ion_auth->is_admin())
-							{
+							
 								
 								$this->data['message'] .= 'Failed to add the item.';
+							
+						}
+					}
+				}
+			}else{ // else tecnician
+				if($request->tech_id != $this->ion_auth->user()->row()->id){
+					$this->data['message'] = "Your not the owner of this request";
+				}else{
+					if(isset($_POST) && ! empty($_POST) && $this->parts_model->check_part($this->input->post('p_name')) == false){
+
+                	$this->data['message'] .= 'Please input a valid Part Desc.';
+
+            		}else{
+						if ($this->form_validation->run() == TRUE)
+						{
+							$data = array(
+
+							'r_id' => $id,
+							'p_id' => $this->input->post('p_id'),
+							'qty'  => $this->input->post('p_qty'),
+							);
+
+							
+							if($this->request_model->item_create($data))
+							{
+								$this->session->set_flashdata('message', $this->ion_auth->messages());
+
+							
+									$this->data['message_suc'] .= 'Item has been added.';
+								
 							}
 							else
 							{
-								redirect('/', 'refresh');
+								$this->session->set_flashdata('message', $this->ion_auth->errors());
+
+								
+									
+									$this->data['message'] .= 'Failed to add the item.';
+								
 							}
 						}
 					}
+				}
 			}
+			
+           
 		}
 
 		// set the flash data error message if there is one
@@ -393,7 +412,7 @@ class Request extends Admin_Controller {
 				$this->data['request_items'][$k]->parts[$r]->categories = $this->categories_model->get_all($part->cat_id);
 			}
         }
-		$request = $this->request_model->get_request($id);
+		
 		$this->data['request'] = $this->request_model->get_request($id);
 		
 			$this->data['rqno'] = $id;
@@ -470,49 +489,90 @@ class Request extends Admin_Controller {
 		$this->data['message_suc'] = '';
 		
 		
-
-		
+		$request = $this->request_model->get_request($id);
+		$this->data['tech_id'] = $request->tech_id;
 		
 		if ($this->form_validation->run() === TRUE)
 		{
-            if ($this->input->post('confirm') == 'yes')
-			{
-                if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
-				{
-					$this->data['message'] = $this->lang->line('error_csrf');
-				}
 
-                if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
+			if($this->ion_auth->is_admin()){ // admin approval
+
+				 if ($this->input->post('confirm') == 'yes')
 				{
-					if(!$this->request_model->approve_admin($id)){
-						$this->data['message'] = 'Approve Failed.';
-					}else{
-						$this->data['message_suc'] = 'Approve Successful.';
+					if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
+					{
+						$this->data['message'] = $this->lang->line('error_csrf');
 					}
 
-				} else {
-					$this->request_model->approve_tech($id);
-				}
-			}else if ($this->input->post('confirm') == 'no'){
+					if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
+					{
+						if(!$this->request_model->approve_admin($id)){
+							$this->data['message'] = 'Approve Failed.';
+						}else{
+							$this->data['message_suc'] = 'Approve Successful.';
+						}
 
-				if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
-				{
-                    $this->data['message'] = $this->lang->line('error_csrf'); 
-				}
+					} 
+				}else if ($this->input->post('confirm') == 'no'){
 
-                if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
-				{
-					
-					if(!$this->request_model->reject_admin($id)){
-						$this->data['message'] = 'Reject Failed.';
-					}else{
-						$this->data['message_suc'] = 'Reject Successful.';
+					if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
+					{
+						$this->data['message'] = $this->lang->line('error_csrf'); 
 					}
-				} else {
 
-					$this->request_model->reject_tech($id);
+					if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
+					{
+						
+						if(!$this->request_model->reject_admin($id)){
+							$this->data['message'] = 'Reject Failed.';
+						}else{
+							$this->data['message_suc'] = 'Reject Successful.';
+						}
+					}
+				}
+			}else{ // tech approval
+				if($request->admin_approval !="1"){
+					$this->data['message'] = "This request is not yet approved by the Administrator.";
+				}else{
+					if ($this->input->post('confirm') == 'yes')
+					{
+						if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
+						{
+							$this->data['message'] = $this->lang->line('error_csrf');
+						}
+
+						if ($this->ion_auth->logged_in())
+						{
+							if(!$this->request_model->approve_tech($id)){
+								$this->data['message'] = 'Approved Failed.';
+							}else{
+								$this->data['message_suc'] = 'Approved Successful.';
+							}
+
+						} 
+					}else if ($this->input->post('confirm') == 'no'){
+
+						if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
+						{
+							$this->data['message'] = $this->lang->line('error_csrf'); 
+						}
+
+						if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
+						{
+							
+							if(!$this->request_model->reject_tech($id)){
+								$this->data['message'] = 'Reject Failed.';
+							}else{
+								$this->data['message_suc'] = 'Reject Successful.';
+							}
+						} else {
+
+							$this->request_model->reject_tech($id);
+						}
+					}	
 				}
 			}
+           
 			
 			
 		}

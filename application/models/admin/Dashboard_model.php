@@ -104,4 +104,68 @@ class Dashboard_model extends CI_Model {
 
         return round(($this->memory_usage() * 100) / $this->memory_peak_usage($real), 0).$unit;
     }
+
+    public function get_count_critical_parts()
+    {
+        //SELECT parts.p_id,COALESCE((qty - qtyout), 0 ) as balance from parts left outer join stocks on stocks.p_id = parts.p_id GROUP BY parts.p_id
+        
+        // $this->db->select('count(parts.p_id) as total');
+        // $this->db->from('parts');
+        // $this->db->join('stocks', 'stocks.p_id = parts.p_id','left');
+
+
+        // $this->db->group_by("parts.p_id");
+                // $this->db->where('SUM(COALESCE((stocks.qty-stocks.qtyout), 0 )) <', 'parts.p_c_level');
+        $query = $this->db->query('SELECT p_id,p_c_level, COALESCE((SELECT SUM(COALESCE((qty-qtyout), 0 )) from stocks where stocks.p_id = parts.p_id),0) as balance from parts WHERE p_c_level >= COALESCE((SELECT SUM(COALESCE((qty-qtyout), 0 )) from stocks where stocks.p_id = parts.p_id),0)');
+
+        return $query->num_rows();
+    }
+
+    public function get_count_outofstock_parts()
+    {
+        //SELECT parts.p_id,COALESCE((qty - qtyout), 0 ) as balance from parts left outer join stocks on stocks.p_id = parts.p_id GROUP BY parts.p_id
+        
+        // $this->db->select('count(parts.p_id) as total');
+        // $this->db->from('parts');
+        // $this->db->join('stocks', 'stocks.p_id = parts.p_id','left');
+
+
+        // $this->db->group_by("parts.p_id");
+                // $this->db->where('SUM(COALESCE((stocks.qty-stocks.qtyout), 0 )) <', 'parts.p_c_level');
+        $query = $this->db->query('SELECT p_id,p_c_level, COALESCE((SELECT SUM(COALESCE((qty-qtyout), 0 )) from stocks where stocks.p_id = parts.p_id),0) as balance from parts WHERE COALESCE((SELECT SUM(COALESCE((qty-qtyout), 0 )) from stocks where stocks.p_id = parts.p_id),0) = 0');
+
+        return $query->num_rows();
+    }
+
+    public function get_count_pending_request()
+    {
+        //SELECT parts.p_id,COALESCE((qty - qtyout), 0 ) as balance from parts left outer join stocks on stocks.p_id = parts.p_id GROUP BY parts.p_id
+        
+        // $this->db->select('count(parts.p_id) as total');
+        // $this->db->from('parts');
+        // $this->db->join('stocks', 'stocks.p_id = parts.p_id','left');
+
+
+        // $this->db->group_by("parts.p_id");
+                // $this->db->where('SUM(COALESCE((stocks.qty-stocks.qtyout), 0 )) <', 'parts.p_c_level');
+        $query = $this->db->query('SELECT r_id from requests WHERE admin_approval = "0" ');
+
+        return $query->num_rows();
+    }
+
+    public function get_count_jobs()
+    {
+        //SELECT parts.p_id,COALESCE((qty - qtyout), 0 ) as balance from parts left outer join stocks on stocks.p_id = parts.p_id GROUP BY parts.p_id
+        
+        // $this->db->select('count(parts.p_id) as total');
+        // $this->db->from('parts');
+        // $this->db->join('stocks', 'stocks.p_id = parts.p_id','left');
+
+
+        // $this->db->group_by("parts.p_id");
+                // $this->db->where('SUM(COALESCE((stocks.qty-stocks.qtyout), 0 )) <', 'parts.p_c_level');
+        $query = $this->db->query('select distinct job_no from in_and_out');
+
+        return $query->num_rows();
+    }
 }

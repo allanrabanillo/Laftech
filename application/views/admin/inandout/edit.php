@@ -53,6 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                      <?php
                                     endif;
                                     ?>
+                                    
                                      <?php echo form_open_multipart(current_url(), array('class' => 'form-horizontal', 'id' => 'form-edit_inandout')); ?>
                         <div id="tabs">
                             <ul>
@@ -213,7 +214,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <div class="form-group">
                                             <div class="col-sm-offset-3 col-sm-10" style="padding:20px;">
                                                 <div class="btn-group">
-                                                    <?php echo form_button(array('type' => 'submit', 'class' => 'btn btn-primary btn-flat', 'content' => lang('actions_submit'))); ?>
+                                                    <?php if($is_admin): ?>
+                                                         <?php echo form_button(array('type' => 'submit', 'class' => 'btn btn-primary btn-flat', 'content' => lang('actions_submit'))); ?>
+                                                    <?php endif;?>
                                                     <?php echo anchor('admin/inandout', lang('actions_cancel'), array('class' => 'btn btn-default btn-flat')); ?>
                                                 </div>
                                             </div>

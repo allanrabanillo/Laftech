@@ -14,19 +14,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <div class="row">
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-maroon"><i class="glyphicon glyphicon-copy"></i></span>
+                                <span class="info-box-icon bg-blue"><i class="fa fa-files-o"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Total Request</span>
-                                    <span class="info-box-number">10</span>
+                                    <span class="info-box-text">Total Jobs</span>
+                                    <span class="info-box-number"><?php echo ($count_jobs)  ?></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-red"><i class="fa fa-sort-amount-desc"></i></span>
+                                <span class="info-box-icon bg-yellow"><i class="fa fa-sort-amount-desc"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Out of Stock</span>
-                                    <span class="info-box-number">12</span>
+                                    <span class="info-box-text">Critical Level</span>
+                                    <span class="info-box-number"><?php echo ($count_critical_parts)  ?></span>
                                 </div>
                             </div>
                         </div>
@@ -35,19 +35,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-user"></i></span>
+                                <span class="info-box-icon bg-red"><i class="fa fa-exclamation-triangle"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Users</span>
-                                    <span class="info-box-number"><?php echo $count_users; ?></span>
+                                    <span class="info-box-text">Out of Stock</span>
+                                    <span class="info-box-number"><?php echo ($count_outofstock_parts)  ?></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box">
-                                <span class="info-box-icon bg-aqua"><i class="fa fa-shield"></i></span>
+                                <span class="info-box-icon bg-orange"><i class="glyphicon glyphicon-copy"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Groups</span>
-                                    <span class="info-box-number"><?php echo $count_groups; ?></span>
+                                    <span class="info-box-text">Peding Requests</span>
+                                    <span class="info-box-number"><?php echo $count_pending_requests; ?></span>
                                 </div>
                             </div>
                         </div>
