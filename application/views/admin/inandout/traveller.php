@@ -62,6 +62,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <tr>
                                                 <th>Test No</th>
                                                 
+                                                <th>Error Code</th>
                                                 <th>Remarks</th>
                                                 
                                                 <th>Technician</th>
@@ -82,6 +83,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                             
                                                     ?>
                                             </td>
+                                            <td><?php echo htmlspecialchars($traveller->t_error_code, ENT_QUOTES, 'UTF-8'); ?></td>
                                             <td><?php echo htmlspecialchars($traveller->t_remarks, ENT_QUOTES, 'UTF-8'); ?></td>
                                             
                                             <td>
@@ -118,9 +120,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                      
                                                     
                                                 </div>
-                                                <!--<div class="col-sm-2">
-                                                         <?php echo anchor('admin/customers/create', '<i class="fa fa-plus"></i> '.'', array('class' => 'btn btn-block btn-primary btn-flat','title'=>'New Customer')); ?>
-                                               </div>-->
+                                               
+                                            </div>
+                                            <div class="form-group">
+                                                <span class = 'col-sm-2 control-label'>Error Code:</span>
+                                                <div class="col-sm-10">
+                                                   
+                                                    
+                                                <?php echo form_input($t_error_code);?>
+                                             
+                                                 
+                                                     
+                                                    
+                                                </div>
+                                               
                                             </div>
 
                                             <div class="form-group">

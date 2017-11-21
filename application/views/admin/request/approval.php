@@ -19,17 +19,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                                 
                                 <div class="progress">
+                                <?php foreach($requests as $request):?>
+                                
                                 <?php
-                                if($request->admin_approval == 1){
-                                    if($request->tech_approval == 1){
+                                if($request->tech_approval == 1){
+                                    if($request->admin_approval == 1){
                                         ?>
-                                      
-                                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
-                                            Admin <i class = "fa fa-check"></i>
+                                         <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
+                                            Tech <i class = "fa fa-check" title="<?php echo $request->tech;?>"></i>
                                         </div>
                                         <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
-                                            Tech <i class = "fa fa-check"></i>
+                                            Admin <i class = "fa fa-check" title="<?php echo $request->admin;?>"></i>
                                         </div>
+                                       
 
 
                                 <?php
@@ -38,10 +40,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         ?>
                                         
                                         <div class="progress-bar progress-bar-success " role="progressbar" style="width:50%">
-                                            Admin <i class = "fa fa-check"></i>
+                                            Tech <i class = "fa fa-check" title="<?php echo $request->tech;?>"></i>
                                         </div>
                                         <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
-                                            Tech ***
+                                            Admin ***
                                         </div>
 
 
@@ -52,16 +54,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                                 
                                 <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
-                                    Admin ***
+                                    Tech ***
                                 </div>
                                 <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
-                                    Tech ***
+                                    Admin ***
                                 </div>
                                 <?php
                                 }
                                 ?>
                                 
-                               
+                               <?php endforeach;?>
                                 </div>
                                 <ul class="nav nav-tabs">
                                 <li role="presentation"><a href="../edit/<?php echo $id; ?>">Info</a></li>

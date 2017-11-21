@@ -163,7 +163,7 @@ class Request extends Admin_Controller {
 
         
 		/* Data */
-		
+		$request = $this->request_model->get_request($id);
         // $cat = $this->categories_model->get_all();
         
 		/* Validate form input */
@@ -222,8 +222,26 @@ class Request extends Admin_Controller {
 				$this->data['request_items'][$k]->parts[$r]->categories = $this->categories_model->get_all($part->cat_id);
 			}
         }
-		$request = $this->request_model->get_request($id);
-		$this->data['request'] = $this->request_model->get_request($id);
+		
+		
+		$this->data['requests'] = $this->request_model->get_all($id);
+		foreach ($this->data['requests'] as $k => $request)
+        {
+		
+			foreach ( $this->ion_auth->user($request->tech_id)->result() as $tech)
+        	{
+				$this->data['requests'][$k]->tech = $tech->first_name." ".$tech->last_name;
+			}
+			if($request->admin_id !=0){
+				foreach ( $this->ion_auth->user($request->admin_id)->result() as $admin)
+				{
+					$this->data['requests'][$k]->admin = $admin->first_name." ".$admin->last_name;
+				}
+			}
+			
+
+        }
+		
 		
 			$this->data['rqno'] = $id;
 
@@ -413,7 +431,25 @@ class Request extends Admin_Controller {
 			}
         }
 		
-		$this->data['request'] = $this->request_model->get_request($id);
+		$this->data['requests'] = $this->request_model->get_all($id);
+		foreach ($this->data['requests'] as $k => $request)
+        {
+		
+			foreach ( $this->ion_auth->user($request->tech_id)->result() as $tech)
+        	{
+				$this->data['requests'][$k]->tech = $tech->first_name." ".$tech->last_name;
+			}
+			if($request->admin_id !=0){
+				foreach ( $this->ion_auth->user($request->admin_id)->result() as $admin)
+				{
+					$this->data['requests'][$k]->admin = $admin->first_name." ".$admin->last_name;
+				}
+			}
+			
+
+        }
+
+		
 		
 			$this->data['rqno'] = $id;
 
@@ -488,51 +524,53 @@ class Request extends Admin_Controller {
 		$this->data['message'] = '';
 		$this->data['message_suc'] = '';
 		
-		
 		$request = $this->request_model->get_request($id);
-		$this->data['tech_id'] = $request->tech_id;
+	
 		
 		if ($this->form_validation->run() === TRUE)
 		{
 
 			if($this->ion_auth->is_admin()){ // admin approval
-
-				 if ($this->input->post('confirm') == 'yes')
-				{
-					if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
+				if($request->tech_approval !="1"){
+					$this->data['message'] = "This request is not yet approved by the owner of the request.";
+				}else{
+					if ($this->input->post('confirm') == 'yes')
 					{
-						$this->data['message'] = $this->lang->line('error_csrf');
-					}
-
-					if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
-					{
-						if(!$this->request_model->approve_admin($id)){
-							$this->data['message'] = 'Approve Failed.';
-						}else{
-							$this->data['message_suc'] = 'Approve Successful.';
+						if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
+						{
+							$this->data['message'] = $this->lang->line('error_csrf');
 						}
 
-					} 
-				}else if ($this->input->post('confirm') == 'no'){
+						if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
+						{
+							if(!$this->request_model->approve_admin($id)){
+								$this->data['message'] = '<p>Approved Failed.<br><h5>Cause(s):</h5><h5><i class="fa fa-remove"></i> Not enough stocks in the inventory. Please check your inventory.</h5><h5><i class="fa fa-remove"></i> Failed loading the modules. Please try to refresh the program.</h5></p>';
+							}else{
+								$this->data['message_suc'] = 'Approved Successful.';
+							}
 
-					if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
-					{
-						$this->data['message'] = $this->lang->line('error_csrf'); 
-					}
+						} 
+					}else if ($this->input->post('confirm') == 'no'){
 
-					if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
-					{
-						
-						if(!$this->request_model->reject_admin($id)){
-							$this->data['message'] = 'Reject Failed.';
-						}else{
-							$this->data['message_suc'] = 'Reject Successful.';
+						if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
+						{
+							$this->data['message'] = $this->lang->line('error_csrf'); 
+						}
+
+						if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
+						{
+							
+							if(!$this->request_model->reject_admin($id)){
+								$this->data['message'] = 'Reject Failed.';
+							}else{
+								$this->data['message_suc'] = 'Reject Successful.';
+							}
 						}
 					}
 				}
 			}else{ // tech approval
-				if($request->admin_approval !="1"){
-					$this->data['message'] = "This request is not yet approved by the Administrator.";
+				if($request->admin_approval == 1 OR $request->admin_approval == "1"){
+					$this->data['message'] = "This request is already approved by the administrator.";
 				}else{
 					if ($this->input->post('confirm') == 'yes')
 					{
@@ -557,7 +595,7 @@ class Request extends Admin_Controller {
 							$this->data['message'] = $this->lang->line('error_csrf'); 
 						}
 
-						if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
+						if ($this->ion_auth->logged_in())
 						{
 							
 							if(!$this->request_model->reject_tech($id)){
@@ -565,10 +603,7 @@ class Request extends Admin_Controller {
 							}else{
 								$this->data['message_suc'] = 'Reject Successful.';
 							}
-						} else {
-
-							$this->request_model->reject_tech($id);
-						}
+						} 
 					}	
 				}
 			}
@@ -577,9 +612,28 @@ class Request extends Admin_Controller {
 			
 		}
 
-		$request = $this->request_model->get_request($id);
+		
 		$this->data['request'] = $this->request_model->get_request($id);
 		$user = $this->ion_auth->user($id)->row();
+		$this->data['requests'] = $this->request_model->get_all($id);
+		foreach ($this->data['requests'] as $k => $request)
+        {
+		
+			foreach ( $this->ion_auth->user($request->tech_id)->result() as $tech)
+        	{
+				$this->data['requests'][$k]->tech = $tech->first_name." ".$tech->last_name;
+			}
+			if($request->admin_id !=0){
+				foreach ( $this->ion_auth->user($request->admin_id)->result() as $admin)
+				{
+					$this->data['requests'][$k]->admin = $admin->first_name." ".$admin->last_name;
+				}
+			}
+			
+
+        }
+		$request = $this->request_model->get_request($id);
+		$this->data['tech_id'] = $request->tech_id;
 
 		$this->data['csrf']       = $this->_get_csrf_nonce();
 		$this->data['id']         = $id;

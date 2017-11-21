@@ -919,6 +919,7 @@ class InandOut extends Admin_Controller {
 		 //$this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
 
 		 $this->data['message'] = '';
+		 $this->data['message_suc'] = '';
 
 		 if ($this->form_validation->run() == TRUE)
 		{
@@ -929,6 +930,7 @@ class InandOut extends Admin_Controller {
 				$data = array(
 							'job_no'  => $id,
 							'test_no'  => $this->input->post('test_no'),
+							't_error_code'  => $this->input->post('t_error_code'),
 							't_remarks'  => $this->input->post('remarks'),
 							't_user' => $this->ion_auth->user()->row()->id,
 						);
@@ -966,6 +968,13 @@ class InandOut extends Admin_Controller {
 				'class' => 'form-control',
                 'value' => $this->form_validation->set_value('test_no'),
 		);
+		$this->data['t_error_code'] = array(
+				'name'  => 't_error_code',
+				'id'    => 't_error_code',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('t_error_code'),
+			);
 
 		$this->data['remarks'] = array(
 				'name'  => 'remarks',
@@ -989,11 +998,14 @@ class InandOut extends Admin_Controller {
 		$this->breadcrumbs->unshift(2, 'Job Test', 'admin/inandout/traveller');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
+		$traveller = $this->inandout_model->get_test($id,$testno);
+
 		/* Validate form input */
 		 $this->form_validation->set_rules('test_no', 'Test No', 'required|numeric');
 		 //$this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
 
 		 $this->data['message'] = '';
+		 $this->data['message_suc'] = '';
 
 		 if ($this->form_validation->run() == TRUE)
 		{
@@ -1001,8 +1013,13 @@ class InandOut extends Admin_Controller {
 
 			// 	$this->data['message'] .= 'Test No already existed.';
 			// }else{
+				if(!$this->ion_auth->is_admin()){ // tech update
+					if($this->ion_auth->user()->row()->id != $traveller->t_user){
+						$this->data['message'] .= 'Your not the owner of this traveller.';
+					}else{
 						$data = array(
 					
+							't_error_code'  => $this->input->post('t_error_code'),
 							't_remarks'  => $this->input->post('remarks'),
 						);
 
@@ -1013,6 +1030,24 @@ class InandOut extends Admin_Controller {
 						}else{
 							$this->data['message'] .= 'Failed updating Test: '.$this->input->post('test_no').'.';
 						}
+					}
+				}else{ // admin updated
+
+					$data = array(
+					
+							't_error_code'  => $this->input->post('t_error_code'),
+							't_remarks'  => $this->input->post('remarks'),
+						);
+
+					 	if($this->inandout_model->updateTraveller($id,$testno,$data)){
+							$this->data['message_suc'] .= 'Test No: '.$this->input->post('test_no').' has been successfully updated.';
+
+
+						}else{
+							$this->data['message'] .= 'Failed updating Test: '.$this->input->post('test_no').'.';
+					}
+				}
+						
 			//}
 
 		}else{
@@ -1051,6 +1086,14 @@ class InandOut extends Admin_Controller {
                 'value' => $this->form_validation->set_value('test_no',$traveller->test_no),
 				'readonly' => true
 		);
+
+		$this->data['t_error_code'] = array(
+				'name'  => 't_error_code',
+				'id'    => 't_error_code',
+				'type'  => 'text',
+				'class' => 'form-control',
+				'value' => $this->form_validation->set_value('t_error_code',$traveller->t_error_code),
+			);
 
 		$this->data['remarks'] = array(
 				'name'  => 'remarks',

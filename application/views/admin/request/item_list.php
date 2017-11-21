@@ -19,17 +19,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                                 
                                 <div class="progress">
+                                <?php foreach($requests as $request):?>
+                                
                                 <?php
-                                if($request->admin_approval == 1){
-                                    if($request->tech_approval == 1){
+                                if($request->tech_approval == 1){
+                                    if($request->admin_approval == 1){
                                         ?>
-                                      
-                                        <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
-                                            Admin <i class = "fa fa-check"></i>
+                                         <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
+                                            Tech <i class = "fa fa-check" title="<?php echo $request->tech;?>"></i>
                                         </div>
                                         <div class="progress-bar progress-bar-success" role="progressbar" style="width:50%">
-                                            Tech <i class = "fa fa-check"></i>
+                                            Admin <i class = "fa fa-check" title="<?php echo $request->admin;?>"></i>
                                         </div>
+                                       
 
 
                                 <?php
@@ -38,10 +40,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         ?>
                                         
                                         <div class="progress-bar progress-bar-success " role="progressbar" style="width:50%">
-                                            Admin <i class = "fa fa-check"></i>
+                                            Tech <i class = "fa fa-check" title="<?php echo $request->tech;?>"></i>
                                         </div>
                                         <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
-                                            Tech ***
+                                            Admin ***
                                         </div>
 
 
@@ -52,16 +54,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                                 
                                 <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
-                                    Admin ***
+                                    Tech ***
                                 </div>
                                 <div class="progress-bar progress-bar-warning progress-bar-striped active" role="progressbar" style="width:50%">
-                                    Tech ***
+                                    Admin ***
                                 </div>
                                 <?php
                                 }
                                 ?>
                                 
-                               
+                               <?php endforeach;?>
                                 </div>
                                 <ul class="nav nav-tabs">
                                 <li role="presentation"><a href="../edit/<?php echo $rqno; ?>">Info</a></li>
@@ -132,7 +134,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                                         <?php endforeach;?>
                                             <td><?php echo htmlspecialchars($request_item->qty, ENT_QUOTES, 'UTF-8'); ?></td>
-                                            <td><button data-id = "<?php echo $request_item->r_item_id?>" data-jobno = "<?php echo $rqno?>"  class = "btn btn-danger btn-circle" id ="btnRemoveItem"><i class="glyphicon glyphicon-remove"></i></button></td>
+                                            
+                                            <td>
+                                            <?php
+                                            if($request->tech_approval !=1):
+                                            ?>
+                                                <button data-id = "<?php echo $request_item->r_item_id?>" data-jobno = "<?php echo $rqno?>"  class = "btn btn-danger btn-circle" id ="btnRemoveItem"><i class="glyphicon glyphicon-remove"></i></button>
+                                            <?php else:?>
+                                                <span  class = "btn btn-success btn-circle" ><i class="glyphicon glyphicon-check"></i></span>
+                                            <?php endif;?>
+                                            </td>
                                             
                                          </tr>
                                          <?php endforeach;?>

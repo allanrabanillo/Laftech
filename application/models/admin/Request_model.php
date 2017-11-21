@@ -138,20 +138,123 @@ class Request_model extends CI_Model {
         return $query->result();
     }
 
-    public function approve_admin($id=null){
+    public function approve_admin($id=null,$admin=1){ 
+
+        $this->db->trans_begin();
         $this->db->set('admin_approval', '1', FALSE);
+        $this->db->set('admin_id', $admin, FALSE);
         $this->db->where('r_id', $id);
         $this->db->update('requests');
+        if($this->db->affected_rows() !=1){
+             $this->db->trans_rollback();
+             return false;
+        }
+        $query = $this->db->query("SELECT * FROM request_items where r_id = $id");
+        if($query->num_rows() > 0){
+            foreach($query->result_array() as $row){
+                $r_item_id = $row['r_item_id'];
+                $p_id = $row['p_id'];
+                $qtyneed = $row['qty'];
+                $getstocks = $this->db->query("SELECT s_id,qty-qtyout as balance FROM stocks where p_id = $p_id and qty-qtyout != 0 order by s_date asc");
+                 $numrows = $getstocks->num_rows(); 
+                 
+                 if( $numrows == 0){
+                    $this->db->trans_rollback();
+                    return false; // not enough stock to complete the request
+                 }
+                 foreach($getstocks->result_array() as $row2){
+                   
+                    if($qtyneed != 0){
+                        $stock_id = $row2['s_id'];
+                        $balance = $row2['balance'];
+                        if($qtyneed >= $balance){
+                            $entyQty = $balance;
+                            $qtyneed = $qtyneed - $balance;
+                        }else{
+                            $entyQty = $qtyneed;
+                            $qtyneed = $qtyneed - $entyQty;
+                        }
 
-        return ($this->db->affected_rows() != 1) ? false : true;
+                        $updateStocks = $this->db->query("UPDATE stocks SET qtyout = qtyout + $entyQty where s_id = $stock_id");
+                        if($this->db->affected_rows() > 0){
+                            $data = array(
+                                'r_id' => $id,
+                                'r_item_id' => $r_item_id,
+                                's_id' => $stock_id,
+                                'p_id' => $p_id,
+                                'qty' => $entyQty,
+                                'out_date' => date('Y-m-d H:i:s'),
+                                'out_by' => $admin
+                            );
+                            $updateItemListOut = $this->db->insert("request_items_out",$data);
+                            if($this->db->affected_rows() > 0){
+                                 $numrows--;
+                                if($qtyneed != 0 && $numrows == 0){
+                                    $this->db->trans_rollback(); // not enought inventory
+                                    return false;
+                                }
+                            }else{
+                                $this->db->trans_rollback(); // failed to update the item out
+                                return false;
+                            }
+                           
+                        }else{
+                             $this->db->trans_rollback(); // failed to update the stocks
+                             return false;
+                        }
+                    }
+                 }
+                
+            }
+        }else{
+            $this->db->trans_rollback();
+            return false; // no items in the request
+        }
+
+        $this->db->trans_commit();
+        return true;
+        
     }
 
+    
     public function reject_admin($id=null){
         $this->db->set('admin_approval', '0', FALSE);
         $this->db->where('r_id', $id);
         $this->db->update('requests');
 
-        return ($this->db->affected_rows() != 1) ? false : true;
+        if($this->db->affected_rows() !=1){
+            $this->db->trans_rollback();
+            return false;
+        }
+
+        $this->db->trans_begin();
+        $query = $this->db->query("SELECT * FROM request_items_out where r_id = $id");
+        if($query->num_rows() > 0){
+            foreach($query->result_array() as $row){
+                $item_out_id = $row['r_item_out_id'];
+                $s_id = $row['s_id'];
+                $qtyback = $row['qty'];
+
+                $updatestock = $this->db->query("UPDATE stocks set qtyout = qtyout - $qtyback where s_id = $s_id");
+                if($this->db->affected_rows() == 0){
+                     $this->db->trans_rollback();
+                    return false; // failed to update the stocks back
+                }
+                $deleteItemOut = $this->db->query("DELETE FROM request_items_out where r_item_out_id = $item_out_id and r_id = $id");
+                if($this->db->affected_rows() == 0){
+                     $this->db->trans_rollback();
+                    return false; // failed to delete the item out
+                }
+            }
+        
+        }else{
+            $this->db->trans_rollback();
+            return false; // no items in the request
+        }
+        $this->db->trans_commit();
+        return true;
+
+       
     }
     
     public function approve_tech($id=null){

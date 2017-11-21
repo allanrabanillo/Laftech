@@ -131,6 +131,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </div>
 
                                             <div class="form-group">
+                                                <span class = 'col-sm-2 control-label'>Error Code:</span>
+                                                <div class="col-sm-10">
+                                                   
+                                                    
+                                                <?php echo form_input($t_error_code);?>
+                                             
+                                                 
+                                                     
+                                                    
+                                                </div>
+                                               
+                                            </div>
+
+                                            <div class="form-group">
                                                 <span class = 'col-sm-2 control-label'>Remarks:</span>
                                                 <div class="col-sm-10">
                                                    
