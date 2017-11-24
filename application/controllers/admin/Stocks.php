@@ -13,7 +13,7 @@ class Stocks extends Admin_Controller {
         $this->load->model('admin/parts_model');
         $this->load->model('admin/categories_model');
         /* Title Page :: Common */
-        $this->page_title->push('Stocks');
+        $this->page_title->push('Stocks','Show(s) all the available inventory.');
         $this->data['pagetitle'] = $this->page_title->show();
 
         /* Breadcrumbs :: Common */

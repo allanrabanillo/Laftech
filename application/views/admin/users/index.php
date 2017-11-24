@@ -42,8 +42,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <td><?php echo ($user->active) ? anchor('admin/users/deactivate/'.$user->id, '<span class="label label-success">'.lang('users_active').'</span>') : anchor('admin/users/activate/'. $user->id, '<span class="label label-default">'.lang('users_inactive').'</span>'); ?></td>
                                                 <td>
                                                     
-                                                    <?php echo anchor('admin/users/edit/'.$user->id, '<i class="fa fa-edit"></i> Edit',array('class' => 'btn btn-primary btn-flat')); ?> 
-                                                    <?php echo anchor('admin/users/profile/'.$user->id, '<i class="fa fa-user-o"></i> Profile',array('class' => 'btn btn-warning btn-flat')); ?>
+                                                    <?php echo anchor('admin/users/edit/'.$user->id, '<i class="fa fa-edit"></i>',array('class' => 'btn btn-primary btn-circle','title'=>'Edit')); ?> |
+                                                    <?php echo anchor('admin/users/profile/'.$user->id, '<i class="fa fa-user-o"></i>',array('class' => 'btn btn-warning btn-circle','title'=>'Profile')); ?>
                                                 </td>
                                             </tr>
 <?php endforeach;?>

@@ -43,7 +43,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 
                                                 <td>
                                                     
-                                                    <?php echo anchor('admin/customers/edit/'.$customer->c_id, '<i class="fa fa-edit"></i> Edit',array('class' => 'btn btn-primary btn-flat')); ?> 
+                                                    <?php echo anchor('admin/customers/edit/'.$customer->c_id, '<i class="fa fa-edit"></i>',array('class' => 'btn btn-primary btn-circle','title'=>'Edit')); ?> 
                                                     <!--<?php echo anchor('admin/parts/profile/'.$customer->c_id, '<i class="fa fa-user-o"></i> Profile',array('class' => 'btn btn-warning btn-flat')); ?>-->
                                                 </td>
                                             </tr>

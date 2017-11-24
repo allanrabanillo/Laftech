@@ -105,7 +105,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </ul>
                         </li>
                          
-                        <li class="treeview <?=active_link_controller('prefs')?>">
+                        <!--<li class="treeview <?=active_link_controller('prefs')?>">
                             <a href="#">
                                 <i class="fa fa-cogs"></i>
                                 <span><?php echo lang('menu_preferences'); ?></span>
@@ -114,12 +114,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <ul class="treeview-menu">
                                 <li class="<?=active_link_function('interfaces')?>"><a href="<?php echo site_url('admin/prefs/interfaces/admin'); ?>"><?php echo lang('menu_interfaces'); ?></a></li>
                             </ul>
-                        </li>
-                        <!--<li class="<?=active_link_controller('files')?>">
-                            <a href="<?php echo site_url('admin/files'); ?>">
-                                <i class="fa fa-file"></i> <span><?php echo lang('menu_files'); ?></span>
-                            </a>
                         </li>-->
+                        <li class="<?=active_link_controller('audits')?>">
+                            <a href="<?php echo site_url('admin/audits'); ?>">
+                                <i class="fa fa-history"></i> <span>Audit Trail</span>
+                            </a>
+                        </li>
                         <!--<li class="<?=active_link_controller('database')?>">
                             <a href="<?php echo site_url('admin/database'); ?>">
                                 <i class="fa fa-database"></i> <span><?php echo lang('menu_database_utility'); ?></span>

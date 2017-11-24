@@ -16,8 +16,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="info-box">
                                 <span class="info-box-icon bg-blue"><i class="fa fa-files-o"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Total Jobs</span>
-                                    <span class="info-box-number"><?php echo ($count_jobs)  ?></span>
+                                    <span class="info-box-text">Jobs for INVOICE</span>
+                                    <span class="info-box-number"><?php echo ($count_forinv_jobs)  ?></span>
                                 </div>
                             </div>
                         </div>

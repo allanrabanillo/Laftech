@@ -10,7 +10,7 @@ class Groups extends Admin_Controller {
         $this->lang->load('admin/groups');
 
         /* Title Page :: Common */
-        $this->page_title->push(lang('menu_security_groups'));
+        $this->page_title->push(lang('menu_security_groups'),'Create or Update group details.');
         $this->data['pagetitle'] = $this->page_title->show();
 
         /* Breadcrumbs :: Common */
@@ -56,6 +56,7 @@ class Groups extends Admin_Controller {
 			$new_group_id = $this->ion_auth->create_group($this->input->post('group_name'), $this->input->post('description'));
 			if ($new_group_id)
 			{
+				$this->logme("New group created (Name: ".$this->input->post('group_name')."|Desc: ".$this->input->post('description').").",$this->ion_auth->user()->row()->id,"Groups");
 				$this->session->set_flashdata('message', $this->ion_auth->messages());
 				redirect('admin/groups', 'refresh');
 			}
@@ -127,6 +128,7 @@ class Groups extends Admin_Controller {
 
 				if ($group_update)
 				{
+					$this->logme("Group updated FROM (Name: ".$group->name."|Desc: ".$group->description."|Color: ".$group->bgcolor.") TO (Name: ".$this->input->post('group_name')."|Desc: ".$this->input->post('group_description')."|Color: ".$this->input->post('group_bgcolor').").",$this->ion_auth->user()->row()->id,"Categories");
 					$this->session->set_flashdata('message', $this->lang->line('edit_group_saved'));
 
                     /* IN TEST */

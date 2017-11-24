@@ -36,7 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </div>
                                         </div>
                                         <div class="form-group">
-                                            <span class = 'col-sm-2 control-label'>Description:</span>
+                                            <span class = 'col-sm-2 control-label'>Part No / Description:</span>
                                             <div class="col-sm-10">
                                                 <?php echo form_input($p_desc);?>
                                             </div>
@@ -51,6 +51,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <span class = 'col-sm-2 control-label'>Type:</span>
                                             <div class="col-sm-10">
                                                 <?php echo form_input($p_type);?>
+                                            </div>
+                                        </div>
+                                         <div class="form-group">
+                                            <span class = 'col-sm-2 control-label'>Package:</span>
+                                            <div class="col-sm-10">
+                                                <?php echo form_input($p_package);?>
                                             </div>
                                         </div>
                                         <div class="form-group">

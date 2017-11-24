@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 21, 2017 at 10:30 AM
+-- Generation Time: Nov 24, 2017 at 10:33 AM
 -- Server version: 10.1.22-MariaDB
 -- PHP Version: 7.0.18
 
@@ -65,9 +65,9 @@ CREATE TABLE `categories` (
 --
 
 INSERT INTO `categories` (`cat_id`, `cat_name`, `cat_desc`, `cat_color`) VALUES
-(1, 'Diode', 'diode desc1', '#f44336'),
-(2, 'Resistor', 'test desc', '#3f51b5'),
-(3, 'Potentiometer', 'test2', '#9c27b0');
+(1, 'Diode', 'Diode', '#f44336'),
+(2, 'Resistor', 'Resistor', '#3f51b5'),
+(3, 'Potentiometer', 'Potentiometer', '#9c27b0');
 
 -- --------------------------------------------------------
 
@@ -90,7 +90,7 @@ CREATE TABLE `customers` (
 
 INSERT INTO `customers` (`c_id`, `c_name`, `c_person`, `c_address`, `c_contactno`, `email`) VALUES
 (1, 'AAFSOFTWAREWORKS', 'Allan Rabanillo', 'Stark Bldg, USA', 2147483647, 'aafsoftwareworks@gmail.com'),
-(2, 'JSI Logistics', 'John Doe', 'Pascor Drive, Sky freight Paranaque', 2147483647, 'jsilogistics@gmail.com'),
+(2, 'JSI Logistics', 'John Doe', 'Pascor Drive, Sky freight Paranaque City', 2147483647, 'jsilogistics@gmail.com'),
 (3, 'asdasdsad', 'sadasd', 'ASD\'s Room', 213213213, 'asdasdasd@gmail.com');
 
 -- --------------------------------------------------------
@@ -112,7 +112,6 @@ CREATE TABLE `groups` (
 
 INSERT INTO `groups` (`id`, `name`, `description`, `bgcolor`) VALUES
 (1, 'admin', 'Administrator', '#F44336'),
-(2, 'members', 'General User', '#2196F3'),
 (3, 'Technician', 'Group for Technician', '#009688');
 
 -- --------------------------------------------------------
@@ -210,26 +209,71 @@ CREATE TABLE `login_attempts` (
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `logs`
+--
+
+CREATE TABLE `logs` (
+  `id` int(11) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `message` text NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `module` text NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `logs`
+--
+
+INSERT INTO `logs` (`id`, `status`, `message`, `user_id`, `created_at`, `module`) VALUES
+(2, 1, 'Received a new stock for 1N4002 (1A 100V) with 1 qty.', 1, '2017-11-24 02:34:46', 'Receiving'),
+(3, 1, 'Undo Received (PartNo/Desc: 0.5Ω 2W (4 Band) Quantity: 2 DateReceived: 2017-11-24 02:55:52).', 1, '2017-11-24 02:48:48', 'Receiving'),
+(4, 1, 'New Part created (PartNo/Desc: 100 OHMS-YELLOW|BoxNo: 3|Type: DIP|Package:|Critical Level:1).', 1, '2017-11-24 04:41:16', 'Parts'),
+(5, 1, 'Update Part FROM (PartNo/Desc: 1N4002 (1A 100V)|BoxNo: 2|Type: SMD|Package:|Critical Level:5) TO (PartNo/Desc: 1N4002 (1A 100V)|BoxNo: 2|Type: SMD|Package:asd|Critical Level:5).', 1, '2017-11-24 04:52:45', 'Parts'),
+(6, 1, 'Customer detail updated FROM (Name: JSI Logistics|Contact Person: John Doe|Address: Pascor Drive, Sky freight Paranaque|Contact No: 2147483647|Email : jsilogistics@gmail.com) TO (Name: JSI Logistics|Contact Person: John Doe|Address: Pascor Drive, Sky freight Paranaque City|Contact No: 2147483647|Email : jsilogistics@gmail.com).', 1, '2017-11-24 05:11:38', 'Customers'),
+(7, 1, 'User :  has been activated.', 1, '2017-11-24 07:16:47', 'Groups'),
+(8, 1, 'User : john doe has been activated.', 1, '2017-11-24 07:19:51', 'Users'),
+(9, 1, 'User : john doe has been deactivated.', 1, '2017-11-24 07:20:51', 'Users'),
+(10, 1, 'User : john doe has been activated.', 1, '2017-11-24 07:21:00', 'Users'),
+(11, 1, 'Request item has been removed. (RQ no: 6 | Part Desc: 100 OHMS-YELLOW | Qty: 1 ).', 1, '2017-11-24 07:50:09', 'Request'),
+(12, 1, 'Request item has been removed. (RQ no: 6 | Part Desc: 100 OHMS-YELLOW | Qty: 1 ).', 1, '2017-11-24 07:51:48', 'Request'),
+(13, 1, 'Request item has been added. (RQ no:  | Part Desc: 1N4002 (1A 100V) | Qty: 1 ).', 5, '2017-11-24 07:59:08', 'Request'),
+(14, 1, 'Request item has been added. (RQ no: 6 | Part Desc: 1N4002 (1A 100V) | Qty: 1 ).', 5, '2017-11-24 08:00:02', 'Request'),
+(15, 1, 'Request has been approved by the owner. (RQ no: 6).', 5, '2017-11-24 08:00:13', 'Request'),
+(16, 1, 'Request has been rejected by the owner. (RQ no: 6).', 5, '2017-11-24 08:02:28', 'Request'),
+(17, 1, 'Request item has been added. (RQ no: 6 | Part Desc: 1N4002 (1A 100V) | Qty: 1 ).', 5, '2017-11-24 08:02:48', 'Request'),
+(18, 1, 'Request has been approved by the owner. (RQ no: 6).', 5, '2017-11-24 08:02:51', 'Request'),
+(19, 1, 'Request has been approved by the admin. (RQ no: 6).', 1, '2017-11-24 08:03:33', 'Request'),
+(20, 1, 'New Stock has been added. (PartNo/Desc: 100 OHMS-YELLOW | Quantity: 5 | Supplier OHMS CORP ).', 1, '2017-11-24 08:13:23', 'Receiving'),
+(21, 1, 'Job detail has been updated (Job No: ).', 1, '2017-11-24 08:30:32', 'In and Out'),
+(22, 1, 'Job detail has been updated (Job No: ).', 1, '2017-11-24 08:30:47', 'In and Out'),
+(23, 1, 'Request has been rejected by the admin. (RQ no: 6).', 1, '2017-11-24 08:31:26', 'Request'),
+(24, 1, 'New category created (Name: Diode|Desc: sadad).', 1, '2017-11-24 08:36:53', 'Categories');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `parts`
 --
 
 CREATE TABLE `parts` (
   `p_id` int(11) NOT NULL,
-  `p_desc` varchar(255) NOT NULL,
+  `p_desc` varchar(255) CHARACTER SET utf8mb4 NOT NULL,
   `p_boxno` varchar(255) NOT NULL,
   `p_type` varchar(255) NOT NULL,
   `p_c_level` int(11) NOT NULL,
-  `cat_id` int(11) NOT NULL
+  `cat_id` int(11) NOT NULL,
+  `p_package` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `parts`
 --
 
-INSERT INTO `parts` (`p_id`, `p_desc`, `p_boxno`, `p_type`, `p_c_level`, `cat_id`) VALUES
-(1, 'diode101', '1', 'cmd', 5, 1),
-(2, 'this is a test part1', '2', 'cddddd', 3, 3),
-(3, 'asdasddasd', '1', 'adqwd', 5, 1);
+INSERT INTO `parts` (`p_id`, `p_desc`, `p_boxno`, `p_type`, `p_c_level`, `cat_id`, `p_package`) VALUES
+(1, '0.5Ω 2W (4 Band)', '1', 'DIP', 5, 2, ''),
+(3, '1N4002 (1A 100V)', '2', 'SMD', 5, 1, 'asd'),
+(4, '100 OHMS-YELLOW', '3', 'DIP', 1, 3, '');
 
 -- --------------------------------------------------------
 
@@ -262,16 +306,16 @@ CREATE TABLE `requests` (
   `admin_approval` int(11) NOT NULL,
   `tech_approval` int(11) NOT NULL,
   `admin_id` int(11) NOT NULL,
-  `tech_id` int(11) NOT NULL
+  `tech_id` int(11) NOT NULL,
+  `r_date` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `requests`
 --
 
-INSERT INTO `requests` (`r_id`, `job_no`, `test_no`, `admin_approval`, `tech_approval`, `admin_id`, `tech_id`) VALUES
-(1, 'LIS-15263', '1', 0, 0, 1, 5),
-(2, 'LIS-16045', '1', 0, 1, 0, 5);
+INSERT INTO `requests` (`r_id`, `job_no`, `test_no`, `admin_approval`, `tech_approval`, `admin_id`, `tech_id`, `r_date`) VALUES
+(6, 'LIS-15263', '1', 0, 1, 1, 5, '2017-11-22 06:31:08');
 
 -- --------------------------------------------------------
 
@@ -293,7 +337,8 @@ CREATE TABLE `request_items` (
 
 INSERT INTO `request_items` (`r_item_id`, `r_id`, `s_id`, `p_id`, `qty`) VALUES
 (27, 2, 0, 1, 2),
-(36, 1, 0, 1, 5);
+(36, 1, 0, 1, 5),
+(41, 6, 0, 3, 1);
 
 -- --------------------------------------------------------
 
@@ -325,19 +370,17 @@ CREATE TABLE `stocks` (
   `qty` int(11) NOT NULL,
   `qtyout` int(11) NOT NULL,
   `s_date` datetime NOT NULL,
-  `s_by` varchar(250) NOT NULL
+  `s_by` varchar(250) NOT NULL,
+  `p_supplier` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `stocks`
 --
 
-INSERT INTO `stocks` (`s_id`, `p_id`, `qty`, `qtyout`, `s_date`, `s_by`) VALUES
-(4, 1, 2, 0, '2017-11-06 08:47:31', 'administrator'),
-(10, 1, 2, 0, '2017-11-06 09:23:39', 'administrator'),
-(11, 1, 67, 0, '2017-11-06 14:45:33', 'administrator'),
-(12, 1, 20, 0, '2017-11-06 14:59:02', 'administrator'),
-(13, 3, 5, 0, '2017-11-20 10:31:17', 'administrator');
+INSERT INTO `stocks` (`s_id`, `p_id`, `qty`, `qtyout`, `s_date`, `s_by`, `p_supplier`) VALUES
+(6, 3, 1, 0, '2017-11-24 03:34:46', 'administrator', ''),
+(7, 4, 5, 0, '2017-11-24 09:13:23', 'administrator', 'OHMS CORP');
 
 -- --------------------------------------------------------
 
@@ -370,10 +413,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1511250610, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
+(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1511510580, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
 (4, '::1', 'allan rabanillo', '$2y$08$nARdb5EHVJGgYwZ9VtlCpOA70wF/QQLUImZdsFBvSrfAbua5jWhWy', NULL, 'allanrabanillo@gmail.com', NULL, NULL, NULL, NULL, 1509690576, 1509701465, 1, 'Allan', 'Rabanillo', 'JSI', '09567383179'),
-(5, '::1', 'reymark rabanillo', '$2y$08$B11FZmzpg2ZJVSsqXsHDGOZNywsI87swKvheOAcWVfjieIsjCpJDG', NULL, 'reymark@gmail.com', NULL, NULL, NULL, NULL, 1509979757, 1511253908, 1, 'Reymark', 'Rabanillo', 'Laftech', '09234422332'),
-(6, '::1', 'john doe', '$2y$08$s1v.06S5BgZNC5aYSfLjteABghcgs2R76OT8GLt3l8pY93GZ19fVm', NULL, 'tech@tech.com', NULL, NULL, NULL, NULL, 1511159419, 1511253737, 1, 'John', 'Doe', 'ASD', '123213213213');
+(5, '::1', 'reymark rabanillo', '$2y$08$B11FZmzpg2ZJVSsqXsHDGOZNywsI87swKvheOAcWVfjieIsjCpJDG', NULL, 'reymark@gmail.com', NULL, NULL, NULL, NULL, 1509979757, 1511510542, 1, 'Reymark', 'Rabanillo', 'Laftech', '09234422332'),
+(6, '::1', 'john doe', '$2y$08$s1v.06S5BgZNC5aYSfLjteABghcgs2R76OT8GLt3l8pY93GZ19fVm', NULL, 'tech@tech.com', NULL, NULL, NULL, NULL, 1511159419, 1511318944, 1, 'John', 'Doe', 'ASD', '12121212121212');
 
 -- --------------------------------------------------------
 
@@ -450,6 +493,12 @@ ALTER TABLE `login_attempts`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `logs`
+--
+ALTER TABLE `logs`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `parts`
 --
 ALTER TABLE `parts`
@@ -513,7 +562,7 @@ ALTER TABLE `admin_preferences`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `customers`
 --
@@ -540,10 +589,15 @@ ALTER TABLE `job_traveler`
 ALTER TABLE `login_attempts`
   MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT;
 --
+-- AUTO_INCREMENT for table `logs`
+--
+ALTER TABLE `logs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+--
 -- AUTO_INCREMENT for table `parts`
 --
 ALTER TABLE `parts`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 --
 -- AUTO_INCREMENT for table `public_preferences`
 --
@@ -553,22 +607,22 @@ ALTER TABLE `public_preferences`
 -- AUTO_INCREMENT for table `requests`
 --
 ALTER TABLE `requests`
-  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 --
 -- AUTO_INCREMENT for table `request_items`
 --
 ALTER TABLE `request_items`
-  MODIFY `r_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
+  MODIFY `r_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
 --
 -- AUTO_INCREMENT for table `request_items_out`
 --
 ALTER TABLE `request_items_out`
-  MODIFY `r_item_out_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=121;
+  MODIFY `r_item_out_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
 -- AUTO_INCREMENT for table `stocks`
 --
 ALTER TABLE `stocks`
-  MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `users`
 --

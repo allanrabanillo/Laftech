@@ -12,7 +12,7 @@ class Parts extends Admin_Controller {
         $this->load->model('admin/parts_model');
         $this->load->model('admin/categories_model');
         /* Title Page :: Common */
-        $this->page_title->push('Parts');
+        $this->page_title->push('Parts','Create or Update parts details.');
         $this->data['pagetitle'] = $this->page_title->show();
 
         /* Breadcrumbs :: Common */
@@ -56,7 +56,7 @@ class Parts extends Admin_Controller {
         
 
 		/* Validate form input */
-		$this->form_validation->set_rules('p_desc', 'lang:Description', 'required');
+		$this->form_validation->set_rules('p_desc', 'lang:Description', 'required|is_unique[parts.p_desc]');
 		$this->form_validation->set_rules('p_boxno', 'lang:Box No', 'required|numeric');
         $this->form_validation->set_rules('p_type', 'lang:Type', 'required');
         $this->form_validation->set_rules('p_critical', 'lang:Critical Level', 'required|numeric|greater_than[0]');
@@ -74,13 +74,15 @@ class Parts extends Admin_Controller {
 				'p_boxno'  => $this->input->post('p_boxno'),
                 'p_type'  => $this->input->post('p_type'),
                 'p_c_level'  => $this->input->post('p_critical'),
-                'cat_id'  => $this->input->post('p_category')
+                'cat_id'  => $this->input->post('p_category'),
+				'p_package' => $this->input->post('p_package'),
                 
 			);
 		
 
 		if ($this->form_validation->run() == TRUE && $this->parts_model->create($data))
 		{
+			$this->logme("New Part created (PartNo/Desc: ".$this->input->post('p_desc')."|BoxNo: ".$this->input->post('p_boxno')."|Type: ".$this->input->post('p_type')."|Package:".$this->input->post('p_package')."|Critical Level:".$this->input->post('p_critical').").",$this->ion_auth->user()->row()->id,"Parts");
             $this->session->set_flashdata('message', $this->ion_auth->messages());
 			redirect('admin/parts', 'refresh');
 		}
@@ -108,6 +110,13 @@ class Parts extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('p_type'),
+			);
+			 $this->data['p_package'] = array(
+				'name'  => 'p_package',
+				'id'    => 'p_package',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('p_package'),
 			);
             $this->data['p_critical'] = array(
 				'name'  => 'p_critical',
@@ -181,13 +190,15 @@ class Parts extends Admin_Controller {
 				'p_boxno'  => $this->input->post('p_boxno'),
                 'p_type'  => $this->input->post('p_type'),
                 'p_c_level'  => $this->input->post('p_critical'),
-                'cat_id'  => $this->input->post('p_category')
+                'cat_id'  => $this->input->post('p_category'),
+				'p_package'  => $this->input->post('p_package'),
                 
 			);
 
                 
                 if($this->parts_model->update($id, $data))
 			    {
+					$this->logme("Update Part FROM (PartNo/Desc: ".$parts->p_desc."|BoxNo: ".$parts->p_boxno."|Type: ".$parts->p_type."|Package:".$parts->p_package."|Critical Level:".$parts->p_c_level.") TO (PartNo/Desc: ".$this->input->post('p_desc')."|BoxNo: ".$this->input->post('p_boxno')."|Type: ".$this->input->post('p_type')."|Package:".$this->input->post('p_package')."|Critical Level:".$this->input->post('p_critical').").",$this->ion_auth->user()->row()->id,"Parts");
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
 
 				    if ($this->ion_auth->is_admin())
@@ -244,6 +255,13 @@ class Parts extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('p_type',$parts->p_type),
+			);
+			$this->data['p_package'] = array(
+				'name'  => 'p_package',
+				'id'    => 'p_package',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('p_package',$parts->p_package),
 			);
             $this->data['p_critical'] = array(
 				'name'  => 'p_critical',

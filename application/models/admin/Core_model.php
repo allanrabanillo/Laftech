@@ -25,4 +25,17 @@ class Core_model extends CI_Model {
             return $val;
         }
     }
+
+    public function logme($message, $status,$user,$module){
+
+        $data = array(
+            "status" => $status,
+            "message" => $message,
+            "user_id" => $user,
+            "module" => $module,
+        );
+
+        $this->db->insert("logs",$data);
+
+    }
 }

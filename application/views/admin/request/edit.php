@@ -16,10 +16,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <div class="box-header with-border">
                                     
                                     <h3 class="box-title"><span class = "label label-primary">RQ-<?php echo $rqno?></span></h3>
+                                    <?php foreach($requests as $request):?>
+                                    <?php  if($request->tech_approval != 1):?>
+                                    <h3 class="box-title pull-right"><button class="label label-danger" data-id=<?php echo $rqno?> id="btnCancelRequest"><i class="fa fa-close"></i> Cancel Request</button></h3>
+                                    <?php endif;?>
                                 </div>
                                 <!--<?php var_dump($requests); ?>-->
                                 <div class="progress">
-                                <?php foreach($requests as $request):?>
+                                
                                 
                                 <?php
                                 if($request->tech_approval == 1){

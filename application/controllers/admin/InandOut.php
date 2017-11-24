@@ -15,7 +15,7 @@ class InandOut extends Admin_Controller {
         $this->load->model('admin/categories_model');
        
         /* Title Page :: Common */
-        $this->page_title->push('In and Out');
+        $this->page_title->push('In and Out','Create or Update Job info.');
         $this->data['pagetitle'] = $this->page_title->show();
 
         /* Breadcrumbs :: Common */
@@ -96,7 +96,7 @@ class InandOut extends Admin_Controller {
 		 
 		 
 		 /* Validate form input */
-		 $this->form_validation->set_rules('job_no', 'Job No', 'required');
+		 $this->form_validation->set_rules('job_no', 'Job No', 'required|is_unique[in_and_out.job_no]');
 		 $this->form_validation->set_rules('item_desc', 'Item Desc', 'required');
 		 $this->form_validation->set_rules('partno', 'Part No', 'required');
 		 $this->form_validation->set_rules('date_in', 'Date In', 'required');
@@ -130,11 +130,9 @@ class InandOut extends Admin_Controller {
 							'modelno'  => $this->input->post('modelno'),
 							'refno'  => $this->input->post('refno'),
 							'date_in'  => $this->input->post('date_in'),
-						
 							'drno'  => $this->input->post('drno'),
 							'status'  => $this->input->post('status'),
 							'dn_no'  => $this->input->post('dn_no'),
-							
 							'remarks'  => $this->input->post('remarks'),
 							'c_id'  => $this->input->post('c_id'),
 							'images' => $filenames,
@@ -142,18 +140,13 @@ class InandOut extends Admin_Controller {
 
 
 					 	if($this->inandout_model->create($data)){
+							 $this->logme("New job created (Job No: ".$this->input->post('job_no').").",$this->ion_auth->user()->row()->id,"In and Out");
 							$this->session->set_flashdata('message', $this->ion_auth->messages());
             				redirect('admin/inandout', 'refresh');
 					 	}else{
 							$this->data['message'] .= 'Something went wrong. Please try agian later.';
 						}
-
-					
-				
 			}
-        
-            // $this->session->set_flashdata('message', $this->ion_auth->messages());
-            // redirect('admin/parts', 'refresh');
 		}
 		else
 		{
@@ -451,6 +444,7 @@ class InandOut extends Admin_Controller {
 						
 						if($this->inandout_model->update($id, $data))
 						{
+							$this->logme("Job detail has been updated (Job No: ".$this->input->post('job_no').").",$this->ion_auth->user()->row()->id,"In and Out");
 							$this->session->set_flashdata('message', $this->ion_auth->messages());
 
 							if ($this->ion_auth->is_admin())
@@ -828,6 +822,7 @@ class InandOut extends Admin_Controller {
 						);
 
 					 	if($this->inandout_model->history($data)){
+							$this->logme("New job history has been added. (Job No: ".$id." | History: ".$this->input->post('jobno').").",$this->ion_auth->user()->row()->id,"In and Out");
 							$this->data['message_suc'] .= 'Job No: '.$this->input->post('jobno').' has been successfully added.';
 
 
@@ -936,6 +931,7 @@ class InandOut extends Admin_Controller {
 						);
 
 					 	if($this->inandout_model->insertTraveller($data)){
+							$this->logme("New job traveller has been added. (Job No: ".$id." | Test No: ".$this->input->post('test_no')." | Created by : ".$this->ion_auth->user()->row()->username.").",$this->ion_auth->user()->row()->id,"In and Out");
 							$this->data['message_suc'] .= 'Test No: '.$this->input->post('test_no').' has been successfully added.';
 
 
@@ -1024,6 +1020,7 @@ class InandOut extends Admin_Controller {
 						);
 
 					 	if($this->inandout_model->updateTraveller($id,$testno,$data)){
+							$this->logme("Job traveller has been updated. (Job No: ".$id." | Test No: ".$testno.").",$this->ion_auth->user()->row()->id,"In and Out");
 							$this->data['message_suc'] .= 'Test No: '.$this->input->post('test_no').' has been successfully updated.';
 
 
@@ -1137,6 +1134,7 @@ class InandOut extends Admin_Controller {
 
 				if($this->inandout_model->update($id, $data))
 				{
+					$this->logme("New Drawing has been added. (Job No: ".$id.").",$this->ion_auth->user()->row()->id,"In and Out");
 					$this->session->set_flashdata('message', $this->ion_auth->messages());
 
 					if ($this->ion_auth->is_admin())

@@ -24,6 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <th>Job No</th>
                                                 <th>Test No</th>
                                                 <th>Technician</th>
+                                                <th>Date</th>
                                                 <th>Status</th>
                                             </tr>
                                         </thead>
@@ -56,6 +57,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                                                         endforeach;?>
                                                     </td> 
+                                                    <td><?php echo htmlspecialchars($request->r_date, ENT_QUOTES, 'UTF-8'); ?></td>
                                                    <td><span class="label" style="background:<?php echo $request->color; ?>"><?php echo htmlspecialchars($request->status, ENT_QUOTES, 'UTF-8'); ?></span></td>
 
 

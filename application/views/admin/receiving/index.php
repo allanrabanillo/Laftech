@@ -24,6 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <th>Category</th>
                                                 <th>Description</th>
                                                 <th>Qty</th>
+                                                <th>Supplier</th>
                                                 <th>Received Date</th>
                                                 <th>Received By</th>
                                                 <th>Action</th>
@@ -45,13 +46,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <?php endforeach?>
                                                 
                                                 <td><?php echo htmlspecialchars($receive->qty, ENT_QUOTES, 'UTF-8'); ?></td>
+                                                <td><?php echo htmlspecialchars($receive->p_supplier, ENT_QUOTES, 'UTF-8'); ?></td>
                                                 <td><?php echo htmlspecialchars($receive->s_date, ENT_QUOTES, 'UTF-8'); ?></td>
                                                 <td><?php echo htmlspecialchars($receive->s_by, ENT_QUOTES, 'UTF-8'); ?></td>
                                                 
                                                 <td>
                                                     
-                                                    <?php echo anchor('admin/receiving/edit/'.$receive->s_id, '<i class="fa fa-edit"></i> Edit',array('class' => 'btn btn-primary btn-flat')); ?> 
-                                                    <!--<?php echo anchor('admin/receiving/profile/'.$category->cat_id, '<i class="fa fa-user-o"></i> Profile',array('class' => 'btn btn-warning btn-flat')); ?>-->
+                                                    <!--<?php echo anchor('admin/receiving/edit/'.$receive->s_id, '<i class="fa fa-remove"></i>',array('class' => 'btn btn-danger btn-circle','title'=>'Undo Receive')); ?> -->
+                                                    <button type="button" class="btn btn-danger btn-circle" title="Undo Receive" data-id="<?php echo $receive->s_id;?>" id="btnUndoReceive"><i class="fa fa-remove"></i></button>
                                                 </td>
                                             </tr>
 <?php endforeach;?>

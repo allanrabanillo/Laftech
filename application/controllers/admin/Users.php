@@ -11,7 +11,7 @@ class Users extends Admin_Controller {
         $this->lang->load('admin/users');
 
         /* Title Page :: Common */
-        $this->page_title->push(lang('menu_users'));
+        $this->page_title->push(lang('menu_users'),'Create, Update, Activate and Deactivate users.');
         $this->data['pagetitle'] = $this->page_title->show();
 
         /* Breadcrumbs :: Common */
@@ -45,6 +45,10 @@ class Users extends Admin_Controller {
 
 	public function create()
 	{
+		 if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin())
+        {
+            redirect('auth/login', 'refresh');
+        }
         /* Breadcrumbs */
         $this->breadcrumbs->unshift(2, lang('menu_users_create'), 'admin/users/create');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
@@ -77,6 +81,7 @@ class Users extends Admin_Controller {
 
 		if ($this->form_validation->run() == TRUE && $this->ion_auth->register($username, $password, $email, $additional_data))
 		{
+			$this->logme("New user created (First Name: ".$this->input->post('first_name')."|Last Name: ".$this->input->post('last_name')."|Email: ".$this->input->post('email').").",$this->ion_auth->user()->row()->id,"Users");
             $this->session->set_flashdata('message', $this->ion_auth->messages());
 			redirect('admin/users', 'refresh');
 		}
@@ -216,6 +221,7 @@ class Users extends Admin_Controller {
 
                 if($this->ion_auth->update($user->id, $data))
 			    {
+					$this->logme("User detail update (First Name: ".$this->input->post('first_name')."|Last Name: ".$this->input->post('last_name')."|Email: ".$this->input->post('email').").",$this->ion_auth->user()->row()->id,"Users");
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
 
 				    if ($this->ion_auth->is_admin())
@@ -224,7 +230,7 @@ class Users extends Admin_Controller {
 					}
 					else
 					{
-						redirect('admin', 'refresh');
+						redirect('admin/users/profile/'.$id, 'refresh');
 					}
 			    }
 			    else
@@ -317,13 +323,14 @@ class Users extends Admin_Controller {
 
 		if ($activation)
 		{
+			$this->logme("User : ".$this->ion_auth->user($id)->row()->username." has been activated.",$this->ion_auth->user()->row()->id,"Users");
             $this->session->set_flashdata('message', $this->ion_auth->messages());
 			redirect('admin/users', 'refresh');
 		}
 		else
 		{
 			$this->session->set_flashdata('message', $this->ion_auth->errors());
-			redirect('auth/forgot_password', 'refresh');
+			redirect('admin/users', 'refresh');
 		}
 	}
 
@@ -368,6 +375,7 @@ class Users extends Admin_Controller {
 
                 if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
 				{
+					$this->logme("User : ".$this->ion_auth->user($id)->row()->username." has been deactivated.",$this->ion_auth->user()->row()->id,"Users");
 					$this->ion_auth->deactivate($id);
 				}
 			}
@@ -379,13 +387,17 @@ class Users extends Admin_Controller {
 
 	public function profile($id)
 	{
+		if ( ! $this->ion_auth->logged_in() OR ( ! $this->ion_auth->is_admin() && ! ($this->ion_auth->user()->row()->id == $id)))
+		{
+			redirect('auth', 'refresh');
+		}
         /* Breadcrumbs */
         $this->breadcrumbs->unshift(2, lang('menu_users_profile'), 'admin/groups/profile');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
 
         /* Data */
         $id = (int) $id;
-
+		$this->data['id'] = $id;
         $this->data['user_info'] = $this->ion_auth->user($id)->result();
         foreach ($this->data['user_info'] as $k => $user)
         {

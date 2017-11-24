@@ -11,7 +11,7 @@ class Customers extends Admin_Controller {
         $this->lang->load('admin/users');
         $this->load->model('admin/customers_model');
         /* Title Page :: Common */
-        $this->page_title->push('Customers');
+        $this->page_title->push('Customers','Create or Update customer details.');
         $this->data['pagetitle'] = $this->page_title->show();
 
         /* Breadcrumbs :: Common */
@@ -74,6 +74,7 @@ class Customers extends Admin_Controller {
 
 		if ($this->form_validation->run() == TRUE && $this->customers_model->create($data))
 		{
+			$this->logme("New customer created (Name: ".$this->input->post('c_name')."|Contact Person: ".$this->input->post('c_person')."|Address: ".$this->input->post('c_address')."|Contact No: ".$this->input->post('c_contactno')."|Email : ".$this->input->post('c_email').").",$this->ion_auth->user()->row()->id,"Customers");
             $this->session->set_flashdata('message', $this->ion_auth->messages());
 			redirect('admin/customers', 'refresh');
 		}
@@ -171,6 +172,7 @@ class Customers extends Admin_Controller {
                 
                 if($this->customers_model->update($id, $data))
 			    {
+					$this->logme("Customer detail updated FROM (Name: ".$customer->c_name."|Contact Person: ".$customer->c_person."|Address: ".$customer->c_address."|Contact No: ".$customer->c_contactno."|Email : ".$customer->email.") TO (Name: ".$this->input->post('c_name')."|Contact Person: ".$this->input->post('c_person')."|Address: ".$this->input->post('c_address')."|Contact No: ".$this->input->post('c_contactno')."|Email : ".$this->input->post('c_email').").",$this->ion_auth->user()->row()->id,"Customers");
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
 
 				    if ($this->ion_auth->is_admin())

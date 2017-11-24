@@ -31,6 +31,14 @@ class Request_model extends CI_Model {
     {
         return $row = $this->db->get_where('requests', array('r_id' => $id))->row();
     }
+    public function get_request_itm($id = null)
+    {
+        $this->db->select('parts.p_desc,request_items.qty');
+        $this->db->from('request_items');
+        $this->db->where("request_items.r_item_id",$id);
+        $this->db->join('parts', 'parts.p_id = request_items.p_id');
+        return $row = $this->db->get()->row();
+    }
 
     public function create($data)
     {
@@ -57,6 +65,12 @@ class Request_model extends CI_Model {
     {
         $this->db->where('r_id', $id);
         $this->db->update('requests',$data);
+
+        return ($this->db->affected_rows() != 1) ? false : true;
+    }
+
+    public function delete($data){
+         $query = $this->db->delete('requests',$data);
 
         return ($this->db->affected_rows() != 1) ? false : true;
     }

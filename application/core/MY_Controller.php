@@ -59,6 +59,7 @@ class MY_Controller extends CI_Controller
             $this->data['mobile_ie'] = FALSE;
         }
 	}
+
 }
 
 
@@ -104,6 +105,12 @@ class Admin_Controller extends MY_Controller
                 $this->data['header_alert_file_install']    = NULL; /* << A MODIFIER !!! */
             }
         }
+    }
+    public function logme($message,$user,$module="None",$status=1){
+
+         $this->load->model('admin/core_model');
+
+         $this->core_model->logme($message, $status,$user,$module);
     }
 }
 

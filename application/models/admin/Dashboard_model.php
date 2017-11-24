@@ -168,4 +168,20 @@ class Dashboard_model extends CI_Model {
 
         return $query->num_rows();
     }
+
+     public function get_forinv_count_jobs()
+    {
+        //SELECT parts.p_id,COALESCE((qty - qtyout), 0 ) as balance from parts left outer join stocks on stocks.p_id = parts.p_id GROUP BY parts.p_id
+        
+        // $this->db->select('count(parts.p_id) as total');
+        // $this->db->from('parts');
+        // $this->db->join('stocks', 'stocks.p_id = parts.p_id','left');
+
+
+        // $this->db->group_by("parts.p_id");
+                // $this->db->where('SUM(COALESCE((stocks.qty-stocks.qtyout), 0 )) <', 'parts.p_c_level');
+        $query = $this->db->query("select distinct job_no from in_and_out where status ='GOOD' ");
+
+        return $query->num_rows();
+    }
 }

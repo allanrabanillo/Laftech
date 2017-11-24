@@ -13,7 +13,7 @@ class Receiving extends Admin_Controller {
         $this->load->model('admin/parts_model');
         $this->load->model('admin/categories_model');
         /* Title Page :: Common */
-        $this->page_title->push('Receiving');
+        $this->page_title->push('Receiving','Receive a new stock.');
         $this->data['pagetitle'] = $this->page_title->show();
 
         /* Breadcrumbs :: Common */
@@ -45,6 +45,7 @@ class Receiving extends Admin_Controller {
             }
 
             /* Load Template */
+			
             $this->template->admin_render('admin/receiving/index', $this->data);
         }
 	}
@@ -67,6 +68,7 @@ class Receiving extends Admin_Controller {
 			$data = array(
 				'p_id' => $this->input->post('p_id'),
 				'qty'  => $this->input->post('qty'),
+				'p_supplier'  => $this->input->post('p_supplier'),
 				'qtyout'  => 0,
                 's_date' => date('Y-m-d H:i:s'),
                 's_by' => $this->ion_auth->user()->row()->username,
@@ -74,6 +76,7 @@ class Receiving extends Admin_Controller {
 		
 		if ($this->form_validation->run() == TRUE && $this->parts_model->check_part($this->input->post('p_name'))  && $this->receiving_model->create($data))
 		{
+			$this->logme("New Stock has been added. (PartNo/Desc: ".$this->input->post('p_name')." | Quantity: ".$this->input->post('qty')." | Supplier: ".$this->input->post('p_supplier')." ).",$this->ion_auth->user()->row()->id,"Receiving");
             $this->session->set_flashdata('message', $this->ion_auth->messages());
 			redirect('admin/receiving', 'refresh');
 		}
@@ -91,6 +94,13 @@ class Receiving extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('p_name'),
+			);
+			$this->data['p_supplier'] = array(
+				'name'  => 'p_supplier',
+				'id'    => 'p_supplier',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('p_supplier'),
 			);
 			$this->data['qty'] = array(
 				'name'  => 'qty',
@@ -112,10 +122,32 @@ class Receiving extends Admin_Controller {
 	}
 
 
-	public function delete()
+
+
+	public function delete($id)
 	{
-        /* Load Template */
-		$this->template->admin_render('admin/users/delete', $this->data);
+
+		$received = $this->receiving_model->get_received($id);
+        $data = array(
+			's_id' => $id
+		);
+		$mes = '';
+
+		if($this->ion_auth->is_admin()){
+			if(!$this->receiving_model->delete($data,$id)){
+				$mes = "Unable to undo receive.";
+			}else{
+				$this->logme("Undo Received (PartNo/Desc: ".$received->p_desc." Quantity: ".$received->qty." DateReceived: ".$received->s_date.").",$this->ion_auth->user()->row()->id,"Receiving");
+				$mes = 'success';
+			}
+			
+		}else{
+			$mes = "You need administrator rights to undo received.";
+		}
+		
+		
+
+		echo $mes;
 	}
 
      public function getpartsname(){
@@ -125,98 +157,7 @@ class Receiving extends Admin_Controller {
     }
 
 
-	public function edit($id)
-	{
-        $id = (int) $id;
-
-		if ( ! $this->ion_auth->logged_in() OR ! $this->ion_auth->is_admin() OR ! $id OR empty($id))
-		{
-			redirect('auth', 'refresh');
-		}
-
-        /* Breadcrumbs */
-        $this->breadcrumbs->unshift(2, 'Edit category', 'admin/categories/edit');
-        $this->data['breadcrumb'] = $this->breadcrumbs->show();
-
-        
-		/* Data */
-		$category = $this->categories_model->get_cat($id);
-        
-		/* Validate form input */
-		$this->form_validation->set_rules('category_name', 'lang:category_name', 'required');
-		$this->form_validation->set_rules('category_desc', 'lang:category_desc', 'required');
 	
-
-		if (isset($_POST) && ! empty($_POST))
-		{
-           
-			if ($this->form_validation->run() == TRUE)
-			{
-				$data = array(
-					'cat_name' => $this->input->post('category_name'),
-					'cat_desc'  => $this->input->post('category_desc'),
-				);
-
-                
-                if($this->categories_model->update($id, $data))
-			    {
-                    $this->session->set_flashdata('message', $this->ion_auth->messages());
-
-				    if ($this->ion_auth->is_admin())
-					{
-						redirect('admin/categories', 'refresh');
-					}
-					else
-					{
-						redirect('admin', 'refresh');
-					}
-			    }
-			    else
-			    {
-                    $this->session->set_flashdata('message', $this->ion_auth->errors());
-
-				    if ($this->ion_auth->is_admin())
-					{
-                        
-						redirect('admin/categories', 'refresh');
-					}
-					else
-					{
-						redirect('/', 'refresh');
-					}
-			    }
-			}
-		}
-
-	
-
-		// set the flash data error message if there is one
-		$this->data['message'] = validation_errors();
-
-		// pass the user to the view
-		$this->data['category_name']        = $category->cat_name;
-		$this->data['category_desc']        = $category->cat_desc;
-		
-
-		$this->data['category_name'] = array(
-			'name'  => 'category_name',
-			'id'    => 'category_name',
-			'type'  => 'text',
-            'class' => 'form-control',
-			'value' => $this->form_validation->set_value('category_name', $category->cat_name)
-		);
-		$this->data['category_desc'] = array(
-			'name'  => 'category_desc',
-			'id'    => 'category_desc',
-			'type'  => 'text',
-            'class' => 'form-control',
-			'value' => $this->form_validation->set_value('category_desc', $category->cat_desc)
-		);
-	
-        /* Load Template */
-		$this->template->admin_render('admin/categories/edit', $this->data);
-	}
-
 
 	function activate($id, $code = FALSE)
 	{

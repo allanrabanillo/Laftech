@@ -11,7 +11,7 @@ class Categories extends Admin_Controller {
         $this->lang->load('admin/users');
         $this->load->model('admin/categories_model');
         /* Title Page :: Common */
-        $this->page_title->push('Categories');
+        $this->page_title->push('Categories','Create or Update category details.');
         $this->data['pagetitle'] = $this->page_title->show();
 
         /* Breadcrumbs :: Common */
@@ -49,7 +49,7 @@ class Categories extends Admin_Controller {
 		// $tables = $this->config->item('tables', 'ion_auth');
 
 		/* Validate form input */
-		$this->form_validation->set_rules('category_name', 'Category Name', 'required');
+		$this->form_validation->set_rules('category_name', 'Category Name', 'required|is_unique[categories.cat_name]');
 		$this->form_validation->set_rules('category_desc', 'Category Description', 'required');
 	
 
@@ -69,6 +69,7 @@ class Categories extends Admin_Controller {
 
 		if ($this->form_validation->run() == TRUE && $this->categories_model->create($data))
 		{
+			$this->logme("New category created (Name: ".$this->input->post('category_name')."|Desc: ".$this->input->post('category_desc').").",$this->ion_auth->user()->row()->id,"Categories");
             $this->session->set_flashdata('message', $this->ion_auth->messages());
 			redirect('admin/categories', 'refresh');
 		}
@@ -141,6 +142,7 @@ class Categories extends Admin_Controller {
                 
                 if($this->categories_model->update($id, $data))
 			    {
+					$this->logme("Category updated FROM (Name: ".$category->cat_name."|Desc: ".$category->cat_desc."|Color: ".$category->cat_color.") TO (Name: ".$this->input->post('category_name')."|Desc: ".$this->input->post('category_desc')."|Color: ".$this->input->post('group_bgcolor').").",$this->ion_auth->user()->row()->id,"Categories");
                     $this->session->set_flashdata('message', $this->ion_auth->messages());
 
 				    if ($this->ion_auth->is_admin())
@@ -196,8 +198,8 @@ class Categories extends Admin_Controller {
 			'type'     => 'text',
 			'name'     => 'group_bgcolor',
 			'id'       => 'group_bgcolor',
-			'value'    => $this->form_validation->set_value('group_bgcolor', $group->bgcolor),
-			'data-src' => $group->bgcolor,
+			'value'    => $this->form_validation->set_value('group_bgcolor', $category->cat_color),
+			'data-src' => $category->cat_color,
             'class'    => 'form-control'
 		);
 	

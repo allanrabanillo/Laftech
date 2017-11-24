@@ -37,6 +37,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </div>
                                         </div>
                                         <div class="form-group">
+                                            <span class = 'col-sm-2 control-label'>Supplier:</span>
+                                            <div class="col-sm-10">
+                                                <?php echo form_input($p_supplier);?>
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
                                             <span class = 'col-sm-2 control-label'>Quantity:</span>
                                             <div class="col-sm-10">
                                                 <?php echo form_input($qty);?>
