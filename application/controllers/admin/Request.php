@@ -101,7 +101,7 @@ class Request extends Admin_Controller {
 			if($this->inandout_model->check_jobno($this->input->post('job_no'))){
 				if($this->inandout_model->check_testno($this->input->post('job_no'))){
 					if($last_id = $this->request_model->create($data)){
-						$this->logme("New Request has been created. (RQ no: ".$last_id.").",$this->ion_auth->user()->row()->id,"Request");
+						$this->logme("New Request has been created. (RQ: ".$last_id.").",$this->ion_auth->user()->row()->id,"Request");
 						$this->session->set_flashdata('message', $this->ion_auth->messages());
 						redirect('admin/request/item_list/'.$last_id, 'refresh');
 					}
@@ -161,7 +161,7 @@ class Request extends Admin_Controller {
 				if($request->tech_id != $this->ion_auth->user()->row()->id){
 					$mes = 'Your not the owner of this request.';
 				}else{
-					$this->logme("Request has been deleted. (RQ no: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
+					$this->logme("Request has been deleted. (RQ: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
 					$this->request_model->delete($data);
 					$mes = 'success';
 				}
@@ -219,7 +219,7 @@ class Request extends Admin_Controller {
 								'test_no'  => $this->input->post('test_no')
 								);
 								if($this->request_model->update($id,$data)){
-									$this->logme("Request has been updated. (RQ no: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
+									$this->logme("Request has been updated. (RQ: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
 									$this->data['message_suc'] .= 'Update Successful.';
 								}else{
 									$this->data['message'] .= 'Something went wrong.';
@@ -325,7 +325,7 @@ class Request extends Admin_Controller {
 		
 		$mes = '';
 		if($this->ion_auth->is_admin()){
-			$this->logme("Request item has been removed. (RQ no: ".$rqno." | Part Desc: ".$request_item->p_desc." | Qty: ".$request_item->qty." ).",$this->ion_auth->user()->row()->id,"Request");
+			$this->logme("Request item has been removed. (RQ: ".$rqno." | Part Desc: ".$request_item->p_desc." | Qty: ".$request_item->qty." ).",$this->ion_auth->user()->row()->id,"Request");
 			$this->request_model->item_delete($data);
 			$mes = 'success';
 		}else{
@@ -387,7 +387,7 @@ class Request extends Admin_Controller {
 						
 						if($this->request_model->item_create($data))
 						{
-							$this->logme("Request item has been added. (RQ no: ".$rqno." | Part Desc: ".$this->input->post('p_name')." | Qty: ".$this->input->post('p_qty')." ).",$this->ion_auth->user()->row()->id,"Request");
+							$this->logme("Request item has been added. (RQ: ".$rqno." | Part Desc: ".$this->input->post('p_name')." | Qty: ".$this->input->post('p_qty')." ).",$this->ion_auth->user()->row()->id,"Request");
 							$this->session->set_flashdata('message', $this->ion_auth->messages());
 
 						
@@ -426,7 +426,7 @@ class Request extends Admin_Controller {
 							
 							if($this->request_model->item_create($data))
 							{
-								$this->logme("Request item has been added. (RQ no: ".$id." | Part Desc: ".$this->input->post('p_name')." | Qty: ".$this->input->post('p_qty')." ).",$this->ion_auth->user()->row()->id,"Request");
+								$this->logme("Request item has been added. (RQ: ".$id." | Part Desc: ".$this->input->post('p_name')." | Qty: ".$this->input->post('p_qty')." ).",$this->ion_auth->user()->row()->id,"Request");
 								$this->session->set_flashdata('message', $this->ion_auth->messages());
 
 							
@@ -579,7 +579,7 @@ class Request extends Admin_Controller {
 							if(!$this->request_model->approve_admin($id)){
 								$this->data['message'] = '<p>Approved Failed.<br><h5>Cause(s):</h5><h5><i class="fa fa-remove"></i> Not enough stocks in the inventory. Please check your inventory.</h5><h5><i class="fa fa-remove"></i> Failed loading the modules. Please try to refresh the program.</h5></p>';
 							}else{
-								$this->logme("Request has been approved by the admin. (RQ no: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
+								$this->logme("Request has been approved by the admin. (RQ: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
 								$this->data['message_suc'] = 'Approved Successful.';
 							}
 
@@ -597,7 +597,7 @@ class Request extends Admin_Controller {
 							if(!$this->request_model->reject_admin($id)){
 								$this->data['message'] = 'Reject Failed.';
 							}else{
-								$this->logme("Request has been rejected by the admin. (RQ no: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
+								$this->logme("Request has been rejected by the admin. (RQ: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
 								$this->data['message_suc'] = 'Reject Successful.';
 							}
 						}
@@ -619,7 +619,7 @@ class Request extends Admin_Controller {
 							if(!$this->request_model->approve_tech($id)){
 								$this->data['message'] = 'Approved Failed.';
 							}else{
-								$this->logme("Request has been approved by the owner. (RQ no: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
+								$this->logme("Request has been approved by the owner. (RQ: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
 								$this->data['message_suc'] = 'Approved Successful.';
 							}
 
@@ -637,7 +637,7 @@ class Request extends Admin_Controller {
 							if(!$this->request_model->reject_tech($id)){
 								$this->data['message'] = 'Reject Failed.';
 							}else{
-								$this->logme("Request has been rejected by the owner. (RQ no: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
+								$this->logme("Request has been rejected by the owner. (RQ: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
 								$this->data['message_suc'] = 'Reject Successful.';
 							}
 						} 

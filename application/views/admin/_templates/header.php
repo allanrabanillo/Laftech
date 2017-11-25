@@ -28,7 +28,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 <?php if ($mobile == TRUE && $android == TRUE): ?>
         <meta name="mobile-web-app-capable" content="yes">
 <?php endif; ?>
-        <link rel="icon" href="<?php echo base_url($avatar_dir . '/icon.png'); ?>">
+        <link rel="manifest" href="<?php echo base_url('manifest.json');?>">
+        <link rel="icon" sizes="192x192" href="<?php echo base_url($avatar_dir . '/icon.png'); ?>">
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,700italic">
         <link rel="stylesheet" href="<?php echo base_url($frameworks_dir . '/bootstrap/css/bootstrap.min.css'); ?>">
         <link rel="stylesheet" href="<?php echo base_url($frameworks_dir . '/bootstrap/css/dataTables.bootstrap.min.css'); ?>">

@@ -444,7 +444,7 @@ class InandOut extends Admin_Controller {
 						
 						if($this->inandout_model->update($id, $data))
 						{
-							$this->logme("Job detail has been updated (Job No: ".$this->input->post('job_no').").",$this->ion_auth->user()->row()->id,"In and Out");
+							$this->logme("Job detail has been updated (Job No: ".$id.").",$this->ion_auth->user()->row()->id,"In and Out");
 							$this->session->set_flashdata('message', $this->ion_auth->messages());
 
 							if ($this->ion_auth->is_admin())

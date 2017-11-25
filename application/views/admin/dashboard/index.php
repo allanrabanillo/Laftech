@@ -25,7 +25,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <div class="info-box">
                                 <span class="info-box-icon bg-yellow"><i class="fa fa-sort-amount-desc"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Critical Level</span>
+                                    <span class="info-box-text">Critical Part(s)</span>
                                     <span class="info-box-number"><?php echo ($count_critical_parts)  ?></span>
                                 </div>
                             </div>

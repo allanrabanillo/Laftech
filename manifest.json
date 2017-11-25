@@ -1,0 +1,14 @@
+{
+    "short_name": "Laftech",
+    "name": "Laftech",
+    "icons": [{
+            "src": "/upload/avatar/icon2.png",
+            "type": "image/png",
+            "sizes": "256x256"
+        }
+
+    ],
+    "start_url": "/laftech",
+    "background_color": "#d73925",
+    "display": "standalone"
+}

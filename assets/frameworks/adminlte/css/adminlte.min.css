@@ -1294,7 +1294,7 @@ a:focus {
 
 .navbar-nav>.user-menu>.dropdown-menu>.user-footer {
     background-color: #f9f9f9;
-    padding: 10px
+    padding: 10px;
 }
 
 .navbar-nav>.user-menu>.dropdown-menu>.user-footer:before,
@@ -1314,6 +1314,13 @@ a:focus {
 @media (max-width:991px) {
     .navbar-nav>.user-menu>.dropdown-menu>.user-footer .btn-default:hover {
         background-color: #f9f9f9
+    }
+}
+
+@media (max-width:991px) {
+    .navbar-nav>.user-menu>.dropdown-menu>.user-footer .btn-danger {
+        background-color: red;
+        color: white;
     }
 }
 
