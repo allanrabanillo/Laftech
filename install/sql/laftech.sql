@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 24, 2017 at 10:33 AM
+-- Generation Time: Nov 27, 2017 at 10:03 AM
 -- Server version: 10.1.22-MariaDB
 -- PHP Version: 7.0.18
 
@@ -46,6 +46,27 @@ CREATE TABLE `admin_preferences` (
 
 INSERT INTO `admin_preferences` (`id`, `user_panel`, `sidebar_form`, `messages_menu`, `notifications_menu`, `tasks_menu`, `user_menu`, `ctrl_sidebar`, `transition_page`) VALUES
 (1, 1, 0, 0, 0, 0, 1, 0, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `announcements`
+--
+
+CREATE TABLE `announcements` (
+  `a_id` int(11) NOT NULL,
+  `a_message` text NOT NULL,
+  `a_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  `a_title` varchar(50) NOT NULL,
+  `a_active` tinyint(4) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `announcements`
+--
+
+INSERT INTO `announcements` (`a_id`, `a_message`, `a_date`, `a_title`, `a_active`) VALUES
+(3, 'Due to National Holiday.\r\nWednesday October 23rd.\r\nWill be a day off. Enjoy this short break.\r\n', '2017-11-27 12:52:07', 'Day Off', 0);
 
 -- --------------------------------------------------------
 
@@ -248,7 +269,17 @@ INSERT INTO `logs` (`id`, `status`, `message`, `user_id`, `created_at`, `module`
 (21, 1, 'Job detail has been updated (Job No: ).', 1, '2017-11-24 08:30:32', 'In and Out'),
 (22, 1, 'Job detail has been updated (Job No: ).', 1, '2017-11-24 08:30:47', 'In and Out'),
 (23, 1, 'Request has been rejected by the admin. (RQ no: 6).', 1, '2017-11-24 08:31:26', 'Request'),
-(24, 1, 'New category created (Name: Diode|Desc: sadad).', 1, '2017-11-24 08:36:53', 'Categories');
+(24, 1, 'New category created (Name: Diode|Desc: sadad).', 1, '2017-11-24 08:36:53', 'Categories'),
+(25, 1, 'User detail update (First Name: Allan|Last Name: Rabanillo|Email: ).', 1, '2017-11-25 03:33:19', 'Users'),
+(26, 1, 'User detail update (First Name: Allan|Last Name: Rabanillo|Email: ).', 1, '2017-11-25 03:33:43', 'Users'),
+(27, 1, 'New Stock has been added. (PartNo/Desc: 100 OHMS-YELLOW | Quantity: 100 | Supplier: this is a test supplier ).', 1, '2017-11-25 03:34:07', 'Receiving'),
+(28, 1, 'Undo Received (PartNo/Desc: 100 OHMS-YELLOW Quantity: 100 DateReceived: 2017-11-25 04:34:07).', 1, '2017-11-25 03:35:06', 'Receiving'),
+(29, 1, 'Request has been approved by the admin. (RQ: 6).', 1, '2017-11-25 03:35:30', 'Request'),
+(30, 1, 'New announcement created (Title: 2nd test title|Message: this is a second test announcement.).', 1, '2017-11-27 04:00:44', 'Announcements'),
+(31, 1, 'Announcement updated FROM (Title: 2nd test title|Message: this is a second test announcement.) TO (Title: 2nd test title|Message: this is a second test announcement. test).', 1, '2017-11-27 04:09:20', 'Announcements'),
+(32, 1, 'Announcement deleted (Title: This is a test title |  Message: This is a test announcement.).', 1, '2017-11-27 04:24:51', 'Announcements'),
+(33, 1, 'New announcement created (Title: Day Off|Message: Due to National Holiday.\r\nWednesday October 23rd.\r\nWill be a day off. Enjoy this short break.\r\n).', 1, '2017-11-27 04:52:07', 'Announcements'),
+(34, 1, 'Announcement deleted (Title: 2nd test title |  Message: this is a second test announcement. test).', 1, '2017-11-27 05:14:31', 'Announcements');
 
 -- --------------------------------------------------------
 
@@ -315,7 +346,7 @@ CREATE TABLE `requests` (
 --
 
 INSERT INTO `requests` (`r_id`, `job_no`, `test_no`, `admin_approval`, `tech_approval`, `admin_id`, `tech_id`, `r_date`) VALUES
-(6, 'LIS-15263', '1', 0, 1, 1, 5, '2017-11-22 06:31:08');
+(6, 'LIS-15263', '1', 1, 1, 1, 5, '2017-11-22 06:31:08');
 
 -- --------------------------------------------------------
 
@@ -358,6 +389,13 @@ CREATE TABLE `request_items_out` (
   `r_item_out_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+--
+-- Dumping data for table `request_items_out`
+--
+
+INSERT INTO `request_items_out` (`r_id`, `r_item_id`, `s_id`, `p_id`, `qty`, `out_date`, `tech`, `out_by`, `r_item_out_id`) VALUES
+(6, 41, 6, 3, 1, '2017-11-25 04:35:30', '', '1', 2);
+
 -- --------------------------------------------------------
 
 --
@@ -379,7 +417,7 @@ CREATE TABLE `stocks` (
 --
 
 INSERT INTO `stocks` (`s_id`, `p_id`, `qty`, `qtyout`, `s_date`, `s_by`, `p_supplier`) VALUES
-(6, 3, 1, 0, '2017-11-24 03:34:46', 'administrator', ''),
+(6, 3, 1, 1, '2017-11-24 03:34:46', 'administrator', ''),
 (7, 4, 5, 0, '2017-11-24 09:13:23', 'administrator', 'OHMS CORP');
 
 -- --------------------------------------------------------
@@ -413,10 +451,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2a$07$SeBknntpZror9uyftVopmu61qg0ms8Qv1yV6FG.kQOSM.9QhmTo36', '', 'admin@admin.com', '', NULL, NULL, 'ZWF0m/yzsHPISbbkGKMINO', 1268889823, 1511510580, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
+(1, '127.0.0.1', 'administrator', '$2y$08$9RDXKidYvphil0EbKwH9S.AjebHYGaF9QhJ/lORrJRNIh1eaG2RFy', '', 'admin@admin.com', '', NULL, NULL, 'PiyzP.WpKODjBgwpjZ2Kz.', 1268889823, 1511768262, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
 (4, '::1', 'allan rabanillo', '$2y$08$nARdb5EHVJGgYwZ9VtlCpOA70wF/QQLUImZdsFBvSrfAbua5jWhWy', NULL, 'allanrabanillo@gmail.com', NULL, NULL, NULL, NULL, 1509690576, 1509701465, 1, 'Allan', 'Rabanillo', 'JSI', '09567383179'),
-(5, '::1', 'reymark rabanillo', '$2y$08$B11FZmzpg2ZJVSsqXsHDGOZNywsI87swKvheOAcWVfjieIsjCpJDG', NULL, 'reymark@gmail.com', NULL, NULL, NULL, NULL, 1509979757, 1511510542, 1, 'Reymark', 'Rabanillo', 'Laftech', '09234422332'),
-(6, '::1', 'john doe', '$2y$08$s1v.06S5BgZNC5aYSfLjteABghcgs2R76OT8GLt3l8pY93GZ19fVm', NULL, 'tech@tech.com', NULL, NULL, NULL, NULL, 1511159419, 1511318944, 1, 'John', 'Doe', 'ASD', '12121212121212');
+(5, '::1', 'reymark rabanillo', '$2y$08$B11FZmzpg2ZJVSsqXsHDGOZNywsI87swKvheOAcWVfjieIsjCpJDG', NULL, 'reymark@gmail.com', NULL, NULL, NULL, NULL, 1509979757, 1511580429, 1, 'Reymark', 'Rabanillo', 'Laftech', '09234422332'),
+(6, '::1', 'john doe', '$2y$08$s1v.06S5BgZNC5aYSfLjteABghcgs2R76OT8GLt3l8pY93GZ19fVm', NULL, 'tech@tech.com', NULL, NULL, NULL, NULL, 1511159419, 1511768236, 1, 'John', 'Doe', 'ASD', '12121212121212');
 
 -- --------------------------------------------------------
 
@@ -435,7 +473,7 @@ CREATE TABLE `users_groups` (
 --
 
 INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
-(14, 1, 1),
+(18, 1, 1),
 (11, 4, 1),
 (13, 5, 3),
 (16, 6, 3);
@@ -449,6 +487,12 @@ INSERT INTO `users_groups` (`id`, `user_id`, `group_id`) VALUES
 --
 ALTER TABLE `admin_preferences`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `announcements`
+--
+ALTER TABLE `announcements`
+  ADD PRIMARY KEY (`a_id`);
 
 --
 -- Indexes for table `categories`
@@ -559,10 +603,15 @@ ALTER TABLE `users_groups`
 ALTER TABLE `admin_preferences`
   MODIFY `id` tinyint(1) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 --
+-- AUTO_INCREMENT for table `announcements`
+--
+ALTER TABLE `announcements`
+  MODIFY `a_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+--
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `cat_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 --
 -- AUTO_INCREMENT for table `customers`
 --
@@ -592,12 +641,12 @@ ALTER TABLE `login_attempts`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
 --
 -- AUTO_INCREMENT for table `parts`
 --
 ALTER TABLE `parts`
-  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `p_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 --
 -- AUTO_INCREMENT for table `public_preferences`
 --
@@ -617,7 +666,7 @@ ALTER TABLE `request_items`
 -- AUTO_INCREMENT for table `request_items_out`
 --
 ALTER TABLE `request_items_out`
-  MODIFY `r_item_out_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `r_item_out_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `stocks`
 --
@@ -632,7 +681,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `users_groups`
 --
 ALTER TABLE `users_groups`
-  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `id` int(11) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
 --
 -- Constraints for dumped tables
 --

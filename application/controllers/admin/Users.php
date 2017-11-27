@@ -16,6 +16,7 @@ class Users extends Admin_Controller {
 
         /* Breadcrumbs :: Common */
         $this->breadcrumbs->unshift(1, lang('menu_users'), 'admin/users');
+		$this->load->model('admin/audits_model');
     }
 
 
@@ -394,7 +395,7 @@ class Users extends Admin_Controller {
         /* Breadcrumbs */
         $this->breadcrumbs->unshift(2, lang('menu_users_profile'), 'admin/groups/profile');
         $this->data['breadcrumb'] = $this->breadcrumbs->show();
-
+		 $this->data['audits'] = $this->audits_model->get_all_by_user($id);
         /* Data */
         $id = (int) $id;
 		$this->data['id'] = $id;

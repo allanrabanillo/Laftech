@@ -184,4 +184,10 @@ class Dashboard_model extends CI_Model {
 
         return $query->num_rows();
     }
+
+    public function get_announcements(){
+        $query = $this->db->query("SELECT * FROM announcements order by a_date desc limit 5;");
+
+        return $query->result();
+    }
 }

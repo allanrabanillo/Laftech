@@ -45,6 +45,7 @@ class Dashboard extends Admin_Controller {
             $this->data['memory_peak_usage'] = $this->dashboard_model->memory_peak_usage(TRUE);
             $this->data['memory_usepercent'] = $this->dashboard_model->memory_usepercent(TRUE, FALSE);
             $this->data['users'] = $this->dashboard_model->top_user_login();
+            $this->data['announcements']       = $this->dashboard_model->get_announcements();
             // foreach ($this->data['users'] as $k => $user)
             // {
             //     $this->data['users'][$k]->groups = $this->ion_auth->get_users_groups($user->id)->result();

@@ -120,6 +120,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <i class="fa fa-history"></i> <span>Audit Trail</span>
                             </a>
                         </li>
+                        <li class="<?=active_link_controller('announcements')?>">
+                            <a href="<?php echo site_url('admin/announcements'); ?>">
+                                <i class="fa fa-bullhorn"></i> <span>Announcements</span>
+                            </a>
+                        </li>
                         <!--<li class="<?=active_link_controller('database')?>">
                             <a href="<?php echo site_url('admin/database'); ?>">
                                 <i class="fa fa-database"></i> <span><?php echo lang('menu_database_utility'); ?></span>

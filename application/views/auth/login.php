@@ -34,13 +34,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         <span class="glyphicon glyphicon-lock form-control-feedback"></span>
                     </div>
                     <div class="row">
-                        <div class="col-xs-8">
+                        <!--<div class="col-xs-8">
                             <div class="checkbox icheck">
                                 <label>
                                     <?php echo form_checkbox('remember', '1', FALSE, 'id="remember"'); ?><?php echo lang('auth_remember_me'); ?>
                                 </label>
                             </div>
-                        </div>
+                        </div>-->
                         <div class="col-xs-4">
                             <?php echo form_submit('submit', lang('auth_login'), array('class' => 'btn btn-primary btn-block btn-flat'));?>
                         </div>
