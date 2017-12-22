@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2017 at 10:03 AM
+-- Generation Time: Dec 22, 2017 at 07:10 AM
 -- Server version: 10.1.22-MariaDB
 -- PHP Version: 7.0.18
 
@@ -166,8 +166,8 @@ CREATE TABLE `in_and_out` (
 --
 
 INSERT INTO `in_and_out` (`job_no`, `c_id`, `item_desc`, `serialno`, `partno`, `modelno`, `refno`, `date_in`, `date_out`, `drno`, `status`, `dn_no`, `invno`, `date_inv`, `remarks`, `images`, `drawing`) VALUES
-('LIS-15263', 1, 'VEHICLE MANAGER (BR243 ZENNITH FOODS)', '1401170025', '1045780/106R', '', '', '2015-12-17', '2016-03-27', '0810', 'UNDERWARRANTY', '31207', '', '0000-00-00', 'FORTEST BTHI in', 'LIS-15263_p1.png,LIS-15263_sa1.png', 'LIS-15263_316701b.png,LIS-15263_epak.png,LIS-15263_impinj1.PNG,LIS-15263_impinj2.PNG,LIS-15263_impinj3.PNG,LIS-15263_magento_credentials.PNG'),
-('LIS-16045', 2, 'VEHICLE MANAGER (POLAR BEAR)', '13082301592', '1045780/105', '', '', '2016-05-12', '0000-00-00', '', 'NAU', '0038843', '', '0000-00-00', 'NO AVAILABLE UNIT', 'LIS-16045_epak.png,LIS-16045_iam+_order.PNG,LIS-16045_impinj2.PNG', 'LIS-16045_s9.png,LIS-16045_s10.png');
+('LIS-15263', 1, 'VEHICLE MANAGER (BR243 ZENNITH FOODS)', '1401170025', '1045780/106R', '', '', '2015-12-17', '0000-00-00', '0810', 'FORTEST', '31207', '', '0000-00-00', 'FORTEST BTHI in', 'LIS-15263_p1.png,LIS-15263_sa1.png', 'LIS-15263_316701b.png,LIS-15263_epak.png,LIS-15263_impinj1.PNG,LIS-15263_impinj2.PNG,LIS-15263_impinj3.PNG,LIS-15263_magento_credentials.PNG'),
+('LIS-16045', 2, 'VEHICLE MANAGER (POLAR BEAR)', '13082301592', '1045780/105', '', '', '2016-05-12', '0000-00-00', '', 'GOOD', '0038843', '', '0000-00-00', 'NO AVAILABLE UNIT', 'LIS-16045_epak.png,LIS-16045_iam+_order.PNG,LIS-16045_impinj2.PNG', 'LIS-16045_s9.png,LIS-16045_s10.png');
 
 -- --------------------------------------------------------
 
@@ -199,20 +199,46 @@ CREATE TABLE `job_traveler` (
   `job_no` varchar(150) NOT NULL,
   `test_no` int(11) NOT NULL,
   `t_remarks` varchar(150) NOT NULL,
-  `t_status` int(50) NOT NULL,
+  `t_status` varchar(50) NOT NULL,
   `t_user` varchar(50) NOT NULL,
   `t_id` int(11) NOT NULL,
-  `t_error_code` varchar(100) NOT NULL
+  `t_error_code` varchar(100) NOT NULL,
+  `t_datein` date NOT NULL,
+  `t_dateout` date NOT NULL,
+  `status` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `job_traveler`
 --
 
-INSERT INTO `job_traveler` (`job_no`, `test_no`, `t_remarks`, `t_status`, `t_user`, `t_id`, `t_error_code`) VALUES
-('LIS-15263', 1, 'test remarks', 0, '5', 1, 'Error code 4023'),
-('LIS-16045', 1, 'this is a test', 0, '1', 2, '404'),
-('LIS-15263', 2, 'Code error', 0, '1', 3, 'Error  code 500');
+INSERT INTO `job_traveler` (`job_no`, `test_no`, `t_remarks`, `t_status`, `t_user`, `t_id`, `t_error_code`, `t_datein`, `t_dateout`, `status`) VALUES
+('LIS-15263', 1, 'test remarks', 'FORTEST', '5', 1, 'Error code 40233', '2017-12-20', '2017-12-20', ''),
+('LIS-16045', 1, 'this is a test', '', '1', 2, '404', '0000-00-00', '0000-00-00', ''),
+('LIS-15263', 2, 'Code error', 'FORTEST', '1', 3, 'Error code 500', '2017-12-21', '2017-12-21', ''),
+('LIS-15263', 3, '123', 'FORTEST', '1', 4, '123', '2017-12-14', '2017-12-14', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `job_travller_scrap_items`
+--
+
+CREATE TABLE `job_travller_scrap_items` (
+  `s_id` int(11) NOT NULL,
+  `job_no` varchar(50) NOT NULL,
+  `test_no` int(11) NOT NULL,
+  `s_dec` varchar(50) NOT NULL,
+  `quantity` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `job_travller_scrap_items`
+--
+
+INSERT INTO `job_travller_scrap_items` (`s_id`, `job_no`, `test_no`, `s_dec`, `quantity`) VALUES
+(6, 'LIS-16045', 1, 'asdasd', 3),
+(8, 'LIS-16045', 1, 'dasd', 3);
 
 -- --------------------------------------------------------
 
@@ -279,7 +305,22 @@ INSERT INTO `logs` (`id`, `status`, `message`, `user_id`, `created_at`, `module`
 (31, 1, 'Announcement updated FROM (Title: 2nd test title|Message: this is a second test announcement.) TO (Title: 2nd test title|Message: this is a second test announcement. test).', 1, '2017-11-27 04:09:20', 'Announcements'),
 (32, 1, 'Announcement deleted (Title: This is a test title |  Message: This is a test announcement.).', 1, '2017-11-27 04:24:51', 'Announcements'),
 (33, 1, 'New announcement created (Title: Day Off|Message: Due to National Holiday.\r\nWednesday October 23rd.\r\nWill be a day off. Enjoy this short break.\r\n).', 1, '2017-11-27 04:52:07', 'Announcements'),
-(34, 1, 'Announcement deleted (Title: 2nd test title |  Message: this is a second test announcement. test).', 1, '2017-11-27 05:14:31', 'Announcements');
+(34, 1, 'Announcement deleted (Title: 2nd test title |  Message: this is a second test announcement. test).', 1, '2017-11-27 05:14:31', 'Announcements'),
+(35, 1, 'Job detail has been updated (Job No: LIS-15263).', 1, '2017-12-20 01:02:01', 'In and Out'),
+(36, 1, 'Job detail has been updated (Job No: LIS-15263).', 1, '2017-12-20 03:03:35', 'In and Out'),
+(37, 1, 'Job detail has been updated (Job No: LIS-16045).', 1, '2017-12-20 03:07:30', 'In and Out'),
+(38, 1, 'New Request has been created. (RQ: 7).', 5, '2017-12-20 04:05:33', 'Request'),
+(39, 1, 'Request item has been added. (RQ: 7 | Part Desc: 0.5Ω 2W (4 Band) | Qty: 1 ).', 5, '2017-12-20 04:06:03', 'Request'),
+(40, 1, 'Request has been approved by the owner. (RQ: 7).', 1, '2017-12-20 04:11:19', 'Request'),
+(41, 1, 'Request has been rejected by the owner. (RQ: 7).', 1, '2017-12-20 04:17:23', 'Request'),
+(42, 1, 'Request has been approved by the owner. (RQ: 7).', 1, '2017-12-20 04:17:27', 'Request'),
+(43, 1, 'Request has been rejected by the owner. (RQ: 7).', 1, '2017-12-20 04:17:28', 'Request'),
+(44, 1, 'Update Part FROM (PartNo/Desc: 0.5Ω 2W (4 Band)|BoxNo: 1|Type: DIP|Package:|Critical Level:5) TO (PartNo/Desc: 0.5Ω 2W (4 Band)|BoxNo: 1|Type: DIP|Package:|Critical Level:5).', 1, '2017-12-20 04:39:49', 'Parts'),
+(45, 1, 'Update Part FROM (PartNo/Desc: 1N4002 (1A 100V)|BoxNo: 2|Type: SMD|Package:asd|Critical Level:5) TO (PartNo/Desc: 1N4002 (1A 100V)|BoxNo: 2|Type: SMD|Package:asd|Critical Level:5).', 1, '2017-12-20 04:56:35', 'Parts'),
+(46, 1, 'Update Part FROM (PartNo/Desc: 100 OHMS-YELLOW|BoxNo: 3|Type: DIP|Package:|Critical Level:1) TO (PartNo/Desc: 100 OHMS-YELLOW|BoxNo: 3|Type: DIP|Package:|Critical Level:1).', 1, '2017-12-20 04:56:38', 'Parts'),
+(47, 1, 'New job traveller has been added. (Job No: LIS-15263 | Test No: 3 | Created by : administrator).', 1, '2017-12-20 05:41:57', 'In and Out'),
+(48, 1, 'New job traveller has been added. (Job No: LIS-15263 | Test No: 3 | Created by : administrator).', 1, '2017-12-20 05:43:00', 'In and Out'),
+(49, 1, 'New job traveller has been added. (Job No: LIS-15263 | Test No: 213213 | Created by : administrator).', 1, '2017-12-20 07:03:43', 'In and Out');
 
 -- --------------------------------------------------------
 
@@ -294,17 +335,18 @@ CREATE TABLE `parts` (
   `p_type` varchar(255) NOT NULL,
   `p_c_level` int(11) NOT NULL,
   `cat_id` int(11) NOT NULL,
-  `p_package` varchar(50) NOT NULL
+  `p_package` varchar(50) NOT NULL,
+  `p_scode` varchar(50) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 --
 -- Dumping data for table `parts`
 --
 
-INSERT INTO `parts` (`p_id`, `p_desc`, `p_boxno`, `p_type`, `p_c_level`, `cat_id`, `p_package`) VALUES
-(1, '0.5Ω 2W (4 Band)', '1', 'DIP', 5, 2, ''),
-(3, '1N4002 (1A 100V)', '2', 'SMD', 5, 1, 'asd'),
-(4, '100 OHMS-YELLOW', '3', 'DIP', 1, 3, '');
+INSERT INTO `parts` (`p_id`, `p_desc`, `p_boxno`, `p_type`, `p_c_level`, `cat_id`, `p_package`, `p_scode`) VALUES
+(1, '0.5Ω 2W (4 Band)', '1', 'DIP', 5, 2, '', '123'),
+(3, '1N4002 (1A 100V)', '2', 'SMD', 5, 1, 'asd', '1234'),
+(4, '100 OHMS-YELLOW', '3', 'DIP', 1, 3, '', '12345');
 
 -- --------------------------------------------------------
 
@@ -346,7 +388,8 @@ CREATE TABLE `requests` (
 --
 
 INSERT INTO `requests` (`r_id`, `job_no`, `test_no`, `admin_approval`, `tech_approval`, `admin_id`, `tech_id`, `r_date`) VALUES
-(6, 'LIS-15263', '1', 1, 1, 1, 5, '2017-11-22 06:31:08');
+(6, 'LIS-15263', '1', 1, 1, 1, 5, '2017-11-22 06:31:08'),
+(7, 'LIS-15263', '1', 0, 0, 0, 5, '2017-12-20 05:05:33');
 
 -- --------------------------------------------------------
 
@@ -369,7 +412,8 @@ CREATE TABLE `request_items` (
 INSERT INTO `request_items` (`r_item_id`, `r_id`, `s_id`, `p_id`, `qty`) VALUES
 (27, 2, 0, 1, 2),
 (36, 1, 0, 1, 5),
-(41, 6, 0, 3, 1);
+(41, 6, 0, 3, 1),
+(42, 7, 0, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -451,9 +495,9 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `ip_address`, `username`, `password`, `salt`, `email`, `activation_code`, `forgotten_password_code`, `forgotten_password_time`, `remember_code`, `created_on`, `last_login`, `active`, `first_name`, `last_name`, `company`, `phone`) VALUES
-(1, '127.0.0.1', 'administrator', '$2y$08$9RDXKidYvphil0EbKwH9S.AjebHYGaF9QhJ/lORrJRNIh1eaG2RFy', '', 'admin@admin.com', '', NULL, NULL, 'PiyzP.WpKODjBgwpjZ2Kz.', 1268889823, 1511768262, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
+(1, '127.0.0.1', 'administrator', '$2y$08$9RDXKidYvphil0EbKwH9S.AjebHYGaF9QhJ/lORrJRNIh1eaG2RFy', '', 'admin@admin.com', '', NULL, NULL, 'PiyzP.WpKODjBgwpjZ2Kz.', 1268889823, 1513922846, 1, 'Allan', 'Rabanillo', 'ADMIN', '234234324'),
 (4, '::1', 'allan rabanillo', '$2y$08$nARdb5EHVJGgYwZ9VtlCpOA70wF/QQLUImZdsFBvSrfAbua5jWhWy', NULL, 'allanrabanillo@gmail.com', NULL, NULL, NULL, NULL, 1509690576, 1509701465, 1, 'Allan', 'Rabanillo', 'JSI', '09567383179'),
-(5, '::1', 'reymark rabanillo', '$2y$08$B11FZmzpg2ZJVSsqXsHDGOZNywsI87swKvheOAcWVfjieIsjCpJDG', NULL, 'reymark@gmail.com', NULL, NULL, NULL, NULL, 1509979757, 1511580429, 1, 'Reymark', 'Rabanillo', 'Laftech', '09234422332'),
+(5, '::1', 'reymark rabanillo', '$2y$08$B11FZmzpg2ZJVSsqXsHDGOZNywsI87swKvheOAcWVfjieIsjCpJDG', NULL, 'reymark@gmail.com', NULL, NULL, NULL, NULL, 1509979757, 1513742717, 1, 'Reymark', 'Rabanillo', 'Laftech', '09234422332'),
 (6, '::1', 'john doe', '$2y$08$s1v.06S5BgZNC5aYSfLjteABghcgs2R76OT8GLt3l8pY93GZ19fVm', NULL, 'tech@tech.com', NULL, NULL, NULL, NULL, 1511159419, 1511768236, 1, 'John', 'Doe', 'ASD', '12121212121212');
 
 -- --------------------------------------------------------
@@ -529,6 +573,12 @@ ALTER TABLE `job_history`
 --
 ALTER TABLE `job_traveler`
   ADD PRIMARY KEY (`t_id`);
+
+--
+-- Indexes for table `job_travller_scrap_items`
+--
+ALTER TABLE `job_travller_scrap_items`
+  ADD PRIMARY KEY (`s_id`);
 
 --
 -- Indexes for table `login_attempts`
@@ -631,7 +681,12 @@ ALTER TABLE `job_history`
 -- AUTO_INCREMENT for table `job_traveler`
 --
 ALTER TABLE `job_traveler`
-  MODIFY `t_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `t_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+--
+-- AUTO_INCREMENT for table `job_travller_scrap_items`
+--
+ALTER TABLE `job_travller_scrap_items`
+  MODIFY `s_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 --
 -- AUTO_INCREMENT for table `login_attempts`
 --
@@ -641,7 +696,7 @@ ALTER TABLE `login_attempts`
 -- AUTO_INCREMENT for table `logs`
 --
 ALTER TABLE `logs`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=50;
 --
 -- AUTO_INCREMENT for table `parts`
 --
@@ -656,12 +711,12 @@ ALTER TABLE `public_preferences`
 -- AUTO_INCREMENT for table `requests`
 --
 ALTER TABLE `requests`
-  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `r_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 --
 -- AUTO_INCREMENT for table `request_items`
 --
 ALTER TABLE `request_items`
-  MODIFY `r_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=42;
+  MODIFY `r_item_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=43;
 --
 -- AUTO_INCREMENT for table `request_items_out`
 --
