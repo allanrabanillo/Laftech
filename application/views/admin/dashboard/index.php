@@ -12,18 +12,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <section class="content">
                     <?php echo $dashboard_alert_file_install; ?>
                     <div class="row">
+                       
                         <div class="col-md-3 col-sm-6 col-xs-12">
+                            
                             <div class="info-box">
+                                <a href="./inandout/forinv">
                                 <span class="info-box-icon bg-blue"><i class="fa fa-files-o"></i></span>
+                                </a>
                                 <div class="info-box-content">
                                     <span class="info-box-text">Jobs for INVOICE</span>
                                     <span class="info-box-number"><?php echo ($count_forinv_jobs)  ?></span>
                                 </div>
                             </div>
+                           
                         </div>
-                        <div class="col-md-3 col-sm-6 col-xs-12">
+                         
+                        <div class="col-md-2 col-sm-6 col-xs-12">
                             <div class="info-box">
+                                <a href="./inandout/fortest">
+                                <span class="info-box-icon bg-yellow"><i class="fa fa-cogs"></i></span>
+                                </a>
+                                <div class="info-box-content">
+                                    <span class="info-box-text">Jobs for TEST</span>
+                                    <span class="info-box-number"><?php echo ($count_fortest_jobs)  ?></span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-sm-6 col-xs-12">
+                            <div class="info-box">
+                                <a href="./inandout/fortest">
                                 <span class="info-box-icon bg-yellow"><i class="fa fa-sort-amount-desc"></i></span>
+                                </a>
                                 <div class="info-box-content">
                                     <span class="info-box-text">Critical Part(s)</span>
                                     <span class="info-box-number"><?php echo ($count_critical_parts)  ?></span>
@@ -33,20 +52,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                         <div class="clearfix visible-sm-block"></div>
 
-                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        <div class="col-md-2 col-sm-6 col-xs-12">
                             <div class="info-box">
+                                <a href="./stocks/outofstock">
                                 <span class="info-box-icon bg-red"><i class="fa fa-exclamation-triangle"></i></span>
+                                </a>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Out of Stock</span>
+                                     <span class="info-box-text">Out of Stock(s)</span>
                                     <span class="info-box-number"><?php echo ($count_outofstock_parts)  ?></span>
+                                    
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-6 col-xs-12">
                             <div class="info-box">
+                                <a href="./request/pending">
                                 <span class="info-box-icon bg-orange"><i class="glyphicon glyphicon-copy"></i></span>
+                                </a>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Peding Requests</span>
+                                    <span class="info-box-text">Peding Request(s)</span>
                                     <span class="info-box-number"><?php echo $count_pending_requests; ?></span>
                                 </div>
                             </div>

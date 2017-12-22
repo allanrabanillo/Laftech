@@ -24,6 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <th>Descrption</th>
                                                 <th>Box No</th>
                                                 <th>Type</th>
+                                                <th>Stock Code</th>
                                                 <th>Critical Lvl</th>
                                                 <th>Action</th>
                                             </tr>
@@ -39,6 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <td><?php echo htmlspecialchars($part->p_desc, ENT_QUOTES, 'UTF-8'); ?></td>
                                                 <td><?php echo htmlspecialchars($part->p_boxno, ENT_QUOTES, 'UTF-8'); ?></td>
                                                 <td><?php echo htmlspecialchars($part->p_type, ENT_QUOTES, 'UTF-8'); ?></td>
+                                                <td><?php echo htmlspecialchars($part->p_scode, ENT_QUOTES, 'UTF-8'); ?></td>
                                                 <td><?php echo htmlspecialchars($part->p_c_level, ENT_QUOTES, 'UTF-8'); ?></td>
                                                 <td>
                                                     

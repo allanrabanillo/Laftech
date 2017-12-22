@@ -53,6 +53,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                      <?php echo form_open_multipart(current_url(), array('class' => 'form-horizontal', 'id' => 'form-edit_inandout')); ?>
                         
                                    <div class="col-md-6">
+                                    <?php echo form_fieldset('Request Items'); ?>
                                         <table class="table table-striped table-bordered display">
 
                                         <thead>
@@ -103,8 +104,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                          <?php endforeach;?>
                                         </tbody>
 
+
+                                        <br>
+
                                         </table>
+                                        <?php echo form_fieldset_close(); ?>
+                                        <?php echo form_fieldset('Scrap Items'); ?>
+                                        <table class="table table-striped table-bordered display">
+
+                                        <thead>
+                                            <tr>
+                                                
+                                                <th>Desc</th>
+                                                <th>Qty</th>
+                                                <th>Action</th>
+                                                
+                                            </tr>
+                                        </thead>
+                                        <tbody>
                                         
+                                         <?php foreach ($traveller_scrap_items as $item):?>
+                                       
+                                         <tr>
+
+                
+                                            
+                                            <td><?php echo htmlspecialchars($item->s_dec, ENT_QUOTES, 'UTF-8'); ?></td>
+                                            <td><?php echo htmlspecialchars($item->quantity, ENT_QUOTES, 'UTF-8'); ?></td>
+                                            <td><a data-id = "<?php echo $item->s_id;?>" data-jobno="<?php echo $item->job_no;?>" data-testno="<?php echo $item->test_no;?>" class="btn btn-danger btn-circle" id = "btnRemoveScrapItem"><i class="glyphicon glyphicon-remove"></i></a></td>
+
+                                         </tr>
+                                       
+                                         <?php endforeach;?>
+                                        </tbody>
+
+                                        </table>
+                                        <br>
+                                        <button type="button" data-jobno="<?php echo $job_no;?>" data-testno="<?php echo $testno;?>" class="btn btn-primary btn-flat" id ="btnAddScrapItem">Add Scrap</button>
+                                        <?php echo form_fieldset_close(); ?>
+
                                         
                                         
                                         
@@ -140,6 +178,31 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                  
                                                      
                                                     
+                                                </div>
+                                               
+                                            </div>
+
+                                            <div class="form-group">
+                                                <span class = 'col-sm-2 control-label'>Status:</span>
+                                                <div class="col-sm-10">
+                                                    <?php echo form_dropdown($status);?>
+                                                </div>
+                                            </div>
+                                            
+                                             <div class="form-group">
+                                                <span class = 'col-sm-2 control-label'>In:</span>
+                                                <div class="col-sm-4">
+                                                   
+                                                    
+                                                <?php echo form_input($date_in);?>
+                                             
+                                                </div>
+                                               <span class = 'col-sm-2 control-label'>Out:</span>
+                                                <div class="col-sm-4">
+                                                   
+                                                    
+                                                <?php echo form_input($date_out);?>
+                                             
                                                 </div>
                                                
                                             </div>

@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                 <a href="<?php echo site_url('admin/dashboard'); ?>" class="logo">
 
                     <span class="logo-mini"><img width="70%" src="<?php echo base_url($avatar_dir . '/icon2.png'); ?>"/></span>
-                    <span class="logo-lg"><img width="10%" src="<?php echo base_url($avatar_dir . '/icon2.png'); ?>"/><b>Laf</b>tech </span>
+                    <span class="logo-lg"><img width="10%" src="<?php echo base_url($avatar_dir . '/icon2.png'); ?>"/><b>Laftech</b> </span>
 
                 </a>
 

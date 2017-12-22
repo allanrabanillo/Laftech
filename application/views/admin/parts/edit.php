@@ -47,18 +47,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <?php echo form_input($p_boxno);?>
                                             </div>
                                         </div>
+                                       <div class="form-group">
+                                            <span class = 'col-sm-2 control-label'>Package:</span>
+                                            <div class="col-sm-10">
+                                                <?php echo form_input($p_package);?>
+                                            </div>
+                                        </div>
                                         <div class="form-group">
                                             <span class = 'col-sm-2 control-label'>Type:</span>
                                             <div class="col-sm-10">
                                                 <?php echo form_input($p_type);?>
                                             </div>
                                         </div>
-                                         <div class="form-group">
-                                            <span class = 'col-sm-2 control-label'>Package:</span>
+                                        <div class="form-group">
+                                            <span class = 'col-sm-2 control-label'>Stock Code:</span>
                                             <div class="col-sm-10">
-                                                <?php echo form_input($p_package);?>
+                                                <?php echo form_input($p_scode);?>
                                             </div>
                                         </div>
+                                      
                                         <div class="form-group">
                                             <span class = 'col-sm-2 control-label'>Critical Lvl:</span>
                                             <div class="col-sm-10">

@@ -6,7 +6,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                 <!--<a href="#" style ="color:#dd4b39"><b>Laf</b>tech</a>-->
 
-                <a href="#" style ="color:#dd4b39"><img width="20%" src="<?php echo base_url($avatar_dir . '/icon.png'); ?>"/><b>Laf</b>tech</a>
+                <a href="#" style ="color:#dd4b39"><img width="20%" src="<?php echo base_url($avatar_dir . '/icon.png'); ?>"/><b>Laftech</b></a>
 
             </div>
 

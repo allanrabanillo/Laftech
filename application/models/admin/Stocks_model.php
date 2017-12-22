@@ -20,6 +20,32 @@ class Stocks_model extends CI_Model {
         return $query->result();
     }
 
+     public function get_critical()
+    {
+        //SELECT parts.p_id,COALESCE((qty - qtyout), 0 ) as balance from parts left outer join stocks on stocks.p_id = parts.p_id GROUP BY parts.p_id
+        $this->db->select('parts.p_id,SUM(COALESCE((qty-qtyout), 0 )) as balance');
+        $this->db->from('parts');
+        $this->db->join('stocks', 'stocks.p_id = parts.p_id','left');
+        $this->db->where('COALESCE((qty-qtyout), 0 ) < parts.p_c_level');
+        $this->db->group_by("parts.p_id");
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
+    public function get_outofstock()
+    {
+        //SELECT parts.p_id,COALESCE((qty - qtyout), 0 ) as balance from parts left outer join stocks on stocks.p_id = parts.p_id GROUP BY parts.p_id
+        $this->db->select('parts.p_id,SUM(COALESCE((qty-qtyout), 0 )) as balance');
+        $this->db->from('parts');
+        $this->db->join('stocks', 'stocks.p_id = parts.p_id','left');
+        $this->db->where('COALESCE((qty-qtyout), 0 ) = 0');
+        $this->db->group_by("parts.p_id");
+        $query = $this->db->get();
+
+        return $query->result();
+    }
+
     
 
     

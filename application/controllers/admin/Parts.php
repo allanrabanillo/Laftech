@@ -59,7 +59,8 @@ class Parts extends Admin_Controller {
 		$this->form_validation->set_rules('p_desc', 'lang:Description', 'required|is_unique[parts.p_desc]');
 		$this->form_validation->set_rules('p_boxno', 'lang:Box No', 'required|numeric');
         $this->form_validation->set_rules('p_type', 'lang:Type', 'required');
-        $this->form_validation->set_rules('p_critical', 'lang:Critical Level', 'required|numeric|greater_than[0]');
+        $this->form_validation->set_rules('p_scode', 'Stock Code', 'is_unique[parts.p_scode]');
+        $this->form_validation->set_rules('p_critical', 'Critical Level', 'required|numeric|greater_than[0]');
         $this->form_validation->set_rules('p_category', 'lang:Category', 'required');
 	
 
@@ -76,6 +77,7 @@ class Parts extends Admin_Controller {
                 'p_c_level'  => $this->input->post('p_critical'),
                 'cat_id'  => $this->input->post('p_category'),
 				'p_package' => $this->input->post('p_package'),
+				'p_scode' => $this->input->post('p_scode'),
                 
 			);
 		
@@ -117,6 +119,13 @@ class Parts extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('p_package'),
+			);
+			 $this->data['p_scode'] = array(
+				'name'  => 'p_scode',
+				'id'    => 'p_scode',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('p_scode'),
 			);
             $this->data['p_critical'] = array(
 				'name'  => 'p_critical',
@@ -176,7 +185,8 @@ class Parts extends Admin_Controller {
 		$this->form_validation->set_rules('p_desc', 'lang:Description', 'required');
 		$this->form_validation->set_rules('p_boxno', 'lang:Box No', 'required|numeric');
         $this->form_validation->set_rules('p_type', 'lang:Type', 'required');
-        $this->form_validation->set_rules('p_critical', 'lang:Critical Level', 'required|numeric|greater_than[0]');
+        // $this->form_validation->set_rules('p_scode', 'Stock Code', 'edit_unique[parts.p_scode.'.$parts->p_scode.']');
+        $this->form_validation->set_rules('p_critical', 'Critical Level', 'required|numeric|greater_than[0]');
         $this->form_validation->set_rules('p_category', 'lang:Category', 'required');
 	
 
@@ -192,6 +202,7 @@ class Parts extends Admin_Controller {
                 'p_c_level'  => $this->input->post('p_critical'),
                 'cat_id'  => $this->input->post('p_category'),
 				'p_package'  => $this->input->post('p_package'),
+				'p_scode' => $this->input->post('p_scode'),
                 
 			);
 
@@ -255,6 +266,13 @@ class Parts extends Admin_Controller {
 				'type'  => 'text',
                 'class' => 'form-control',
 				'value' => $this->form_validation->set_value('p_type',$parts->p_type),
+			);
+			$this->data['p_scode'] = array(
+				'name'  => 'p_scode',
+				'id'    => 'p_scode',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('p_scode',$parts->p_scode),
 			);
 			$this->data['p_package'] = array(
 				'name'  => 'p_package',

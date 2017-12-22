@@ -61,11 +61,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <thead>
                                             <tr>
                                                 <th>Test No</th>
-                                                
                                                 <th>Error Code</th>
+                                                <th>Status</th>
+                                                <th>Date In</th>
+                                                <th>Date Out</th>
                                                 <th>Remarks</th>
-                                                
-                                                <th>Technician</th>
                                                 
                                             </tr>
                                         </thead>
@@ -84,25 +84,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     ?>
                                             </td>
                                             <td><?php echo htmlspecialchars($traveller->t_error_code, ENT_QUOTES, 'UTF-8'); ?></td>
+                                            <td><?php echo htmlspecialchars($traveller->t_status, ENT_QUOTES, 'UTF-8'); ?></td>
+                                            <td><?php echo htmlspecialchars($traveller->t_datein, ENT_QUOTES, 'UTF-8'); ?></td>
+                                            <td><?php echo htmlspecialchars($traveller->t_dateout, ENT_QUOTES, 'UTF-8'); ?></td>
                                             <td><?php echo htmlspecialchars($traveller->t_remarks, ENT_QUOTES, 'UTF-8'); ?></td>
                                             
-                                            <td>
-                                                <?php foreach ($traveller->users as $user):
-                                                    echo anchor('admin/users/profile/'.$user->id, '<span class="label" style="background:orange;" >'.htmlspecialchars(ucwords($user->username), ENT_QUOTES, 'UTF-8').'</span>'); 
-
-                                                 endforeach;?>
-                                            </td> 
-
+                            
 
                                          </tr>
                                          <?php endforeach;?>
                                         </tbody>
 
                                         </table>
-                                        
-                                        
-                                        
-                                        
+
                                         </div>
                                         <div class="col-md-6">
                                          <?php echo form_open_multipart(current_url(), array('class' => 'form-horizontal', 'id' => 'form-edit_history')); ?>
@@ -112,13 +106,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <div class="form-group">
                                                 <span class = 'col-sm-2 control-label'>Test No:</span>
                                                 <div class="col-sm-10">
-                                                   
-                                                    
-                                                <?php echo form_input($test_no);?>
-                                             
-                                                 
                                                      
-                                                    
+                                                <?php echo form_input($test_no);?>
+
                                                 </div>
                                                
                                             </div>
@@ -129,12 +119,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                     
                                                 <?php echo form_input($t_error_code);?>
                                              
-                                                 
-                                                     
-                                                    
                                                 </div>
                                                
                                             </div>
+
+                                            <div class="form-group">
+                                                <span class = 'col-sm-2 control-label'>Status:</span>
+                                                <div class="col-sm-10">
+                                                    <?php echo form_dropdown($status);?>
+                                                </div>
+                                            </div>
+                                            
+                                             <div class="form-group">
+                                                <span class = 'col-sm-2 control-label'>In:</span>
+                                                <div class="col-sm-4">
+                                                   
+                                                    
+                                                <?php echo form_input($date_in);?>
+                                             
+                                                </div>
+                                               <span class = 'col-sm-2 control-label'>Out:</span>
+                                                <div class="col-sm-4">
+                                                   
+                                                    
+                                                <?php echo form_input($date_out);?>
+                                             
+                                                </div>
+                                               
+                                            </div>
+                                            
+                                            
+                                            
+                                                
 
                                             <div class="form-group">
                                                 <span class = 'col-sm-2 control-label'>Remarks:</span>
@@ -149,9 +165,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 </div>
                                             
                                             </div>
-
-                                            
-
 
                                             <div class="form-group">
                                                 <div class="col-sm-offset-3 col-sm-10">

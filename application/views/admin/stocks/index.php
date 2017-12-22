@@ -21,8 +21,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <table class="table table-striped table-bordered display">
                                         <thead>
                                             <tr>
-                                                <th>Category</th>
+                                                <th>Category</th>                                             
                                                 <th>Description</th>
+                                                <th>Stock Code</th>
                                                 <th>Critical Level</th>
                                                 <th>Quantity</th>
                                                
@@ -33,14 +34,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <tr>
                                                 
                                                 <?php foreach ($stock->parts as $part):?>
+                                                
                                                 <td>
                                                     <?php foreach ($part->categories as $category):?>
                                                         <?php echo anchor('admin/categories/edit/'.$category->cat_id, '<span class="label" style="background:'.$category->cat_color.';">'.htmlspecialchars($category->cat_name, ENT_QUOTES, 'UTF-8').'</span>'); ?>
                                                     <?php endforeach?>
                                                 </td>
+
                                                 <td>
                                                   
                                                     <?php echo anchor('admin/parts/edit/'.$part->p_id, '<span class="label" style="background:'.$part->s_color.';">'.htmlspecialchars($part->p_desc, ENT_QUOTES, 'UTF-8').'</span>'); ?>
+                                                </td>
+                                                <td>
+                                                   <?php echo htmlspecialchars($part->p_scode, ENT_QUOTES, 'UTF-8'); ?>
                                                 </td>
                                                  <td><?php echo htmlspecialchars($part->p_c_level, ENT_QUOTES, 'UTF-8'); ?></td>
                                                 <?php endforeach?>

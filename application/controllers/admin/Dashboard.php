@@ -36,6 +36,7 @@ class Dashboard extends Admin_Controller {
             $this->data['count_pending_requests']   = $this->dashboard_model->get_count_pending_request();
             $this->data['count_jobs']   = $this->dashboard_model->get_count_jobs();
             $this->data['count_forinv_jobs']   = $this->dashboard_model->get_forinv_count_jobs();
+            $this->data['count_fortest_jobs']   = $this->dashboard_model->get_fortest_count_jobs();
             $this->data['count_groups']      = $this->dashboard_model->get_count_record('groups');
             $this->data['disk_totalspace']   = $this->dashboard_model->disk_totalspace(DIRECTORY_SEPARATOR);
             $this->data['disk_freespace']    = $this->dashboard_model->disk_freespace(DIRECTORY_SEPARATOR);

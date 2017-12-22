@@ -81,6 +81,88 @@ class InandOut extends Admin_Controller {
         }
 	}
 
+
+	public function fortest()
+	{
+        if ( ! $this->ion_auth->logged_in() )
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            /* Breadcrumbs */
+            $this->data['breadcrumb'] = $this->breadcrumbs->show();
+
+            /* Get all categories */
+            $this->data['jobs'] = $this->inandout_model->get_fortest();
+            foreach ($this->data['jobs'] as $k => $job)
+            {
+                switch(strtoupper($job->status)){
+                    case 'GOOD':
+                    $this->data['jobs'][$k]->color = 'green';
+                    break;
+                    case 'FAILED':
+                    $this->data['jobs'][$k]->color = 'red';
+                    break;
+                    case 'UNDERWARRANTY':
+                    $this->data['jobs'][$k]->color = '#DCB239';
+                    break;
+                    case 'FORTEST':
+                    $this->data['jobs'][$k]->color = 'orange';
+                    break;
+                    case 'NAU':
+                    $this->data['jobs'][$k]->color = '#aa863a';
+                    break;
+                }
+                
+            }
+  
+
+            /* Load Template */
+            $this->template->admin_render('admin/inandout/index', $this->data);
+        }
+	}
+	public function forinv()
+	{
+        if ( ! $this->ion_auth->logged_in() )
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            /* Breadcrumbs */
+            $this->data['breadcrumb'] = $this->breadcrumbs->show();
+
+            /* Get all categories */
+            $this->data['jobs'] = $this->inandout_model->get_forinv();
+            foreach ($this->data['jobs'] as $k => $job)
+            {
+                switch(strtoupper($job->status)){
+                    case 'GOOD':
+                    $this->data['jobs'][$k]->color = 'green';
+                    break;
+                    case 'FAILED':
+                    $this->data['jobs'][$k]->color = 'red';
+                    break;
+                    case 'UNDERWARRANTY':
+                    $this->data['jobs'][$k]->color = '#DCB239';
+                    break;
+                    case 'FORTEST':
+                    $this->data['jobs'][$k]->color = 'orange';
+                    break;
+                    case 'NAU':
+                    $this->data['jobs'][$k]->color = '#aa863a';
+                    break;
+                }
+                
+            }
+  
+
+            /* Load Template */
+            $this->template->admin_render('admin/inandout/index', $this->data);
+        }
+	}
+
 	public function create(){
 
 		if ( ! $this->ion_auth->logged_in()  )
@@ -928,6 +1010,9 @@ class InandOut extends Admin_Controller {
 							't_error_code'  => $this->input->post('t_error_code'),
 							't_remarks'  => $this->input->post('remarks'),
 							't_user' => $this->ion_auth->user()->row()->id,
+							't_status' => $this->input->post('status'),
+							't_datein' => $this->input->post('date_in'),
+							't_dateout' => $this->input->post('date_in'),
 						);
 
 					 	if($this->inandout_model->insertTraveller($data)){
@@ -972,6 +1057,23 @@ class InandOut extends Admin_Controller {
 				'value' => $this->form_validation->set_value('t_error_code'),
 			);
 
+
+		$this->data['date_in'] = array(
+				'name'  => 'date_in',
+				'id'    => 'date_in',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('date_in'),
+		);
+
+		$this->data['date_out'] = array(
+				'name'  => 'date_out',
+				'id'    => 'date_out',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('date_out'),
+		);
+
 		$this->data['remarks'] = array(
 				'name'  => 'remarks',
 				'id'    => 'remarks',
@@ -980,6 +1082,16 @@ class InandOut extends Admin_Controller {
 				'rows'  => '3',
 				'value' => $this->form_validation->set_value('remarks'),
 			);
+
+		$status = array(""=>"Please select a status","GOOD"=>"GOOD","FAILED"=>"FAILED","UNDERWARRANTY"=>"UNDERWARRANTY","FORTEST"=>"FORTEST","NAU"=>"NAU");	
+		$this->data['status'] = array(
+			'name'  => 'status',
+			'id'    => 'status',
+			'class' => 'form-control',
+			'options' => $status,
+			
+
+		);
 
 
 		$this->template->admin_render('admin/inandout/traveller', $this->data);
@@ -1017,6 +1129,9 @@ class InandOut extends Admin_Controller {
 					
 							't_error_code'  => $this->input->post('t_error_code'),
 							't_remarks'  => $this->input->post('remarks'),
+							't_status' => $this->input->post('status'),
+							't_datein' => $this->input->post('date_in'),
+							't_dateout' => $this->input->post('date_in'),
 						);
 
 					 	if($this->inandout_model->updateTraveller($id,$testno,$data)){
@@ -1034,6 +1149,9 @@ class InandOut extends Admin_Controller {
 					
 							't_error_code'  => $this->input->post('t_error_code'),
 							't_remarks'  => $this->input->post('remarks'),
+							't_status' => $this->input->post('status'),
+							't_datein' => $this->input->post('date_in'),
+							't_dateout' => $this->input->post('date_in'),
 						);
 
 					 	if($this->inandout_model->updateTraveller($id,$testno,$data)){
@@ -1062,6 +1180,7 @@ class InandOut extends Admin_Controller {
 		
 
 		$this->data['traveller_items'] = $this->inandout_model->get_traveller_items($id,$testno);
+		$this->data['traveller_scrap_items'] = $this->inandout_model->get_traveller_scrap_items($id,$testno);
 		foreach ($this->data['traveller_items'] as $k => $item)
         {
             $this->data['traveller_items'][$k]->parts = $this->parts_model->get_all($item->p_id);
@@ -1073,6 +1192,7 @@ class InandOut extends Admin_Controller {
 
 
 		$this->data['job_no'] = $jobs->job_no;
+		$this->data['testno'] = $testno;
 		$this->data['job_images'] = $jobs->images;
 
 		$this->data['test_no'] = array(
@@ -1099,7 +1219,52 @@ class InandOut extends Admin_Controller {
 				'class' => 'form-control',
 				'rows'  => '3',
 				'value' => $this->form_validation->set_value('remarks',$traveller->t_remarks),
-			);
+		);
+
+		$this->data['date_in'] = array(
+				'name'  => 'date_in',
+				'id'    => 'date_in',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('date_in',$traveller->t_datein),
+		);
+
+		$this->data['date_out'] = array(
+				'name'  => 'date_out',
+				'id'    => 'date_out',
+				'type'  => 'text',
+                'class' => 'form-control',
+				'value' => $this->form_validation->set_value('date_out',$traveller->t_dateout),
+		);
+
+		$status = array(""=>"Please select a status","GOOD"=>"GOOD","FAILED"=>"FAILED","UNDERWARRANTY"=>"UNDERWARRANTY","FORTEST"=>"FORTEST","NAU"=>"NAU");	
+		$this->data['status'] = array(
+			'name'  => 'status',
+			'id'    => 'status',
+			'class' => 'form-control',
+			'options' => $status,
+			'selected' => $traveller->t_status
+			
+
+		);
+
+
+		// $this->data['s_desc'] = array(
+		// 	'name'  => 's_desc',
+		// 	'id'    => 's_desc',
+		// 	'type'  => 'text',
+  //           'class' => 'form-control',
+		// 	'value' => $this->form_validation->set_value('s_desc'),
+		// );
+
+		// $this->data['s_qty'] = array(
+		// 	'name'  => 's_qty',
+		// 	'id'    => 's_qty',
+		// 	'type'  => 'text',
+  //           'class' => 'form-control',
+		// 	'value' => $this->form_validation->set_value('s_qty'),
+		// );
+
 		
 
 		$this->template->admin_render('admin/inandout/travellertest', $this->data);
@@ -1168,6 +1333,73 @@ class InandOut extends Admin_Controller {
 			);
 
 		$this->template->admin_render('admin/inandout/drawing', $this->data);
+	}
+
+	public function item_remove($id){
+
+		$data = array(
+			's_id' => $id
+		);
+
+		// $request = $this->inandout_model->get_request($rqno);
+
+		$mes = '';
+		// if($this->ion_auth->is_admin()){
+		// 	$this->logme("Request item has been removed. (RQ: ".$rqno." | Part Desc: ".$request_item->p_desc." | Qty: ".$request_item->qty." ).",$this->ion_auth->user()->row()->id,"Request");
+		// 	$this->request_model->item_delete($data);
+		// 	$mes = 'success';
+		// }else{
+		// 	if($request->tech_id != $this->ion_auth->user()->row()->id){
+		// 		$mes = 'Your not the owner of this request.';
+		// 	}else{
+		// 		$this->request_model->item_delete($data);
+		// 		$mes = 'success';
+		// 	}
+		// }
+		if($this->inandout_model->item_delete($data))
+		{
+			$mes = 'success';
+		}else{
+			$mes = 'failed';
+		}
+
+		echo $mes;
+		
+	}
+
+	public function add_item($jobno,$testno,$desc,$qty){
+
+		$data = array(
+			'job_no' => $jobno,
+			'test_no' => $testno,
+			's_dec' => $desc,
+			'quantity' => $qty,
+		);
+
+		// $request = $this->inandout_model->get_request($rqno);
+
+		$mes = '';
+		// if($this->ion_auth->is_admin()){
+		// 	$this->logme("Request item has been removed. (RQ: ".$rqno." | Part Desc: ".$request_item->p_desc." | Qty: ".$request_item->qty." ).",$this->ion_auth->user()->row()->id,"Request");
+		// 	$this->request_model->item_delete($data);
+		// 	$mes = 'success';
+		// }else{
+		// 	if($request->tech_id != $this->ion_auth->user()->row()->id){
+		// 		$mes = 'Your not the owner of this request.';
+		// 	}else{
+		// 		$this->request_model->item_delete($data);
+		// 		$mes = 'success';
+		// 	}
+		// }
+		if($this->inandout_model->add_item($data))
+		{
+			$mes = 'success';
+		}else{
+			$mes = 'failed';
+		}
+
+		echo $mes;
+		
 	}
 	
 }

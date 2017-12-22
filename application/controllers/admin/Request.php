@@ -57,6 +57,40 @@ class Request extends Admin_Controller {
         }
 	}
 
+	public function pending()
+	{
+        if ( ! $this->ion_auth->logged_in())
+        {
+            redirect('auth/login', 'refresh');
+        }
+        else
+        {
+            /* Breadcrumbs */
+            $this->data['breadcrumb'] = $this->breadcrumbs->show();
+
+            /* Get all categories */
+            $this->data['requests'] = $this->request_model->get_pending();
+            foreach ($this->data['requests'] as $k => $request)
+            {
+                $this->data['requests'][$k]->tech = $this->ion_auth->user($request->tech_id)->result();
+				if($request->tech_approval == 1){
+					if($request->admin_approval == 1){
+						$this->data['requests'][$k]->status = 'Admin-Approved';
+						$this->data['requests'][$k]->color = 'green';
+					}else{
+						$this->data['requests'][$k]->status = 'Tech-Approved';
+						$this->data['requests'][$k]->color = 'green';
+					}
+				}else{
+					$this->data['requests'][$k]->status = 'Pending';
+					$this->data['requests'][$k]->color = 'orange';
+				}
+            }
+            /* Load Template */
+            $this->template->admin_render('admin/request/index', $this->data);
+        }
+	}
+
 
 	public function create()
 	{
@@ -565,7 +599,42 @@ class Request extends Admin_Controller {
 
 			if($this->ion_auth->is_admin()){ // admin approval
 				if($request->tech_approval !="1"){
-					$this->data['message'] = "This request is not yet approved by the owner of the request.";
+					// $this->data['message'] = "This request is not yet approved by the owner of the request.";
+					if ($this->input->post('confirm') == 'yes')
+					{
+						if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
+						{
+							$this->data['message'] = $this->lang->line('error_csrf');
+						}
+
+						if ($this->ion_auth->logged_in())
+						{
+							if(!$this->request_model->approve_tech($id)){
+								$this->data['message'] = 'Approved Failed.';
+							}else{
+								$this->logme("Request has been approved by the owner. (RQ: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
+								$this->data['message_suc'] = 'Approved Successful.';
+							}
+
+						} 
+					}else if ($this->input->post('confirm') == 'no'){
+
+						if ($this->_valid_csrf_nonce() === FALSE OR $id != $this->input->post('id'))
+						{
+							$this->data['message'] = $this->lang->line('error_csrf'); 
+						}
+
+						if ($this->ion_auth->logged_in())
+						{
+							
+							if(!$this->request_model->reject_tech($id)){
+								$this->data['message'] = 'Reject Failed1.';
+							}else{
+								$this->logme("Request has been rejected by the owner. (RQ: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
+								$this->data['message_suc'] = 'Reject Successful.';
+							}
+						} 
+					}
 				}else{
 					if ($this->input->post('confirm') == 'yes')
 					{
@@ -593,13 +662,22 @@ class Request extends Admin_Controller {
 
 						if ($this->ion_auth->logged_in() && $this->ion_auth->is_admin())
 						{
-							
-							if(!$this->request_model->reject_admin($id)){
+							if($request->admin_approval == "1"){
+								if(!$this->request_model->reject_admin($id)){
 								$this->data['message'] = 'Reject Failed.';
+								}else{
+									$this->logme("Request has been rejected by the admin. (RQ: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
+									$this->data['message_suc'] = 'Reject Successful.';
+								}
 							}else{
-								$this->logme("Request has been rejected by the admin. (RQ: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
-								$this->data['message_suc'] = 'Reject Successful.';
+								if(!$this->request_model->reject_tech($id)){
+								$this->data['message'] = 'Reject Failed1.';
+								}else{
+									$this->logme("Request has been rejected by the owner. (RQ: ".$id.").",$this->ion_auth->user()->row()->id,"Request");
+									$this->data['message_suc'] = 'Reject Successful.';
+								}
 							}
+							
 						}
 					}
 				}
