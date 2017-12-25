@@ -24,7 +24,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <th>Descrption</th>
                                                 <th>Box No</th>
                                                 <th>Type</th>
-                                                <th>Stock Code</th>
+                                                <th>Order Code</th>
                                                 <th>Critical Lvl</th>
                                                 <th>Action</th>
                                             </tr>

@@ -146,8 +146,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </div>
 
                                             <div class="form-group">
-                                                <span class = 'col-sm-3 control-label'>DN No:</span>
-                                                <div class="col-sm-9">
+                                                <span class = 'col-sm-4 control-label'>DN No / Gate Pass:</span>
+                                                <div class="col-sm-8">
                                                     <?php echo form_input($dn_no);?>
                                                 </div>
                                             </div>

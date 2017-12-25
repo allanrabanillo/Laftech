@@ -23,7 +23,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <tr>
                                                 <th>Category</th>                                             
                                                 <th>Description</th>
-                                                <th>Stock Code</th>
+                                                <th>Order Code</th>
                                                 <th>Critical Level</th>
                                                 <th>Quantity</th>
                                                

@@ -109,7 +109,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                                         </table>
                                         <?php echo form_fieldset_close(); ?>
-                                        <?php echo form_fieldset('Scrap Items'); ?>
+                                        <?php echo form_fieldset('Part from other Item(s)'); ?>
                                         <table class="table table-striped table-bordered display">
 
                                         <thead>

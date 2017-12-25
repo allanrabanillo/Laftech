@@ -33,7 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <span class="info-box-icon bg-yellow"><i class="fa fa-cogs"></i></span>
                                 </a>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Jobs for TEST</span>
+                                    <span class="info-box-text">Jobs for <br> TEST</span>
                                     <span class="info-box-number"><?php echo ($count_fortest_jobs)  ?></span>
                                 </div>
                             </div>
@@ -44,7 +44,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <span class="info-box-icon bg-yellow"><i class="fa fa-sort-amount-desc"></i></span>
                                 </a>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Critical Part(s)</span>
+                                    <span class="info-box-text">Critical<br> Part(s)</span>
                                     <span class="info-box-number"><?php echo ($count_critical_parts)  ?></span>
                                 </div>
                             </div>
@@ -58,7 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 <span class="info-box-icon bg-red"><i class="fa fa-exclamation-triangle"></i></span>
                                 </a>
                                 <div class="info-box-content">
-                                     <span class="info-box-text">Out of Stock(s)</span>
+                                     <span class="info-box-text">Out of <br>Stock(s)</span>
                                     <span class="info-box-number"><?php echo ($count_outofstock_parts)  ?></span>
                                     
                                 </div>
