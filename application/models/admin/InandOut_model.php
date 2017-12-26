@@ -11,7 +11,7 @@ class InandOut_model extends CI_Model {
     public function get_all()
     {
         //SELECT parts.p_id,COALESCE((qty - qtyout), 0 ) as balance from parts left outer join stocks on stocks.p_id = parts.p_id GROUP BY parts.p_id
-        $this->db->select('job_no,customers.c_id,c_name,item_desc,partno,date_in,status,images,drawing');
+        $this->db->select('job_no,drno,customers.c_id,c_name,item_desc,partno,date_in,status,images,drawing');
         $this->db->from('in_and_out');
         $this->db->join('customers', 'customers.c_id = in_and_out.c_id');
         // $this->db->group_by("parts.p_id");
@@ -23,7 +23,7 @@ class InandOut_model extends CI_Model {
     public function get_fortest()
     {
         //SELECT parts.p_id,COALESCE((qty - qtyout), 0 ) as balance from parts left outer join stocks on stocks.p_id = parts.p_id GROUP BY parts.p_id
-        $this->db->select('job_no,customers.c_id,c_name,item_desc,partno,date_in,status,images,drawing');
+        $this->db->select('job_no,drno,customers.c_id,c_name,item_desc,partno,date_in,status,images,drawing');
         $this->db->from('in_and_out');
         $this->db->join('customers', 'customers.c_id = in_and_out.c_id');
         $this->db->where("status='FORTEST'");
@@ -36,10 +36,10 @@ class InandOut_model extends CI_Model {
     public function get_forinv()
     {
         //SELECT parts.p_id,COALESCE((qty - qtyout), 0 ) as balance from parts left outer join stocks on stocks.p_id = parts.p_id GROUP BY parts.p_id
-        $this->db->select('job_no,customers.c_id,c_name,item_desc,partno,date_in,status,images,drawing');
+        $this->db->select('job_no,drno,customers.c_id,c_name,item_desc,partno,date_in,status,images,drawing');
         $this->db->from('in_and_out');
         $this->db->join('customers', 'customers.c_id = in_and_out.c_id');
-        $this->db->where("status='GOOD'");
+        $this->db->where("invno !='' and invno IS NOT NULL");
         // $this->db->group_by("parts.p_id");
         $query = $this->db->get();
 

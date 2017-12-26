@@ -26,8 +26,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                         <thead>
                                             <tr>
                                                 <th>Job No</th>
+                                                <th>DR No</th>
                                                 <th>Customer</th>
-                                                <th>Item Desc</th>
+                                                <th>Item Desc</th>     
                                                 <th>Part No</th>
                                                 <th>Date In</th>
                                                 <th>Status</th>
@@ -36,6 +37,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <!-- <?php var_dump($jobs);?> -->
                                         <?php foreach ($jobs as $job):?>
                                             <tr>
                                                 
@@ -50,6 +52,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                             
                                                     ?>
                                                 </td>
+                                                <td><?php echo htmlspecialchars($job->drno, ENT_QUOTES, 'UTF-8'); ?></td>
                                                 
                                                 <td>
                                                     <?php if($is_admin): ?>

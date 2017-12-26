@@ -40,7 +40,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                         </div>
                         <div class="col-md-2 col-sm-6 col-xs-12">
                             <div class="info-box">
-                                <a href="./inandout/fortest">
+                                <a href="./stocks/critical">
                                 <span class="info-box-icon bg-yellow"><i class="fa fa-sort-amount-desc"></i></span>
                                 </a>
                                 <div class="info-box-content">
