@@ -88,7 +88,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                             <div class="box-body">
                             <ul class="media-list">
-
+                            <?php if(count($announcements) != 0 ): ?>
                             <?php foreach ($announcements as $announcement):?>
                             <li class="media">
                             <div class="media-left">
@@ -104,6 +104,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             </div>
                             </li>
                               <?php endforeach;?>
+                             
+                            <?php else: ?>
+                            <li><span>No announcement(s).</span> </li>
+                            <?php endif;?>
                              </ul>
                            </div>
                         </div>
