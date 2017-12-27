@@ -182,7 +182,7 @@ class Dashboard_model extends CI_Model {
 
         // $this->db->group_by("parts.p_id");
                 // $this->db->where('SUM(COALESCE((stocks.qty-stocks.qtyout), 0 )) <', 'parts.p_c_level');
-        $query = $this->db->query("select distinct job_no from in_and_out where invno !='' and invno IS NOT NULL ");
+        $query = $this->db->query("select distinct job_no from in_and_out where invno !='' and invno IS NOT NULL and status <> 'GOOD' ");
 
         return $query->num_rows();
     }
