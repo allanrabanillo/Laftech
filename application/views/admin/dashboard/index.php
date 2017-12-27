@@ -13,8 +13,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                     <?php echo $dashboard_alert_file_install; ?>
                     <div class="row">
                        
-                        <div class="col-md-3 col-sm-6 col-xs-12">
-                            
+                       
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-4">
+                             <div class="box">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Statistics</h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    </div>
+                                </div>
+                            <div class="box-body">
+
+                             <p class="text-center text-uppercase"><strong>In and Out</strong></p>
                             <div class="info-box">
                                 <a href="./inandout/forinv">
                                 <span class="info-box-icon bg-blue"><i class="fa fa-files-o"></i></span>
@@ -25,46 +38,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                             </div>
                            
-                        </div>
+                       
                          
-                        <div class="col-md-2 col-sm-6 col-xs-12">
+                       
                             <div class="info-box">
                                 <a href="./inandout/fortest">
-                                <span class="info-box-icon bg-yellow"><i class="fa fa-cogs"></i></span>
+                                <span class="info-box-icon bg-navy"><i class="fa fa-cogs"></i></span>
                                 </a>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Jobs for <br> TEST</span>
+                                    <span class="info-box-text">Jobs for TEST</span>
                                     <span class="info-box-number"><?php echo ($count_fortest_jobs)  ?></span>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-2 col-sm-6 col-xs-12">
+                       
+                             <p class="text-center text-uppercase"><strong>Stocks</strong></p>
                             <div class="info-box">
                                 <a href="./stocks/critical">
                                 <span class="info-box-icon bg-yellow"><i class="fa fa-sort-amount-desc"></i></span>
                                 </a>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Critical<br> Part(s)</span>
+                                    <span class="info-box-text">Critical Part(s)</span>
                                     <span class="info-box-number"><?php echo ($count_critical_parts)  ?></span>
                                 </div>
                             </div>
-                        </div>
+                        
 
                         <div class="clearfix visible-sm-block"></div>
 
-                        <div class="col-md-2 col-sm-6 col-xs-12">
+                       
                             <div class="info-box">
                                 <a href="./stocks/outofstock">
                                 <span class="info-box-icon bg-red"><i class="fa fa-exclamation-triangle"></i></span>
                                 </a>
                                 <div class="info-box-content">
-                                     <span class="info-box-text">Out of <br>Stock(s)</span>
+                                     <span class="info-box-text">Out of Stock(s)</span>
                                     <span class="info-box-number"><?php echo ($count_outofstock_parts)  ?></span>
                                     
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-md-3 col-sm-6 col-xs-12">
+                        
+                             <p class="text-center text-uppercase"><strong>Request(s)</strong></p>
                             <div class="info-box">
                                 <a href="./request/pending">
                                 <span class="info-box-icon bg-orange"><i class="glyphicon glyphicon-copy"></i></span>
@@ -74,45 +87,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <span class="info-box-number"><?php echo $count_pending_requests; ?></span>
                                 </div>
                             </div>
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col-md-3">
-                             <div class="box">
-                                <div class="box-header with-border">
-                                    <h3 class="box-title">Announcement(s)</h3>
-                                    <div class="box-tools pull-right">
-                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
-                                    </div>
-                                </div>
-                            <div class="box-body">
-                            <ul class="media-list">
-                            <?php if(count($announcements) != 0 ): ?>
-                            <?php foreach ($announcements as $announcement):?>
-                            <li class="media">
-                            <div class="media-left">
-                                <a href="#">
-                                <i class="fa fa-bullhorn"></i>
-                                </a>
                             </div>
-                            <div class="media-body">
-                                <h4 class="media-heading"><?php echo $announcement->a_title;?> | <small ><?php $date=strtotime($announcement->a_date);echo date('Y-m-d',$date ); ;?></small></h4>
-                              
-                                <?php echo $announcement->a_message;?>
-                               
                             </div>
-                            </li>
-                              <?php endforeach;?>
-                             
-                            <?php else: ?>
-                            <li><span>No announcement(s).</span> </li>
-                            <?php endif;?>
-                             </ul>
-                           </div>
+                            
                         </div>
-                        </div>
-                        <div class="col-md-9">
+                        
+                        <div class="col-md-8">
                             <div class="box">
                                 <div class="box-header with-border">
                                     <h3 class="box-title">System Info</h3>
@@ -122,7 +102,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                 </div>
                                 <div class="box-body">
                                     <div class="row">
-                                        <div class="col-md-6">
+                                        <div class="col-md-12">
                                             <p class="text-center text-uppercase"><strong>Last Login</strong></p>
                                              <table class="table table-striped table-hover">
                                                 <thead>
@@ -143,7 +123,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                              
                                             </table>
                                         </div>
-                                        <div class="col-md-6">
+                                        <!--<div class="col-md-6">
                                             <p class="text-center text-uppercase"><strong>Resources</strong></p>
                                             <div class="progress-group">
                                                 <span class="progress-text">Disk use space</span>
@@ -158,7 +138,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 <div class="progress">
                                                     <div class="progress-bar progress-bar-red" role="progressbar" aria-valuenow="<?php echo $memory_usepercent; ?>" aria-valuemin="0" aria-valuemax="100" style="width:<?php echo $memory_usepercent; ?>%"></div>
                                                 </div>
-                                            </div>
+                                            </div>-->
                                             <!--<p class="text-center text-uppercase"><strong>Login History</strong></p>
                                              <table class="table table-striped table-hover">
                                                 <thead>
@@ -178,10 +158,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                 </tbody>
                                              
                                             </table>-->
-                                        </div>
+                                        <!--</div>-->
                                     </div>
                                 </div>
                             </div>
+                            <div class="box">
+                                <div class="box-header with-border">
+                                    <h3 class="box-title">Announcement(s) <span class="label label-info"><?php echo(count($announcements));?></span></h3>
+                                    <div class="box-tools pull-right">
+                                        <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i></button>
+                                    </div>
+                                </div>
+                            <div class="box-body">
+                            <ul class="media-list">
+                            <?php if(count($announcements) != 0 ): ?>
+                            <?php foreach ($announcements as $announcement):?>
+                            <li class="media">
+                            <div class="media-left">
+                                <a href="#">
+                                <i class="fa fa-bullhorn"></i>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <h4 class="media-heading"><?php echo $announcement->a_title;?>  <sub class ="pull-right" style ="color:gray;margin-top:10px;"><?php $date=strtotime($announcement->a_date);echo date('Y-m-d',$date ); ;?></sub></h4>
+                              
+                                <i class="fa fa-commenting-o" aria-hidden="true"></i> <?php echo $announcement->a_message;?>
+                               
+                            </div>
+                            </li>
+                              <?php endforeach;?>
+                             
+                            <?php else: ?>
+                            <li><span>No announcement(s).</span> </li>
+                            <?php endif;?>
+                             </ul>
+                           </div>
+                        </div>
                         </div>
                     </div>
                 </section>

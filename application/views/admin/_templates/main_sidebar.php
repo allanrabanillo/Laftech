@@ -54,7 +54,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                         <li class="<?=active_link_controller('request')?>">
                             <a href="<?php echo site_url('admin/request'); ?>">
-                                <i class="fa fa-exchange"></i> <span>Request</span>
+                                <i class="fa fa-exchange"></i> <span>Requests</span>
                             </a>
                         </li>
 

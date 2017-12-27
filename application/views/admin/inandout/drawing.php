@@ -58,7 +58,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                                    
                                                
                                     <div class="alert alert-warning" role="alert">
-                                                <strong>Note:</strong> Please make sure that the file name does not have a space.
+                                                <strong>Note:</strong> Please make sure that the file name does not have spaces.
                                     </div>
                                             <div class="form-group">
                                                 <span class = 'col-sm-2 control-label'>Images:</span>

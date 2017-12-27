@@ -137,6 +137,18 @@ body {
     }
 }
 
+@media (max-width:767px) {
+    .img-laftech {
+        width: 8%;
+    }
+}
+
+@media (max-width:512px) {
+    .img-laftech {
+        width: 10%;
+    }
+}
+
 .fixed.layout-boxed .wrapper {
     max-width: 100%
 }

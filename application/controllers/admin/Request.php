@@ -15,11 +15,11 @@ class Request extends Admin_Controller {
         $this->load->model('admin/receiving_model');
         $this->load->model('admin/inandout_model');
         /* Title Page :: Common */
-        $this->page_title->push('Request','Create a new request.');
+        $this->page_title->push('Requests','Create a new request.');
         $this->data['pagetitle'] = $this->page_title->show();
 
         /* Breadcrumbs :: Common */
-        $this->breadcrumbs->unshift(1, 'Request', 'admin/request');
+        $this->breadcrumbs->unshift(1, 'Requests', 'admin/request');
     }
 
 
