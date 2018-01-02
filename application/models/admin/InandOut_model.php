@@ -39,7 +39,7 @@ class InandOut_model extends CI_Model {
         $this->db->select('job_no,drno,customers.c_id,c_name,item_desc,partno,date_in,status,images,drawing');
         $this->db->from('in_and_out');
         $this->db->join('customers', 'customers.c_id = in_and_out.c_id');
-        $this->db->where("invno !='' and invno IS NOT NULL and status <> 'GOOD'");
+        $this->db->where("(invno ='' OR invno IS NULL) and status = 'GOOD'");
         // $this->db->group_by("parts.p_id");
         $query = $this->db->get();
 
