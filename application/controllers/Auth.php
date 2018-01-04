@@ -58,7 +58,7 @@ class Auth extends MY_Controller {
 
                         /* Load Template */
                         // $this->template->auth_render('admin/choice', $this->data);
-                        redirect('admin/dashboard');
+                        redirect('admin/dashboard/notification');
                     
                 }
                 else

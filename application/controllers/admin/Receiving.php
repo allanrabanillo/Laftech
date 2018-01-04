@@ -64,7 +64,7 @@ class Receiving extends Admin_Controller {
 		$this->form_validation->set_rules('p_name', 'lang:Item Name', 'required');
 		$this->form_validation->set_rules('qty', 'lang:Quatity', 'required');
 	
-
+		 $this->data['message'] = '';
 			$data = array(
 				'p_id' => $this->input->post('p_id'),
 				'qty'  => $this->input->post('qty'),
@@ -74,7 +74,7 @@ class Receiving extends Admin_Controller {
                 's_by' => $this->ion_auth->user()->row()->username,
 			);
 		
-		if ($this->form_validation->run() == TRUE && $this->parts_model->check_part($this->input->post('p_name'))  && $this->receiving_model->create($data))
+		if ($this->form_validation->run() == TRUE && $this->parts_model->check_part($this->input->post('p_name')) && $this->input->post('p_id') != 0 && $this->receiving_model->create($data))
 		{
 			$this->logme("New Stock has been added. (PartNo/Desc: ".$this->input->post('p_name')." | Quantity: ".$this->input->post('qty')." | Supplier: ".$this->input->post('p_supplier')." ).",$this->ion_auth->user()->row()->id,"Receiving");
             $this->session->set_flashdata('message', $this->ion_auth->messages());
@@ -82,11 +82,16 @@ class Receiving extends Admin_Controller {
 		}
 		else
 		{
+
             
-            $this->data['message'] = validation_errors();
+            $this->data['message'] .= validation_errors();
             if(isset($_POST) && ! empty($_POST) && $this->parts_model->check_part($this->input->post('p_name')) == false){
                 $this->data['message'] .= 'Please input a valid Part Desc.';
             }
+
+			if(isset($_POST) && ! empty($_POST) && $this->input->post('p_id') == 0){
+				$this->data['message'] .= 'Please manually type the Part Description.';
+			} 
             
 			$this->data['p_name'] = array(
 				'name'  => 'p_name',
