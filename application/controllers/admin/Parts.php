@@ -57,7 +57,7 @@ class Parts extends Admin_Controller {
 
 		/* Validate form input */
 		$this->form_validation->set_rules('p_desc', 'lang:Description', 'required|is_unique[parts.p_desc]');
-		$this->form_validation->set_rules('p_boxno', 'lang:Box No', 'required|numeric');
+		$this->form_validation->set_rules('p_boxno', 'lang:Box No', 'required');
         $this->form_validation->set_rules('p_type', 'lang:Type', 'required');
         $this->form_validation->set_rules('p_scode', 'Stock Code', 'is_unique[parts.p_scode]');
         $this->form_validation->set_rules('p_critical', 'Critical Level', 'required|numeric|greater_than[0]');
