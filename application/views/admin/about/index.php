@@ -17,7 +17,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                     <h3 class="box-title">Info</h3>
                                 </div>
                                 <div class="box-body">
-
+                                <!-- Insert sample commet -->
 
 
                                 </div>
