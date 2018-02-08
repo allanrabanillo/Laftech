@@ -19,7 +19,7 @@ class InandOut_model extends CI_Model {
 
         return $query->result();
     }
-
+    
     public function get_fortest()
     {
         //SELECT parts.p_id,COALESCE((qty - qtyout), 0 ) as balance from parts left outer join stocks on stocks.p_id = parts.p_id GROUP BY parts.p_id
